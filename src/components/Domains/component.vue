@@ -7,7 +7,9 @@
       <ul>
         <li v-for="domain in filteredDomains" :key="domain.id">
           {{domain.name}}
-          <a :aria-label="'Manage ' + domain.name">Go</a>
+          <router-link :to="'/domains/' + domain.name" :aria-label="'Manage ' + domain.name">
+            Go
+          </router-link>
         </li>
       </ul>
     </div>

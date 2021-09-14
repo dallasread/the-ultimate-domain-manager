@@ -1,5 +1,4 @@
-import { nextTick } from 'vue'
-import { mountApp } from '../../spec/helper.js'
+import { mountApp, flushPromises } from '../../spec/helper.js'
 
 describe('Log in', () => {
   it('shows a button that points to the DNSimple OAuth flow', async () => {
@@ -27,7 +26,7 @@ describe('Log in', () => {
     const dnsimpleAdapter = { authenticate () { return Promise.reject() }, authorize: jest.fn(() => Promise.reject(expectedError)) }
     const wrapper = await mountApp('/auth?code=AUTHCODE', dnsimpleAdapter)
 
-    await nextTick()
+    await flushPromises()
 
     expect(wrapper.find('[aria-label="Unauthorized"]').text()).toEqual(expectedError)
     expect(wrapper.findAll('[aria-label="Log in"]').length).toEqual(1)

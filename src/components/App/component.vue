@@ -1,5 +1,10 @@
 <template>
   <div>
+    <h1>
+      <router-link to="/">
+        The Ultimate Domain Manager™
+      </router-link>
+    </h1>
     <a v-if="dnsimple.user" aria-label="Log out" @click="logout">Log out</a>
     <router-view :dnsimple="dnsimple" />
   </div>
@@ -17,9 +22,7 @@ export default {
   methods: {
     logout () {
       return this.dnsimple.logout()
-        .then(() => {
-          this.$router.push('/')
-        })
+        .then(() => this.$router.push('/'))
         .catch(() => {})
     }
   }
