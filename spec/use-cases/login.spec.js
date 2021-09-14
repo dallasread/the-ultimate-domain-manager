@@ -14,15 +14,10 @@ describe('Log in to a DNSimple account', () => {
     expect(button.element.href).toMatch('state=')
   })
 
-  //   it('authorizes the access token supplied by DNSimple', async () => {
-  //     const wrapper = await mountApp('/auth?code=AUTHCODE')
-  //
-  //     expect(wrapper.text()).toMatch('Search...')
-  //   })
+  it('redirects to the domains page when authorized', async () => {
+    const dnsimpleAPI = { authorize: jest.fn(() => Promise.resolve) }
+    const wrapper = await mountApp('/auth?code=AUTHCODE', dnsimpleAPI)
 
-//   it('shows an error if the user is not authenticated with DNSimple', async () => {
-//     const wrapper = await mountApp('/auth?error_description=Error')
-//
-//     expect(wrapper.findAll('[aria-label="Unauthorized"]').length).toEqual(1)
-//   })
+    expect(wrapper.vm.$router.push).toHaveBeenCalledWith('/domains')
+  })
 })

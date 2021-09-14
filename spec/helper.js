@@ -5,7 +5,15 @@ import { routes } from '@/router'
 
 window.document = {}
 
-const mountApp = async (path) => {
+class DNSimpleAPI {
+  authorize () {
+    return new Promise(() => {
+
+    })
+  }
+}
+
+const mountApp = async (path, dnsimpleAPI) => {
   const router = createRouter({
     history: createMemoryHistory(),
     routes
@@ -17,7 +25,12 @@ const mountApp = async (path) => {
     global: {
       plugins: [router],
       mocks: {
-        // $router: { push: jest.fn() }
+        $router: { push: jest.fn() }
+      }
+    },
+    data () {
+      return {
+        api: dnsimpleAPI || new DNSimpleAPI()
       }
     }
   })
