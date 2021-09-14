@@ -22,12 +22,13 @@ describe('Log in to a DNSimple account', () => {
   })
 
   it('shows an error if the user is not authenticated with DNSimple', async () => {
-    const dnsimpleAPI = { authorize: jest.fn(() => Promise.reject('Unauthorized')) }
+    const expectedError = 'You are unauthorized'
+    const dnsimpleAPI = { authorize: jest.fn(() => Promise.reject(expectedError)) }
     const wrapper = await mountApp('/auth?code=AUTHCODE', dnsimpleAPI)
 
     await nextTick()
 
-    expect(wrapper.findAll('[aria-label="Unauthorized"]').length).toEqual(1)
+    expect(wrapper.find('[aria-label="Unauthorized"]').text()).toEqual(expectedError)
     expect(wrapper.findAll('[aria-label="Log in"]').length).toEqual(1)
   })
 })
