@@ -7,9 +7,7 @@ window.document = {}
 
 class DNSimpleAPI {
   authorize () {
-    return new Promise(() => {
-
-    })
+    return Promise.resolve()
   }
 }
 

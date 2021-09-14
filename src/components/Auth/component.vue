@@ -1,14 +1,24 @@
 <template>
   <div>
-    <p aria-label="Unauthorized">You have not been authorized.</p>
-    <router-link to="/">Try again</router-link>
+    <p v-if="error" aria-label="Unauthorized">{{error}}</p>
+    <router-link to="/" aria-label="Log in">Try again</router-link>
   </div>
 </template>
 
 <script>
 export default {
+  props: ['api'],
   mounted () {
-    return this.$router.push('/domains')
+    return this.api.authorize()
+      .then(() => this.$router.push('/domains'))
+      .catch((err) => {
+        this.error = err
+      })
+  },
+  data () {
+    return {
+      error: ''
+    }
   }
 }
 </script>

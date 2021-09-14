@@ -1,3 +1,4 @@
+import { nextTick } from 'vue'
 import { mountApp } from '../../spec/helper.js'
 import App from '@/components/App/component.vue'
 
@@ -15,9 +16,18 @@ describe('Log in to a DNSimple account', () => {
   })
 
   it('redirects to the domains page when authorized', async () => {
-    const dnsimpleAPI = { authorize: jest.fn(() => Promise.resolve) }
-    const wrapper = await mountApp('/auth?code=AUTHCODE', dnsimpleAPI)
+    const wrapper = await mountApp('/auth?code=AUTHCODE')
 
     expect(wrapper.vm.$router.push).toHaveBeenCalledWith('/domains')
+  })
+
+  it('shows an error if the user is not authenticated with DNSimple', async () => {
+    const dnsimpleAPI = { authorize: jest.fn(() => Promise.reject('Unauthorized')) }
+    const wrapper = await mountApp('/auth?code=AUTHCODE', dnsimpleAPI)
+
+    await nextTick()
+
+    expect(wrapper.findAll('[aria-label="Unauthorized"]').length).toEqual(1)
+    expect(wrapper.findAll('[aria-label="Log in"]').length).toEqual(1)
   })
 })
