@@ -3,11 +3,11 @@
     <h1>Domains</h1>
     <p v-if="isLoading">Loading...</p>
     <div v-else>
+      <input v-model="q" aria-label="Domain search">
       <ul>
-        <li v-for="domain in domains">
-          <a>
-            {{domain.name}}
-          </a>
+        <li v-for="domain in filteredDomains" :key="domain.id">
+          {{domain.name}}
+          <a :aria-label="'Manage ' + domain.name">Go</a>
         </li>
       </ul>
     </div>
@@ -22,7 +22,8 @@ export default {
   data () {
     return {
       isLoading: true,
-      domains: []
+      domains: [],
+      q: ''
     }
   },
   mounted () {
@@ -33,6 +34,15 @@ export default {
     }).finally(() => {
       this.isLoading = false
     })
+  },
+  computed: {
+    filteredDomains () {
+      const q = this.q.trim().toLowerCase()
+
+      return this.domains.filter((domain) => {
+        return domain.name.indexOf(q) !== -1
+      })
+    }
   }
 }
 </script>
