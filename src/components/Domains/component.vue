@@ -1,6 +1,16 @@
 <template>
   <div>
     <h1>Domains</h1>
+    <p v-if="isLoading">Loading...</p>
+    <div v-else>
+      <ul>
+        <li v-for="domain in domains">
+          <a>
+            {{domain.name}}
+          </a>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
@@ -9,17 +19,20 @@ import AuthenticatedRoute from '@/components/App/authenticated-route.js'
 
 export default {
   mixins: [AuthenticatedRoute],
-  computed: {
-    oauthUrl () {
-      const url = new URL('https://dnsimple.com/oauth/authorize')
-
-      url.searchParams.append('response_type', 'code')
-      url.searchParams.append('redirect_uri', 'http://localhost:8080/auth')
-      url.searchParams.append('client_id', 'cbde777b80c127be')
-      url.searchParams.append('state', 'RANDOM')
-
-      return url.href
+  data () {
+    return {
+      isLoading: true,
+      domains: []
     }
+  },
+  mounted () {
+    return this.dnsimple.listDomains().then((response) => {
+      this.domains = response.domains
+    }).catch((err) => {
+      this.error = err
+    }).finally(() => {
+      this.isLoading = false
+    })
   }
 }
 </script>
