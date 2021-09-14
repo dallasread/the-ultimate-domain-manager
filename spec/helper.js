@@ -5,13 +5,13 @@ import { routes } from '@/router'
 
 window.document = {}
 
-class DNSimpleAPI {
+class DNSimpleAdapter {
   authorize () {
     return Promise.resolve()
   }
 }
 
-const mountApp = async (path, dnsimpleAPI) => {
+const mountApp = async (path, dnsimpleAdapter) => {
   const router = createRouter({
     history: createMemoryHistory(),
     routes
@@ -28,7 +28,7 @@ const mountApp = async (path, dnsimpleAPI) => {
     },
     data () {
       return {
-        api: dnsimpleAPI || new DNSimpleAPI()
+        dnsimple: dnsimpleAdapter || new DNSimpleAdapter()
       }
     }
   })

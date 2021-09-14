@@ -1,10 +1,10 @@
 import { nextTick } from 'vue'
 import { mountApp } from '../../spec/helper.js'
-import App from '@/components/App/component.vue'
 
-describe('Log in to a DNSimple account', () => {
+describe('Log in', () => {
   it('shows a button that points to the DNSimple OAuth flow', async () => {
-    const wrapper = await mountApp('/')
+    const dnsimpleAdapter = { authenticate () { return Promise.reject() } }
+    const wrapper = await mountApp('/', dnsimpleAdapter)
 
     const button = wrapper.find('a[aria-label="Connect via DNSimple"]')
     expect(button.text()).toEqual('Connect via DNSimple')
@@ -16,15 +16,16 @@ describe('Log in to a DNSimple account', () => {
   })
 
   it('redirects to the domains page when authorized', async () => {
-    const wrapper = await mountApp('/auth?code=AUTHCODE')
+    const dnsimpleAdapter = { authenticate () { return Promise.reject() }, authorize: jest.fn(() => Promise.resolve()) }
+    const wrapper = await mountApp('/auth?code=AUTHCODE', dnsimpleAdapter)
 
     expect(wrapper.vm.$router.push).toHaveBeenCalledWith('/domains')
   })
 
   it('shows an error if the user is not authenticated with DNSimple', async () => {
     const expectedError = 'You are unauthorized'
-    const dnsimpleAPI = { authorize: jest.fn(() => Promise.reject(expectedError)) }
-    const wrapper = await mountApp('/auth?code=AUTHCODE', dnsimpleAPI)
+    const dnsimpleAdapter = { authenticate () { return Promise.reject() }, authorize: jest.fn(() => Promise.reject(expectedError)) }
+    const wrapper = await mountApp('/auth?code=AUTHCODE', dnsimpleAdapter)
 
     await nextTick()
 

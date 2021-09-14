@@ -1,19 +1,26 @@
 <template>
   <div>
-    <div id="nav">
-      <router-link to="/">Welcome</router-link>
-    </div>
-    <router-view :api="api" />
+    <a v-if="dnsimple.user" aria-label="Log out" @click="logout">Log out</a>
+    <router-view :dnsimple="dnsimple" />
   </div>
 </template>
 
 <script>
-import DNSimpleAPI from './dnsimple-api.js'
+import DNSimpleAdapter from './dnsimple-adapter.js'
 
 export default {
   data () {
     return {
-      api: new DNSimpleAPI()
+      dnsimple: new DNSimpleAdapter()
+    }
+  },
+  methods: {
+    logout () {
+      return this.dnsimple.logout()
+        .then(() => {
+          this.$router.push('/')
+        })
+        .catch(() => {})
     }
   }
 }

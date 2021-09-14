@@ -6,7 +6,10 @@
 </template>
 
 <script>
+import AuthenticatedRoute from '@/components/App/authenticated-route.js'
+
 export default {
+  mixins: [AuthenticatedRoute],
   computed: {
     oauthUrl () {
       const url = new URL('https://dnsimple.com/oauth/authorize')

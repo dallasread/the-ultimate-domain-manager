@@ -1,12 +1,14 @@
 <template>
   <div>
-    <h1>The Ultimate Domain Manager™</h1>
-    <a aria-label="Connect via DNSimple" :href="oauthUrl">Connect via DNSimple</a>
+    <h1>Domains</h1>
   </div>
 </template>
 
 <script>
+import AuthenticatedRoute from '@/components/App/authenticated-route.js'
+
 export default {
+  mixins: [AuthenticatedRoute],
   computed: {
     oauthUrl () {
       const url = new URL('https://dnsimple.com/oauth/authorize')
