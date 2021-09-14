@@ -5,8 +5,8 @@ const DOMAINS = [
 
 class DNSimpleAPI {
   constructor () {
-    this.user = {}
     this.data = {}
+    this.user = null
   }
 
   authorize () {
@@ -14,6 +14,8 @@ class DNSimpleAPI {
   }
 
   authenticate () {
+    this.user = {}
+
     if (this.user) {
       return Promise.resolve()
     } else {
@@ -27,14 +29,15 @@ class DNSimpleAPI {
     })
   }
 
-  getDomain () {
+  getDomain (name) {
     return Promise.resolve({
-      domain: DOMAINS[0]
+      domain: DOMAINS.find((d) => d.name === name)
     })
   }
 
   logout () {
     this.user = null
+    return Promise.resolve()
   }
 }
 

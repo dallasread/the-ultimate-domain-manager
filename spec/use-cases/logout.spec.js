@@ -17,7 +17,7 @@ describe('Log out', () => {
     expect(wrapper.vm.$router.push).toHaveBeenCalledWith('/')
   })
 
-  it('redirects if already logged out', async () => {
+  it('redirects to login page if already logged out', async () => {
     const dnsimpleAdapter = {
       authenticate () { return Promise.reject() },
       listDomains () { return Promise.resolve() },

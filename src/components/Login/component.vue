@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h1>The Ultimate Domain Manager™</h1>
     <a aria-label="Connect via DNSimple" :href="oauthUrl">Connect via DNSimple</a>
   </div>
 </template>

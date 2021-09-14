@@ -11,12 +11,13 @@
 </template>
 
 <script>
+import { reactive } from 'vue'
 import DNSimpleAdapter from './dnsimple-adapter.js'
 
 export default {
   data () {
     return {
-      dnsimple: new DNSimpleAdapter()
+      dnsimple: reactive(new DNSimpleAdapter())
     }
   },
   methods: {

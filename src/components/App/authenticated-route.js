@@ -3,8 +3,6 @@ export default {
   mounted () {
     return this.dnsimple.authenticate()
       .then(() => {})
-      .catch(() => {
-        this.$router.push('/')
-      })
+      .catch(() => this.$router.push('/'))
   }
 }

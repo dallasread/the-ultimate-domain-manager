@@ -22,10 +22,10 @@ export default {
     }
   },
   mounted () {
-    return this.dnsimple.getDomain().then((response) => {
+    return this.dnsimple.getDomain(this.$route.params.name).then((response) => {
       this.domain = response.domain
-    }).catch((err) => {
-      this.error = err
+    }).catch(() => {
+      this.error = 'Domain not found'
     })
   }
 }

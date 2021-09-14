@@ -3,7 +3,7 @@ import { mountApp, flushPromises } from '../../spec/helper.js'
 describe('Log in', () => {
   it('shows a button that points to the DNSimple OAuth flow', async () => {
     const dnsimpleAdapter = { authenticate () { return Promise.reject() } }
-    const wrapper = await mountApp('/', dnsimpleAdapter)
+    const wrapper = await mountApp('/login', dnsimpleAdapter)
 
     const button = wrapper.find('a[aria-label="Connect via DNSimple"]')
     expect(button.text()).toEqual('Connect via DNSimple')
