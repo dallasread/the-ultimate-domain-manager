@@ -7,10 +7,11 @@ $padding: 1rem;
 html, body {
   box-sizing: border-box;
   background: $yellow;
-  font-size: 21px;
+  font-size: 18px;
   font-family: Open Sans, Helvetica Neue, Helvetica, Arial, Sans Serif;
   color: $black;
   padding: $padding;
+  line-height: 1.6;
 
   a {
     color: inherit;
@@ -20,10 +21,14 @@ html, body {
   *, *:before, *:after {
     box-sizing: inherit;
   }
+
+  @media (max-width: 640px) {
+    padding: 0;
+  }
 }
 
 .container {
   width: 100%;
-  max-width: 640px;
+  max-width: 720px;
   margin: 3rem auto;
 }

@@ -6,7 +6,60 @@ input {
   border: 0;
   outline: none;
   width: 100%;
-  font-weight: 300;
+  font-weight: 600;
   font-family: inherit;
-  text-align: center;
+}
+
+.content {
+  margin-top: 3px;
+  background: rgba(255, 255, 255, 0.8);
+
+  .list-item {
+    vertical-align: middle;
+
+    a {
+      display: block;
+      padding: 1rem;
+      font-weight: 600;
+      border-top: 1px solid rgba(0, 0, 0, 0.1);
+
+      &:hover {
+        color: $purple;
+        background: $white;
+      }
+
+      .arrow {
+        float: right;
+        width: 1.5rem;
+        height: 1.5rem;
+        color: $purple;
+      }
+    }
+
+    &:first-child a {
+      border-top: 0;
+    }
+  }
+
+  .notice {
+    background: $purple;
+    color: #fff;
+
+    h3 {
+      font-weight: bold;
+      font-size: 1.25rem;
+    }
+
+    p {
+      font-size: 0.85rem;
+    }
+
+    .button {
+      margin-top: 1rem;
+    }
+  }
+
+  .with-padding {
+    padding: 2rem;
+  }
 }

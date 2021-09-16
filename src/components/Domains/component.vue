@@ -3,11 +3,13 @@
     <p v-if="isLoading">Loading...</p>
     <div v-else>
       <input v-model="q" aria-label="Domain search" placeholder="Search...">
-      <ul>
-        <li v-for="domain in filteredDomains" :key="domain.id">
-          {{domain.name}}
+      <ul class="content">
+        <li v-for="domain in filteredDomains" :key="domain.id" class="list-item">
           <router-link :to="'/domains/' + domain.name" :aria-label="'Manage ' + domain.name">
-            Go
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="arrow">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            {{domain.name}}
           </router-link>
         </li>
       </ul>

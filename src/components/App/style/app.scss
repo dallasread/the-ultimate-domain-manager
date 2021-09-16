@@ -2,7 +2,14 @@
   max-width: 1280px;
   width: 100%;
   margin: 0 auto;
-  position: relative;
+
+  .header {
+    position: relative;
+
+    @media (max-width: 640px) {
+      margin: $padding * 1.5;
+    }
+  }
 
   h1 {
     width: 75%;
@@ -34,7 +41,7 @@
 
   &.logged-in {
     h1 {
-      width: 12.5rem;
+      width: 15rem;
       padding-top: 0;
     }
 
@@ -56,6 +63,11 @@
     background: $purple;
     color: $white;
     padding: 0.75rem 2rem;
-    font-weight: 500;
+    font-weight: 600;
+
+    &.button-yellow {
+      background: $yellow;
+      color: $purple;
+    }
   }
 }
