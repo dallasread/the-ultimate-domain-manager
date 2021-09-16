@@ -1,7 +1,7 @@
 import { mountApp, flushPromises } from '../../spec/helper.js'
 
 describe('Log out', () => {
-  it('redirects to the domains page', async () => {
+  it('redirects to the login page', async () => {
     const dnsimpleAdapter = {
       user: {},
       authenticate () { return Promise.resolve() },
@@ -14,7 +14,7 @@ describe('Log out', () => {
     await button.trigger('click')
     await flushPromises()
 
-    expect(wrapper.vm.$router.push).toHaveBeenCalledWith('/')
+    expect(wrapper.vm.$router.push).toHaveBeenCalledWith('/login')
   })
 
   it('redirects to login page if already logged out', async () => {

@@ -1,0 +1,61 @@
+#app {
+  max-width: 1280px;
+  width: 100%;
+  margin: 0 auto;
+  position: relative;
+
+  h1 {
+    width: 75%;
+    padding-top: 5rem;
+    -webkit-transition: 500ms ease-in-out;
+    -moz-transition: 500ms ease-in-out;
+    -o-transition: 500ms ease-in-out;
+    transition: 500ms ease-in-out;
+    margin-left: -6px;
+  }
+
+  .logout {
+    position: absolute;
+    top: 0;
+    right: 0;
+    opacity: 0;
+    transform: scaleX(-1);
+    -webkit-transition: 500ms ease-in-out;
+    -moz-transition: 500ms ease-in-out;
+    -o-transition: 500ms ease-in-out;
+    transition: 500ms ease-in-out;
+
+    svg {
+      width: 1.5rem;
+      height: 1.5rem;
+      opacity: 0.33;
+    }
+  }
+
+  &.logged-in {
+    h1 {
+      width: 12.5rem;
+      padding-top: 0;
+    }
+
+    .logout {
+      opacity: 1;
+      transform: scaleX(1);
+    }
+  }
+
+  h4 {
+    margin: 2.5rem 0;
+    font-size: 1.75rem;
+    color: $purple;
+    font-weight: 600;
+  }
+
+  .button {
+    display: inline-block;
+    background: $purple;
+    color: $white;
+    padding: 0.75rem 2rem;
+    font-weight: 500;
+  }
+}

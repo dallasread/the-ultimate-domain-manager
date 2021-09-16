@@ -1,9 +1,8 @@
 <template>
-  <div>
-    <h1>Domains</h1>
+  <div class="container">
     <p v-if="isLoading">Loading...</p>
     <div v-else>
-      <input v-model="q" aria-label="Domain search">
+      <input v-model="q" aria-label="Domain search" placeholder="Search...">
       <ul>
         <li v-for="domain in filteredDomains" :key="domain.id">
           {{domain.name}}
