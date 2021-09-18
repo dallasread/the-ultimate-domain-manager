@@ -58,8 +58,14 @@ input {
       margin-top: 1rem;
     }
   }
+}
 
-  .with-padding {
-    padding: 2rem;
+.with-padding {
+  padding: $padding * 2;
+}
+
+.with-mobile-padding {
+  @media (max-width: 640px) {
+    padding: $padding;
   }
 }
