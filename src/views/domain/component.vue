@@ -8,7 +8,7 @@
     </div>
     <div class="content">
       <div v-if="domain">
-        <div class="block notice">
+        <div class="block with-padding notice">
           <h3>
             Your domain is not served by DNSimple.
           </h3>
@@ -19,16 +19,15 @@
             Point to DNSimple
           </a>
         </div>
-
-        <div class="block text-center">
-          <p>Your domain expires on</p>
+        <div class="block with-padding text-center">
+          <p>Your domain {{domain.auto_renew ? 'will renew before' : 'expires'}}</p>
           <h3>{{app.presenters.prettyDate(domain.expires_on)}}</h3>
         </div>
       </div>
-      <div v-else-if="error" class="block">
+      <div v-else-if="error" class="block with-padding">
         <p>{{error}}</p>
       </div>
-      <div v-else class="block">
+      <div v-else class="block with-padding">
         <Loading />
       </div>
     </div>
