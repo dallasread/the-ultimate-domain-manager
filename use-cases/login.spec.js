@@ -16,9 +16,10 @@ describe('Log in', () => {
 
   it('redirects to the domains page when authorized', async () => {
     const dnsimpleAdapter = {
+      domains: [{ name: 'example.com' }],
       authenticate: jest.fn(() => Promise.resolve()),
       authorize: jest.fn(() => Promise.resolve()),
-      listDomains: jest.fn(() => Promise.resolve({ domains: [{ id: 181984, account_id: 1385, registrant_id: 2715, name: 'example.com', unicode_name: 'example.com', state: 'registered', auto_renew: false, private_whois: false, expires_on: '2021-06-05', expires_at: '2021-06-05T02:15:00Z', created_at: '2020-06-04T19:15:14Z', updated_at: '2020-06-04T19:15:21Z' }] }))
+      fetchDomains: jest.fn(() => Promise.resolve())
     }
     const app = await mountApp('/auth?code=AUTHCODE', dnsimpleAdapter)
 

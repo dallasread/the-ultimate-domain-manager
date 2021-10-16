@@ -22,9 +22,9 @@ import Queries from '@/lib/queries.js'
 import Commands from '@/lib/commands.js'
 
 export default {
-  props: ['_dnsimpleAdapter'],
+  props: ['_dnsimpleAdapter', '_fetch'],
   data () {
-    const dnsimpleAdapter = this._dnsimpleAdapter || new DNSimpleAdapter()
+    const dnsimpleAdapter = this._dnsimpleAdapter || new DNSimpleAdapter(this._fetch || fetch)
     const queries = new Queries(dnsimpleAdapter)
     const commands = new Commands(queries, dnsimpleAdapter)
 
@@ -49,4 +49,5 @@ export default {
 @import "./style/layout.scss";
 @import "./style/app.scss";
 @import "./style/form.scss";
+@import "./style/spinner.scss";
 </style>

@@ -1,7 +1,6 @@
 import { mount, flushPromises } from '@vue/test-utils'
 import { createRouter, createMemoryHistory } from 'vue-router'
 import App from '@/components/app/component.vue'
-import DNSimpleAdapter from '@/lib/dnsimple-adapter.js'
 import Queries from '@/lib/queries.js'
 import Commands from '@/lib/commands.js'
 import { routes } from '@/router'

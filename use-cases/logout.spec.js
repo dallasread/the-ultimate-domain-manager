@@ -12,8 +12,9 @@ describe('Log out', () => {
 
   it('redirects to login page if already logged out', async () => {
     const dnsimpleAdapter = {
+      domains: [{}],
       authenticate () { return Promise.reject() },
-      listDomains () { return Promise.resolve() },
+      fetchDomains () { return Promise.resolve() },
       logout () { return Promise.resolve() }
     }
     const app = await mountApp('/domains', dnsimpleAdapter)

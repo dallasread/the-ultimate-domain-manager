@@ -16,12 +16,12 @@ class Commands {
     return this.dnsimpleAdapter.authorize()
   }
 
-  getDomain (name) {
-    return this.dnsimpleAdapter.getDomain(name)
+  fetchDomain (name) {
+    return this.dnsimpleAdapter.fetchDomain(name)
   }
 
   fetchDomains () {
-    return this.dnsimpleAdapter.fetchDomains(name)
+    return this.dnsimpleAdapter.fetchDomains()
   }
 }
 

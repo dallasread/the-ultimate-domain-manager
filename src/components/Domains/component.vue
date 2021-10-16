@@ -1,9 +1,9 @@
 <template>
   <div class="container">
-    <p v-if="isLoading">Loading...</p>
-    <div v-else>
-      <input v-model="q" aria-label="Domain search" placeholder="Search...">
-      <ul class="content">
+    <input v-model="q" aria-label="Domain search" placeholder="Search...">
+    <ul class="content">
+      <li v-if="isLoading"><Loading /></li>
+      <template v-else>
         <li v-for="domain in filteredDomains" :key="domain.id" class="list-item">
           <router-link :to="'/domains/' + domain.name" :aria-label="'Manage ' + domain.name">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="arrow">
@@ -12,16 +12,20 @@
             {{domain.name}}
           </router-link>
         </li>
-      </ul>
-    </div>
+      </template>
+    </ul>
   </div>
 </template>
 
 <script>
 import AuthenticatedRoute from '@/components/App/authenticated-route.js'
+import Loading from '@/components/loading/component.vue'
 
 export default {
   mixins: [AuthenticatedRoute],
+  components: {
+    Loading
+  },
   data () {
     const domains = this.app.queries.listDomains()
 
@@ -32,13 +36,12 @@ export default {
     }
   },
   mounted () {
-    return this.app.commands.fetchDomains().then((domains) => {
-      this.domains = domains
-    }).catch((err) => {
-      this.error = err
-    }).finally(() => {
-      this.isLoading = false
-    })
+    return this.app.commands.fetchDomains()
+      .catch((err) => {
+        this.error = err
+      }).finally(() => {
+        this.isLoading = false
+      })
   },
   computed: {
     filteredDomains () {
