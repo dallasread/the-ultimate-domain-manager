@@ -45,7 +45,7 @@ export default {
     }
   },
   mounted () {
-    return this.app.commands.fetchDomain(this.$route.params.name)
+    return this.app.commands.fetchDomain(this.app.queries.getAccessToken(), this.$route.params.name)
       .catch((e) => {
         this.error = 'Domain not found'
       }).finally(() => {

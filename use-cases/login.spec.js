@@ -20,7 +20,7 @@ describe('Log in', () => {
       domains: []
     }, {
       fetchUser (account) { return Promise.resolve({ account }) },
-      fetchAccessToken () { return Promise.resolve(account) },
+      fetchAccessToken () { return Promise.resolve(account.accessToken) },
       fetchDomains () { return Promise.resolve([{ name: 'example.com' }]) }
     })
 

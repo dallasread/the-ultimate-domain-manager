@@ -26,9 +26,11 @@ import localStore from '@/lib/local-store.js'
 export default {
   props: ['_state', '_dnsimpleAdapter'],
   data () {
+    window.theUltimateDomainManager = this
+
     const dnsimpleAdapter = this._dnsimpleAdapter || new DNSimpleAdapter(window.fetch)
     const state = new State(this._state || { accounts: [], domains: [] })
-    const queries = new Queries(state, dnsimpleAdapter, localStore)
+    const queries = new Queries(state, dnsimpleAdapter)
     const commands = new Commands(state, queries, dnsimpleAdapter, localStore)
 
     return {
