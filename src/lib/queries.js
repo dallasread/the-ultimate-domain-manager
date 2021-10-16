@@ -6,6 +6,10 @@ class Queries {
   getCurrentUser () {
     return this.dnsimpleAdapter.user
   }
+
+  listDomains () {
+    return this.dnsimpleAdapter.listDomains()
+  }
 }
 
 export default Queries

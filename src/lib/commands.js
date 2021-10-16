@@ -20,8 +20,8 @@ class Commands {
     return this.dnsimpleAdapter.getDomain(name)
   }
 
-  listDomains () {
-    return this.dnsimpleAdapter.listDomains(name)
+  fetchDomains () {
+    return this.dnsimpleAdapter.fetchDomains(name)
   }
 }
 

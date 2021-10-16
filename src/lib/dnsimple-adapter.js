@@ -1,11 +1,19 @@
-const DOMAINS = [
-  { id: 181984, account_id: 1385, registrant_id: 2715, name: 'example.com', unicode_name: 'example.com', state: 'registered', auto_renew: false, private_whois: false, expires_on: '2021-06-05', expires_at: '2021-06-05T02:15:00Z', created_at: '2020-06-04T19:15:14Z', updated_at: '2020-06-04T19:15:21Z' },
-  { id: 181984, account_id: 1385, registrant_id: 2715, name: 'foo-bar.com', unicode_name: 'foo-bar.com', state: 'registered', auto_renew: false, private_whois: false, expires_on: '2021-06-05', expires_at: '2021-06-05T02:15:00Z', created_at: '2020-06-04T19:15:14Z', updated_at: '2020-06-04T19:15:21Z' }
-]
+const fetcher = (url, options) => {
+  const proxy = 'https://thawing-brushlands-90182.herokuapp.com'
+
+  return new Promise((resolve, reject) => {
+    fetch(`${proxy}/${url}`, options).then((response) => {
+      response.json().then((json) => {
+        resolve(json)
+      })
+    }).catch(reject)
+  })
+}
 
 class DNSimpleAdapter {
   constructor () {
     this.user = {}
+    this.domains = []
   }
 
   authorize () {
@@ -20,15 +28,29 @@ class DNSimpleAdapter {
     }
   }
 
-  listDomains () {
-    return Promise.resolve({
-      domains: DOMAINS
+  fetchDomains () {
+    return new Promise((resolve, reject) => {
+      fetcher('https://api.dnsimple.com/v2/4521/domains', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer S93yNoMP7497DFAzrjRgRt2EaompJ4Nz'
+        }
+        // body: JSON.stringify(user)
+      }).then((response) => {
+        this.domains = response.data
+        resolve(this.domains)
+      }).catch(reject)
     })
+  }
+
+  listDomains () {
+    return this.domains
   }
 
   getDomain (name) {
     return Promise.resolve({
-      domain: DOMAINS.find((d) => d.name === name)
+      domain: this.domains.find((d) => d.name === name)
     })
   }
 

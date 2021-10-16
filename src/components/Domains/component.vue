@@ -23,15 +23,17 @@ import AuthenticatedRoute from '@/components/App/authenticated-route.js'
 export default {
   mixins: [AuthenticatedRoute],
   data () {
+    const domains = this.app.queries.listDomains()
+
     return {
-      isLoading: true,
-      domains: [],
+      isLoading: !domains.length,
+      domains,
       q: ''
     }
   },
   mounted () {
-    return this.app.commands.listDomains().then((response) => {
-      this.domains = response.domains
+    return this.app.commands.fetchDomains().then((domains) => {
+      this.domains = domains
     }).catch((err) => {
       this.error = err
     }).finally(() => {
