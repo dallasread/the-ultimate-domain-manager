@@ -1,7 +1,7 @@
 <template>
-  <div id="app" :class="dnsimple.user ? 'logged-in' : ''">
+  <div id="app" :class="app.queries.getCurrentUser() ? 'logged-in' : ''">
     <div class="header">
-      <a v-if="dnsimple.user" href="javascript:;" aria-label="Log out" @click="logout" class="logout">
+      <a v-if="app.queries.getCurrentUser()" href="javascript:;" aria-label="Log out" @click="logout" class="logout">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z" />
         </svg>
@@ -12,22 +12,31 @@
         </router-link>
       </h1>
     </div>
-    <router-view :dnsimple="dnsimple" />
+    <router-view :app="app" />
   </div>
 </template>
 
 <script>
-import DNSimpleAdapter from './dnsimple-adapter.js'
+import DNSimpleAdapter from '@/lib/dnsimple-adapter.js'
+import Queries from '@/lib/queries.js'
+import Commands from '@/lib/commands.js'
 
 export default {
+  props: ['_dnsimpleAdapter'],
   data () {
+    const dnsimpleAdapter = this._dnsimpleAdapter || new DNSimpleAdapter()
+    const queries = new Queries(dnsimpleAdapter)
+    const commands = new Commands(queries, dnsimpleAdapter)
+
     return {
-      dnsimple: new DNSimpleAdapter()
+      app: this,
+      queries,
+      commands
     }
   },
   methods: {
     logout () {
-      return this.dnsimple.logout()
+      return this.commands.logout()
         .then(() => this.$router.push('/login'))
         .catch(() => {})
     }

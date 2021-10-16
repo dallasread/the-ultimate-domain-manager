@@ -3,7 +3,7 @@ const DOMAINS = [
   { id: 181984, account_id: 1385, registrant_id: 2715, name: 'foo-bar.com', unicode_name: 'foo-bar.com', state: 'registered', auto_renew: false, private_whois: false, expires_on: '2021-06-05', expires_at: '2021-06-05T02:15:00Z', created_at: '2020-06-04T19:15:14Z', updated_at: '2020-06-04T19:15:21Z' }
 ]
 
-class DNSimpleAPI {
+class DNSimpleAdapter {
   constructor () {
     this.user = {}
   }
@@ -38,4 +38,4 @@ class DNSimpleAPI {
   }
 }
 
-export default DNSimpleAPI
+export default DNSimpleAdapter

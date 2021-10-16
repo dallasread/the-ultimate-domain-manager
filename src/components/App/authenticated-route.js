@@ -1,8 +1,7 @@
 export default {
-  props: ['dnsimple'],
+  props: ['app'],
   mounted () {
-    return this.dnsimple.authenticate()
-      .then(() => {})
+    return this.app.commands.authenticate()
       .catch(() => this.$router.push('/'))
   }
 }

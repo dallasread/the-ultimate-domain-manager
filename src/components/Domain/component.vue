@@ -32,7 +32,7 @@ export default {
     }
   },
   mounted () {
-    return this.dnsimple.getDomain(this.$route.params.name).then((response) => {
+    return this.app.commands.getDomain(this.$route.params.name).then((response) => {
       this.domain = response.domain
       this.q = this.domain.name
     }).catch(() => {

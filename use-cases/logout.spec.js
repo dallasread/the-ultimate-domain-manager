@@ -2,19 +2,12 @@ import { mountApp, flushPromises } from './helper.js'
 
 describe('Log out', () => {
   it('redirects to the login page', async () => {
-    const dnsimpleAdapter = {
-      user: {},
-      authenticate () { return Promise.resolve() },
-      listDomains () { return Promise.resolve() },
-      logout () { return Promise.resolve() }
-    }
-    const wrapper = await mountApp('/domains', dnsimpleAdapter)
+    const app = await mountApp('/domains')
 
-    const button = wrapper.find('a[aria-label="Log out"]')
-    await button.trigger('click')
+    await app.find('a[aria-label="Log out"]').trigger('click')
     await flushPromises()
 
-    expect(wrapper.vm.$router.push).toHaveBeenCalledWith('/login')
+    expect(app.findAll('[aria-label="Connect via DNSimple"]').length).toEqual(1)
   })
 
   it('redirects to login page if already logged out', async () => {
@@ -23,21 +16,21 @@ describe('Log out', () => {
       listDomains () { return Promise.resolve() },
       logout () { return Promise.resolve() }
     }
-    const wrapper = await mountApp('/domains', dnsimpleAdapter)
+    const app = await mountApp('/domains', dnsimpleAdapter)
 
-    expect(wrapper.findAll('a[aria-label="Log out"]').length).toEqual(0)
-    expect(wrapper.vm.$router.push).toHaveBeenCalledWith('/')
+    expect(app.findAll('a[aria-label="Log out"]').length).toEqual(0)
+    expect(app.findAll('[aria-label="Connect via DNSimple"]').length).toEqual(1)
   })
 
 //   it('redirects to the log in page', async () => {
-//     const wrapper = await mountApp('/auth?code=AUTHCODE')
+//     const app = await mountApp('/auth?code=AUTHCODE')
 //
-//     expect(wrapper.vm.$router.push).toHaveBeenCalledWith('/domains')
+//     expect(app.vm.$router.push).toHaveBeenCalledWith('/domains')
 //   })
 //
 //   it('removes the authentication cookie', async () => {
-//     const wrapper = await mountApp('/auth?code=AUTHCODE')
+//     const app = await mountApp('/auth?code=AUTHCODE')
 //
-//     expect(wrapper.vm.$router.push).toHaveBeenCalledWith('/domains')
+//     expect(app.vm.$router.push).toHaveBeenCalledWith('/domains')
 //   })
 })

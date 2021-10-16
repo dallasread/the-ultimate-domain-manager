@@ -6,12 +6,10 @@
 </template>
 
 <script>
-import AuthenticatedRoute from '@/components/App/authenticated-route.js'
-
 export default {
-  mixins: [AuthenticatedRoute],
+  props: ['app'],
   mounted () {
-    return this.dnsimple.authorize()
+    return this.app.commands.authorize()
       .then(() => this.$router.push('/domains'))
       .catch((err) => {
         this.error = err

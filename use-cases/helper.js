@@ -1,37 +1,32 @@
 import { mount, flushPromises } from '@vue/test-utils'
 import { createRouter, createMemoryHistory } from 'vue-router'
 import App from '@/components/app/component.vue'
+import DNSimpleAdapter from '@/lib/dnsimple-adapter.js'
+import Queries from '@/lib/queries.js'
+import Commands from '@/lib/commands.js'
 import { routes } from '@/router'
 
 window.document = {}
-
-class DNSimpleAdapter {
-  authorize () {
-    return Promise.resolve()
-  }
-}
 
 const mountApp = async (path, dnsimpleAdapter) => {
   const router = createRouter({
     history: createMemoryHistory(),
     routes
   })
+
   router.push(path || '/')
   await router.isReady()
 
   const app = await mount(App, {
     global: {
-      plugins: [router],
-      mocks: {
-        $router: { push: jest.fn() }
-      }
+      plugins: [router]
     },
-    data () {
-      return {
-        dnsimple: dnsimpleAdapter || new DNSimpleAdapter()
-      }
+    propsData: {
+      _dnsimpleAdapter: dnsimpleAdapter
     }
   })
+
+  await flushPromises()
 
   return app
 }

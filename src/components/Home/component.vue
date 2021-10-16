@@ -2,9 +2,9 @@
 
 <script>
 export default {
-  props: ['dnsimple'],
+  props: ['app'],
   mounted () {
-    if (this.dnsimple.user) {
+    if (this.app.queries.getCurrentUser()) {
       this.$router.push('/domains')
     } else {
       this.$router.push('/login')

@@ -20,30 +20,30 @@ const dnsimpleAdapter = {
 
 describe('See my domains', () => {
   it('displays a list of my domains', async () => {
-    const wrapper = await mountApp('/domains', dnsimpleAdapter)
+    const app = await mountApp('/domains', dnsimpleAdapter)
     await flushPromises()
 
-    expect(wrapper.text()).toContain('example.com')
+    expect(app.text()).toContain('example.com')
   })
 
   it('can search the domains', async () => {
-    const wrapper = await mountApp('/domains', dnsimpleAdapter)
+    const app = await mountApp('/domains', dnsimpleAdapter)
     await flushPromises()
 
-    const input = wrapper.find('input[aria-label="Domain search"]')
+    const input = app.find('input[aria-label="Domain search"]')
     await input.setValue('example')
 
-    expect(wrapper.findAll('[aria-label^="Manage"]').length).toEqual(1)
-    expect(wrapper.find('[aria-label="Manage example.com"]').text()).toEqual(DOMAINS[0].name)
+    expect(app.findAll('[aria-label^="Manage"]').length).toEqual(1)
+    expect(app.find('[aria-label="Manage example.com"]').text()).toEqual(DOMAINS[0].name)
   })
 
   it('can visit a domain', async () => {
-    const wrapper = await mountApp('/domains', dnsimpleAdapter)
+    const app = await mountApp('/domains', dnsimpleAdapter)
     await flushPromises()
 
-    await wrapper.find('[aria-label="Manage example.com"]').trigger('click')
+    await app.find('[aria-label="Manage example.com"]').trigger('click')
     await flushPromises()
 
-    expect(wrapper.text()).toContain('name servers')
+    expect(app.text()).toContain('name servers')
   })
 })

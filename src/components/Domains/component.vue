@@ -30,7 +30,7 @@ export default {
     }
   },
   mounted () {
-    return this.dnsimple.listDomains().then((response) => {
+    return this.app.commands.listDomains().then((response) => {
       this.domains = response.domains
     }).catch((err) => {
       this.error = err
