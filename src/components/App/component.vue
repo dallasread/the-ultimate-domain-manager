@@ -1,5 +1,5 @@
 <template>
-  <div id="app" :class="app.queries.getAccessToken() ? 'logged-in' : ''">
+  <div id="app" v-if="isReady" :class="app.queries.getAccessToken() ? 'logged-in' : ''">
     <div class="header">
       <a v-if="app.queries.getAccessToken()" href="javascript:;" aria-label="Log out" @click="logout" class="logout">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -36,12 +36,15 @@ export default {
 
     return {
       app: this,
+      isReady: false,
       queries,
       commands
     }
   },
   mounted () {
-    return this.commands.restoreLocal()
+    return this.commands.restoreLocal().then(() => {
+      this.isReady = true
+    })
   },
   methods: {
     logout () {

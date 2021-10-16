@@ -10,6 +10,10 @@ class Queries {
     return this.state.findAll('domains').sort(SORT_BY_NAME)
   }
 
+  listAccounts () {
+    return this.state.findAll('accounts').sort(SORT_BY_NAME)
+  }
+
   getDomain (name) {
     return this.state.find('domains', (domain) => domain.name === name)
   }

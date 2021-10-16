@@ -22,8 +22,9 @@ class Commands {
   }
 
   logout () {
-    this.state.removeAll('accounts', this.state.findAll('accounts'))
-    this.state.removeAll('domains', this.state.findAll('domains'))
+    this.state.removeAll('accounts', this.queries.listAccounts())
+    this.state.removeAll('domains', this.queries.listDomains())
+    return this.localCache.reset()
   }
 
   authorize (code) {
@@ -67,9 +68,9 @@ class Commands {
 
   saveLocal () {
     this.localCache.set('data', {
-      accounts: this.state.findAll('accounts')
+      accounts: this.queries.listAccounts()
         .map((account) => this.presenters.accountToJSON(account)),
-      domains: this.state.findAll('domains')
+      domains: this.queries.listDomains()
         .map((domain) => this.presenters.domainToJSON(domain))
     })
   }
