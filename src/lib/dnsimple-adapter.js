@@ -20,8 +20,8 @@ class DNSimpleAdapter {
         state: OAUTH_STATE,
         code
       }).then((response) => {
-        if (response.error_description) {
-          return reject(new Error(response.error_description))
+        if (response.message) {
+          return reject(new Error(response.message))
         }
 
         resolve(response.access_token)

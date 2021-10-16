@@ -14,8 +14,13 @@ describe('Log in', () => {
   })
 
   it('redirects to the domains page when authorized', async () => {
-    const app = await mountApp('/auth?code=AUTHCODE', null, {
+    const account = { accessToken: 'abc-123' }
+    const app = await mountApp('/auth?code=AUTHCODE', {
+      accounts: [account],
+      domains: []
+    }, {
       fetchUser (account) { return Promise.resolve({ account }) },
+      fetchAccessToken () { return Promise.resolve(account) },
       fetchDomains () { return Promise.resolve([{ name: 'example.com' }]) }
     })
 

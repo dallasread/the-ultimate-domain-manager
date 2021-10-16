@@ -1,8 +1,8 @@
 export default {
   props: ['app'],
   mounted () {
-    return this.app.commands.authenticate()
-      .then(() => this.$router.push('/'))
-      .catch(() => {})
+    if (this.app.commands.queries.getAccessToken()) {
+      this.$router.push('/')
+    }
   }
 }

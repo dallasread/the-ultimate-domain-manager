@@ -25,6 +25,10 @@ class Commands {
   authorize (code) {
     return new Promise((resolve, reject) => {
       this.dnsimpleAdapter.fetchAccessToken(code).then((accessToken) => {
+        if (!accessToken) {
+          return reject(new Error('Unauthorized'))
+        }
+
         this.authenticate(accessToken)
           .then(resolve)
           .catch(reject)

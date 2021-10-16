@@ -21,6 +21,8 @@ export default {
       .then(() => this.$router.push('/domains'))
       .catch((err) => {
         this.error = err.message
+      })
+      .finally(() => {
         this.isLoading = false
       })
   },
