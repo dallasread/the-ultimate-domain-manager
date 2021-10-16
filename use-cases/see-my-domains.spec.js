@@ -31,7 +31,7 @@ describe('See my domains', () => {
   it('saves the domains to local storage', async () => {
     const app = await mountApp('/domains', { accounts: [account], domains: [] }, dnsimpleAdapter)
 
-    const data = await app.vm.commands.localStore.getItem('data')
+    const data = await app.vm.commands.localCache.get('data')
 
     expect(data.domains[0].name).toContain('example.com')
   })

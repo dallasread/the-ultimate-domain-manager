@@ -1,17 +1,17 @@
 import localForage from 'localforage'
 
-class LocalStore {
+class LocalCache {
   constructor () {
     this.db = localForage.createInstance({
       name: 'the-ultimate-domain-manager'
     })
   }
 
-  setItem (key, value) {
+  set (key, value) {
     return this.db.setItem(key, value)
   }
 
-  getItem (key) {
+  get (key) {
     return this.db.getItem(key)
   }
 
@@ -20,4 +20,4 @@ class LocalStore {
   }
 }
 
-export default LocalStore
+export default LocalCache

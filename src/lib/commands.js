@@ -1,11 +1,11 @@
 import Presenters from '@/lib/presenters.js'
 
 class Commands {
-  constructor (state, queries, dnsimpleAdapter, localStore) {
+  constructor (state, queries, dnsimpleAdapter, localCache) {
     this.state = state
     this.queries = queries
     this.dnsimpleAdapter = dnsimpleAdapter
-    this.localStore = localStore
+    this.localCache = localCache
     this.presenters = new Presenters()
   }
 
@@ -54,7 +54,7 @@ class Commands {
 
   restoreLocal () {
     return new Promise((resolve, reject) => {
-      this.localStore.getItem('data').then((data) => {
+      this.localCache.get('data').then((data) => {
         if (data) {
           this.state.add('accounts', data.accounts || [])
           this.state.add('domains', data.domains || [])
@@ -66,7 +66,7 @@ class Commands {
   }
 
   saveLocal () {
-    this.localStore.setItem('data', {
+    this.localCache.set('data', {
       accounts: this.state.findAll('accounts')
         .map((account) => this.presenters.accountToJSON(account)),
       domains: this.state.findAll('domains')
