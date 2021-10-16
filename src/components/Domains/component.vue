@@ -36,9 +36,11 @@ export default {
     }
   },
   mounted () {
-    return this.app.commands.fetchDomains()
+    const accessToken = this.app.queries.getAccessToken()
+
+    return this.app.commands.fetchDomains(accessToken)
       .catch((err) => {
-        this.error = err
+        this.error = err.message
       }).finally(() => {
         this.isLoading = false
       })

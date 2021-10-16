@@ -3,6 +3,7 @@ $yellow: #FFCF2D;
 $black: #222;
 $white: #fff;
 $padding: 1rem;
+$half-padding: 0.5rem;
 
 html, body {
   box-sizing: border-box;
@@ -34,6 +35,6 @@ html, body {
   margin: 3rem auto;
 
   @media (max-width: 640px) {
-    margin: $padding / -2 auto;
+    margin: $half-padding auto;
   }
 }

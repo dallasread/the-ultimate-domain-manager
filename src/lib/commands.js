@@ -1,27 +1,62 @@
 class Commands {
-  constructor (queries, dnsimpleAdapter) {
-    this.dnsimpleAdapter = dnsimpleAdapter
+  constructor (state, queries, dnsimpleAdapter) {
+    this.state = state
     this.queries = queries
+    this.dnsimpleAdapter = dnsimpleAdapter
   }
 
-  authenticate () {
-    return this.dnsimpleAdapter.authenticate()
+  authenticate (accessToken) {
+    return new Promise((resolve, reject) => {
+      this.dnsimpleAdapter.fetchUser({ accessToken }).then((response) => {
+        response.account.accessToken = accessToken
+
+        this._upsertById('accounts', response.account)
+
+        resolve()
+      }).catch(reject)
+    })
   }
 
   logout () {
-    return this.dnsimpleAdapter.logout()
+    this.state.removeAll('accounts', this.state.findAll('accounts'))
+    this.state.removeAll('domains', this.state.findAll('domains'))
   }
 
-  authorize () {
-    return this.dnsimpleAdapter.authorize()
+  authorize (code) {
+    return new Promise((resolve, reject) => {
+      this.dnsimpleAdapter.fetchAccessToken(code).then((accessToken) => {
+        this.authenticate(accessToken)
+          .then(resolve)
+          .catch(reject)
+      }).catch(reject)
+    })
   }
 
   fetchDomain (name) {
-    return this.dnsimpleAdapter.fetchDomain(name)
+    const accessToken = this.queries.getAccessToken()
+    return this.dnsimpleAdapter.fetchDomain(accessToken, name)
+      .then((domain) => this._upsertById('domains', domain))
   }
 
   fetchDomains () {
-    return this.dnsimpleAdapter.fetchDomains()
+    const accessToken = this.queries.getAccessToken()
+
+    return this.dnsimpleAdapter.fetchDomains(accessToken)
+      .then((domains) => {
+        domains.forEach((domain) => this._upsertById('domains', domain))
+      })
+  }
+
+  _upsertById (model, data) {
+    const existing = this.state.find(model, (item) => item.id === data.id)
+
+    if (existing) {
+      for (const key in data) {
+        existing[key] = data[key]
+      }
+    } else {
+      this.state.add(model, [data])
+    }
   }
 }
 

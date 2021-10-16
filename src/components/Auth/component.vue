@@ -1,23 +1,33 @@
 <template>
-  <div>
-    <p v-if="error" aria-label="Unauthorized">{{error}}</p>
-    <router-link to="/" aria-label="Log in">Try again</router-link>
+  <div class="with-mobile-padding">
+    <template v-if="error">
+      <h4 aria-label="Unauthorized">{{error}}</h4>
+      <router-link to="/" class="button" aria-label="Log in">Click here to try again.</router-link>
+    </template>
+    <Loading v-else />
   </div>
 </template>
 
 <script>
+import Loading from '@/components/loading/component.vue'
+
 export default {
   props: ['app'],
+  components: {
+    Loading
+  },
   mounted () {
-    return this.app.commands.authorize()
+    return this.app.commands.authorize(this.$route.query.code)
       .then(() => this.$router.push('/domains'))
       .catch((err) => {
-        this.error = err
+        this.error = err.message
+        this.isLoading = false
       })
   },
   data () {
     return {
-      error: ''
+      error: '',
+      isLoading: true
     }
   }
 }

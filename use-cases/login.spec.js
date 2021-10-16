@@ -2,8 +2,7 @@ import { mountApp, flushPromises } from './helper.js'
 
 describe('Log in', () => {
   it('shows a button that points to the DNSimple OAuth flow', async () => {
-    const dnsimpleAdapter = { authenticate () { return Promise.reject() } }
-    const app = await mountApp('/login', dnsimpleAdapter)
+    const app = await mountApp('/login')
 
     const button = app.find('a[aria-label="Connect via DNSimple"]')
     expect(button.text()).toEqual('Connect via DNSimple')
@@ -15,21 +14,19 @@ describe('Log in', () => {
   })
 
   it('redirects to the domains page when authorized', async () => {
-    const dnsimpleAdapter = {
-      domains: [{ name: 'example.com' }],
-      authenticate: jest.fn(() => Promise.resolve()),
-      authorize: jest.fn(() => Promise.resolve()),
-      fetchDomains: jest.fn(() => Promise.resolve())
-    }
-    const app = await mountApp('/auth?code=AUTHCODE', dnsimpleAdapter)
+    const app = await mountApp('/auth?code=AUTHCODE', null, {
+      fetchUser (account) { return Promise.resolve({ account }) },
+      fetchDomains () { return Promise.resolve([{ name: 'example.com' }]) }
+    })
 
     expect(app.text()).toContain('example.com')
   })
 
   it('shows an error if the user is not authenticated with DNSimple', async () => {
     const expectedError = 'You are unauthorized'
-    const dnsimpleAdapter = { authenticate () { return Promise.reject() }, authorize: jest.fn(() => Promise.reject(expectedError)) }
-    const app = await mountApp('/auth?code=AUTHCODE', dnsimpleAdapter)
+    const app = await mountApp('/auth?code=AUTHCODE', null, {
+      fetchAccessToken () { return Promise.reject(new Error(expectedError)) }
+    })
 
     await flushPromises()
 

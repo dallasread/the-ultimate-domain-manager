@@ -3,11 +3,7 @@ export default {
   mounted () {
     return new Promise((resolve, reject) => {
       this.app.commands.authenticate()
-        .then(() => {
-          this.app.commands.fetchDomains().then(() => {
-            resolve()
-          }).catch(console.error)
-        })
+        .then(resolve)
         .catch(() => {
           this.$router.push('/')
           resolve()

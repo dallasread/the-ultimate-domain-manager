@@ -1,77 +1,94 @@
+const OAUTH_RESPONSE_TYPE = 'code'
+const OAUTH_GRANT_TYPE = 'authorization_code'
+const OAUTH_REDIRECT_URL = 'http://localhost:8080/auth'
+const OAUTH_CLIENT_ID = 'cbde777b80c127be'
+const OAUTH_CLIENT_SECRET = 'CmSiXzbiPY91fZ1f4Z4FBsdt4KvB0Frh'
+const OAUTH_STATE = 'RANDOM'
+
 class DNSimpleAdapter {
   constructor (fetch) {
-    this.user = {}
-    this.domains = []
     this._fetch = fetch
   }
 
-  authorize () {
-    return Promise.resolve()
-  }
-
-  authenticate () {
-    if (this.user) {
-      return Promise.resolve()
-    } else {
-      return Promise.reject(new Error('Unauthorized'))
-    }
-  }
-
-  fetchDomains () {
+  fetchAccessToken (code) {
     return new Promise((resolve, reject) => {
-      this._fetcher('/4521/domains').then((response) => {
-        response.data.forEach((item) => this._setDomain(item))
-        resolve(this.domains)
+      this._fetcher('POST', '/oauth/access_token', null, {
+        grant_type: OAUTH_GRANT_TYPE,
+        client_id: OAUTH_CLIENT_ID,
+        client_secret: OAUTH_CLIENT_SECRET,
+        redirect_uri: OAUTH_REDIRECT_URL,
+        state: OAUTH_STATE,
+        code
+      }).then((response) => {
+        if (response.error_description) {
+          return reject(new Error(response.error_description))
+        }
+
+        resolve(response.access_token)
       }).catch(reject)
     })
   }
 
-  fetchDomain (name) {
+  fetchUser (auth) {
     return new Promise((resolve, reject) => {
-      this._fetcher(`/4521/domains/${name}`).then((response) => {
-        const domain = this._setDomain(response.data)
-        resolve(domain)
+      this._fetcher('GET', '/whoami', auth.accessToken).then((response) => {
+        if (response.message) {
+          return reject(response.message)
+        }
+
+        resolve(response.data)
       }).catch(reject)
     })
   }
 
-  logout () {
-    this.user = null
-    this.domains = []
-    return Promise.resolve()
+  fetchDomains (accessToken) {
+    return new Promise((resolve, reject) => {
+      this._fetcher('GET', '/4521/domains', accessToken).then((response) => {
+        resolve(response.data)
+      }).catch(reject)
+    })
   }
 
-  _setDomain (data) {
-    let domain = this.domains.find((d) => d.name === data.name)
-
-    if (domain) {
-      for (const key in data) {
-        domain[key] = data[key]
-      }
-    } else {
-      domain = data
-      this.domains.push(domain)
-    }
-
-    return domain
+  fetchDomain (accessToken, name) {
+    return new Promise((resolve, reject) => {
+      this._fetcher('GET', `/4521/domains/${name}`, accessToken).then((response) => {
+        resolve(response.data)
+      }).catch(reject)
+    })
   }
 
-  _fetcher (path, method = 'GET') {
+  oauthUrl () {
+    const url = new URL('https://dnsimple.com/oauth/authorize')
+
+    url.searchParams.append('response_type', OAUTH_RESPONSE_TYPE)
+    url.searchParams.append('redirect_uri', OAUTH_REDIRECT_URL)
+    url.searchParams.append('client_id', OAUTH_CLIENT_ID)
+    url.searchParams.append('state', OAUTH_STATE)
+
+    return url.href
+  }
+
+  _fetcher (method, path, accessToken, data) {
     const proxy = 'https://thawing-brushlands-90182.herokuapp.com'
     const url = `https://api.dnsimple.com/v2${path}`
+    const headers = { 'Content-Type': 'application/json' }
+    const options = { method, headers }
+
+    if (data) {
+      options.body = JSON.stringify(data)
+    }
+
+    if (accessToken) {
+      headers.Authorization = `Bearer ${accessToken}`
+    }
+
+    console.log('FETCH', method, path)
 
     return new Promise((resolve, reject) => {
-      this._fetch.call(window, `${proxy}/${url}`, {
-        method,
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: 'Bearer S93yNoMP7497DFAzrjRgRt2EaompJ4Nz'
-        }
-        // body: JSON.stringify(user)
-      }).then((response) => {
-        response.json().then((json) => {
-          resolve(json)
-        })
+      this._fetch.call(window, `${proxy}/${url}`, options).then((response) => {
+        response.json()
+          .then(resolve)
+          .catch(reject)
       }).catch(reject)
     })
   }

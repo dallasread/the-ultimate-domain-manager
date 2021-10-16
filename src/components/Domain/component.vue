@@ -47,7 +47,6 @@ export default {
   mounted () {
     return this.app.commands.fetchDomain(this.$route.params.name)
       .catch((e) => {
-        console.log(e)
         this.error = 'Domain not found'
       }).finally(() => {
         this.isLoading = false

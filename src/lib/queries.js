@@ -1,20 +1,29 @@
 const SORT_BY_NAME = (a, b) => a.name.localeCompare(b.name)
 
 class Queries {
-  constructor (dnsimpleAdapter) {
+  constructor (state, dnsimpleAdapter) {
+    this.state = state
     this.dnsimpleAdapter = dnsimpleAdapter
   }
 
-  getCurrentUser () {
-    return this.dnsimpleAdapter.user
-  }
-
   listDomains () {
-    return this.dnsimpleAdapter.domains.sort(SORT_BY_NAME)
+    return this.state.findAll('domains').sort(SORT_BY_NAME)
   }
 
   getDomain (name) {
-    return this.dnsimpleAdapter.domains.find((domain) => domain.name === name)
+    return this.state.find('domains', (domain) => domain.name === name)
+  }
+
+  oauthUrl () {
+    return this.dnsimpleAdapter.oauthUrl()
+  }
+
+  getAccessToken () {
+    const account = this.state.findAll('accounts')[0]
+
+    if (account) {
+      return account.accessToken
+    }
   }
 }
 
