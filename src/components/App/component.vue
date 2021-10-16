@@ -21,20 +21,24 @@ import DNSimpleAdapter from '@/lib/dnsimple-adapter.js'
 import State from '@/lib/state.js'
 import Queries from '@/lib/queries.js'
 import Commands from '@/lib/commands.js'
+import localStore from '@/lib/local-store.js'
 
 export default {
   props: ['_state', '_dnsimpleAdapter'],
   data () {
     const dnsimpleAdapter = this._dnsimpleAdapter || new DNSimpleAdapter(window.fetch)
     const state = new State(this._state || { accounts: [], domains: [] })
-    const queries = new Queries(state, dnsimpleAdapter)
-    const commands = new Commands(state, queries, dnsimpleAdapter)
+    const queries = new Queries(state, dnsimpleAdapter, localStore)
+    const commands = new Commands(state, queries, dnsimpleAdapter, localStore)
 
     return {
       app: this,
       queries,
       commands
     }
+  },
+  mounted () {
+    return this.commands.restoreLocal()
   },
   methods: {
     logout () {

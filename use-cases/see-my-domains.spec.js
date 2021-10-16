@@ -7,9 +7,7 @@ describe('See my domains', () => {
 
   beforeEach(() => {
     domain = { id: 181984, account_id: 1385, registrant_id: 2715, name: 'example.com', unicode_name: 'example.com', state: 'registered', auto_renew: false, private_whois: false, expires_on: '2021-06-05', expires_at: '2021-06-05T02:15:00Z', created_at: '2020-06-04T19:15:14Z', updated_at: '2020-06-04T19:15:21Z' }
-    account = {
-      accessToken: 'abc-123'
-    }
+    account = { accessToken: 'abc-123' }
     dnsimpleAdapter = {
       fetchUser () { return Promise.resolve({ account }) },
       fetchDomain () {
@@ -30,11 +28,30 @@ describe('See my domains', () => {
     expect(app.text()).toContain('example.com')
   })
 
+  it('saves the domains to local storage', async () => {
+    const app = await mountApp('/domains', { accounts: [account], domains: [] }, dnsimpleAdapter)
+
+    const data = await app.vm.commands.localStore.getItem('data')
+
+    expect(data.domains[0].name).toContain('example.com')
+  })
+
+  it('restores the domains from local storage', async () => {
+    dnsimpleAdapter.fetchDomains = () => Promise.resolve([])
+    const app = await mountApp('/domains', { accounts: [], domains: [] }, dnsimpleAdapter, {
+      accounts: [{ accessToken: 'abc-123' }],
+      domains: [{ name: 'foo.bar' }]
+    })
+
+    expect(app.text()).toContain('foo.bar')
+  })
+
   it('can search the domains', async () => {
     const app = await mountApp('/domains', { accounts: [account], domains: [] }, dnsimpleAdapter)
 
     const input = app.find('input[aria-label="Domain search"]')
     await input.setValue('example')
+    await app.wait()
 
     expect(app.findAll('[aria-label^="Manage"]').length).toEqual(1)
     expect(app.find('[aria-label="Manage example.com"]').text()).toEqual('example.com')

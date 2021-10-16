@@ -2,6 +2,7 @@ import { mount, flushPromises } from '@vue/test-utils'
 import { createRouter, createMemoryHistory } from 'vue-router'
 import App from '@/components/app/component.vue'
 import DNSimpleAdapter from '@/lib/dnsimple-adapter'
+import localStore from '@/lib/local-store.js'
 import { routes } from '@/router'
 
 class FakeDNSimpleAdapter extends DNSimpleAdapter {
@@ -11,7 +12,13 @@ class FakeDNSimpleAdapter extends DNSimpleAdapter {
   }
 }
 
-const mountApp = async (path, state, dnsimpleAdapter) => {
+const mountApp = async (path, state, dnsimpleAdapter, localStoreData) => {
+  await localStore.clear()
+
+  if (localStoreData) {
+    await localStore.setItem('data', localStoreData)
+  }
+
   const router = createRouter({
     history: createMemoryHistory(),
     routes
