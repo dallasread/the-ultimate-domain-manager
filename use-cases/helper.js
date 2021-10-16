@@ -3,6 +3,7 @@ import { createRouter, createMemoryHistory } from 'vue-router'
 import App from '@/components/app/component.vue'
 import DNSimpleAdapter from '@/lib/dnsimple-adapter'
 import LocalCache from '@/lib/local-cache.js'
+import State from '@/lib/state.js'
 import { routes } from '@/router'
 
 class FakeDNSimpleAdapter extends DNSimpleAdapter {
@@ -40,7 +41,7 @@ const mountApp = async (path, state, dnsimpleAdapter, localCacheData) => {
       plugins: [router]
     },
     propsData: {
-      _state: state,
+      _state: new State(state || { accounts: [], domains: [] }),
       _dnsimpleAdapter: fakeDNSimpleAdapter
     }
   })

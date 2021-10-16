@@ -30,7 +30,7 @@ export default {
 
     const localCache = this._localCache || new LocalCache()
     const dnsimpleAdapter = this._dnsimpleAdapter || new DNSimpleAdapter(window.fetch)
-    const state = new State(this._state || { accounts: [], domains: [] })
+    const state = this._state || new State({ accounts: [], domains: [] })
     const queries = new Queries(state, dnsimpleAdapter)
     const commands = new Commands(state, queries, dnsimpleAdapter, localCache)
 
