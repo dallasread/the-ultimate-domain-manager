@@ -1,4 +1,4 @@
-import { mountApp, flushPromises } from '../../spec/helper.js'
+import { mountApp, flushPromises } from './helper.js'
 
 describe('Log out', () => {
   it('redirects to the login page', async () => {

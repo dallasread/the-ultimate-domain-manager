@@ -1,4 +1,4 @@
-import { mountApp, flushPromises } from '../../spec/helper.js'
+import { mountApp, flushPromises } from './helper.js'
 
 describe('Log in', () => {
   it('shows a button that points to the DNSimple OAuth flow', async () => {

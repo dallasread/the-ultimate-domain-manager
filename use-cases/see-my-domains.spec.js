@@ -1,4 +1,4 @@
-import { mountApp, flushPromises } from '../../spec/helper.js'
+import { mountApp, flushPromises } from './helper.js'
 
 const DOMAINS = [
   { id: 181984, account_id: 1385, registrant_id: 2715, name: 'example.com', unicode_name: 'example.com', state: 'registered', auto_renew: false, private_whois: false, expires_on: '2021-06-05', expires_at: '2021-06-05T02:15:00Z', created_at: '2020-06-04T19:15:14Z', updated_at: '2020-06-04T19:15:21Z' },
@@ -34,7 +34,7 @@ describe('See my domains', () => {
     await input.setValue('example')
 
     expect(wrapper.findAll('[aria-label^="Manage"]').length).toEqual(1)
-    expect(wrapper.find('[aria-label="Manage example.com"]').text()).toEqual('Go')
+    expect(wrapper.find('[aria-label="Manage example.com"]').text()).toEqual(DOMAINS[0].name)
   })
 
   it('can visit a domain', async () => {
