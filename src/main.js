@@ -1,5 +1,5 @@
 import { createApp } from 'vue'
-import App from './components/App/component.vue'
+import App from './components/app/component.vue'
 import './registerServiceWorker'
 import { router } from './router'
 

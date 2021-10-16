@@ -1,9 +1,14 @@
 <template>
   <div class="container">
-    <input v-model="q" aria-label="Domain search" placeholder="Search..." @focus="$router.push('/domains')">
+    <div class="search">
+      <router-link to="/domains" class="icon">
+        <svg fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M8.445 14.832A1 1 0 0010 14v-2.798l5.445 3.63A1 1 0 0017 14V6a1 1 0 00-1.555-.832L10 8.798V6a1 1 0 00-1.555-.832l-6 4a1 1 0 000 1.664l6 4z" /></svg>
+      </router-link>
+      <input v-model="q" aria-label="Domain search" placeholder="Search..." @focus="$router.push('/domains')">
+    </div>
     <div class="content">
       <div v-if="domain">
-        <div class="notice with-padding">
+        <div class="block notice">
           <h3>
             Your domain is not served by DNSimple.
           </h3>
@@ -15,16 +20,23 @@
           </a>
         </div>
 
-        {{domain}}
+        <div class="block text-center">
+          <p>Your domain expires on</p>
+          <h3>{{app.presenters.prettyDate(domain.expires_on)}}</h3>
+        </div>
       </div>
-      <p v-else-if="error">{{error}}</p>
-      <p v-else><Loading /></p>
+      <div v-else-if="error" class="block">
+        <p>{{error}}</p>
+      </div>
+      <div v-else class="block">
+        <Loading />
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import AuthenticatedRoute from '@/components/App/authenticated-route.js'
+import AuthenticatedRoute from '@/mixins/authenticated-route.js'
 import Loading from '@/components/loading/component.vue'
 
 export default {

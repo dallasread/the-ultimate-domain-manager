@@ -2,7 +2,7 @@ const OAUTH_RESPONSE_TYPE = 'code'
 const OAUTH_GRANT_TYPE = 'authorization_code'
 const OAUTH_REDIRECT_URL = 'http://localhost:8080/auth'
 const OAUTH_CLIENT_ID = 'cbde777b80c127be'
-const OAUTH_CLIENT_SECRET = 'CmSiXzbiPY91fZ1f4Z4FBsdt4KvB0Frh'
+const OAUTH_CLIENT_SECRET = atob('Q21TaVh6YmlQWTkxZloxZjRaNEZCc2R0NEt2QjBGcmg')
 const OAUTH_STATE = 'RANDOM'
 
 class DNSimpleAdapter {
@@ -92,6 +92,10 @@ class DNSimpleAdapter {
       }).catch(reject)
     })
   }
+}
+
+DNSimpleAdapter.prototype._fetcher = () => {
+  return Promise.resolve()
 }
 
 export default DNSimpleAdapter

@@ -26,6 +26,11 @@ class Presenters {
       updated_at: domain.updated_at
     }
   }
+
+  prettyDate (str) {
+    const date = new Date(str)
+    return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+  }
 }
 
 export default Presenters

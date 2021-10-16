@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import UnauthenticatedRoute from '@/components/App/unauthenticated-route.js'
+import UnauthenticatedRoute from '@/mixins/unauthenticated-route.js'
 
 export default {
   mixins: [UnauthenticatedRoute]

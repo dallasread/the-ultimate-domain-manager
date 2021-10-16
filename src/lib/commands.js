@@ -1,12 +1,10 @@
-import Presenters from '@/lib/presenters.js'
-
 class Commands {
-  constructor (state, queries, dnsimpleAdapter, localCache) {
+  constructor (state, queries, dnsimpleAdapter, localCache, presenters) {
     this.state = state
     this.queries = queries
     this.dnsimpleAdapter = dnsimpleAdapter
     this.localCache = localCache
-    this.presenters = new Presenters()
+    this.presenters = presenters
   }
 
   authenticate (accessToken) {

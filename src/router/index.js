@@ -1,9 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Home from '@/components/Home/component.vue'
-import Login from '@/components/Login/component.vue'
-import Auth from '@/components/Auth/component.vue'
-import Domains from '@/components/Domains/component.vue'
-import Domain from '@/components/Domain/component.vue'
+import Home from '@/views/home/component.vue'
+import Login from '@/views/login/component.vue'
+import Auth from '@/views/auth/component.vue'
+import Domains from '@/views/domains/component.vue'
+import Domain from '@/views/domain/component.vue'
 
 const routes = [
   {

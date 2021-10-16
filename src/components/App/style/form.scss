@@ -1,18 +1,42 @@
-input {
-  background: #fff;
-  padding: 0.75rem 1rem;
-  font-size: 1.5rem;
-  color: $black;
-  border: 0;
-  outline: none;
-  width: 100%;
-  font-weight: 600;
-  font-family: inherit;
+.search {
+  input {
+    background: #fff;
+    padding: 0.75rem 1rem;
+    font-size: 1.5rem;
+    color: $black;
+    border: 0;
+    outline: none;
+    width: 100%;
+    font-weight: 600;
+    font-family: inherit;
+    padding-left: 3rem;
+  }
+
+  .icon {
+    position: absolute;
+    display: inline-block;
+    padding: 1.1rem 0.75rem 0.4rem 0.75rem;
+    vertical-align: middle;
+    color: rgba(0, 0, 0, 0.3);
+
+    svg {
+      width: 1.5rem;
+      height: 1.5rem;
+    }
+  }
 }
 
 .content {
-  margin-top: 3px;
-  background: rgba(255, 255, 255, 0.8);
+  .block {
+    background: rgba(255, 255, 255, 0.8);
+    margin-top: 5px;
+    padding: $padding * 2;
+
+    h3 {
+      font-weight: bold;
+      font-size: 1.25rem;
+    }
+  }
 
   .list-item {
     vertical-align: middle;
@@ -60,12 +84,12 @@ input {
   }
 }
 
-.with-padding {
-  padding: $padding * 2;
-}
-
 .with-mobile-padding {
   @media (max-width: 640px) {
     padding: $padding;
   }
+}
+
+.text-center {
+  text-align: center;
 }
