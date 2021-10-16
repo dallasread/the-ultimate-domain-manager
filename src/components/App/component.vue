@@ -21,13 +21,14 @@ import DNSimpleAdapter from '@/lib/dnsimple-adapter.js'
 import State from '@/lib/state.js'
 import Queries from '@/lib/queries.js'
 import Commands from '@/lib/commands.js'
-import localStore from '@/lib/local-store.js'
+import LocalStore from '@/lib/local-store.js'
 
 export default {
-  props: ['_state', '_dnsimpleAdapter'],
+  props: ['_state', '_dnsimpleAdapter', '_localStore'],
   data () {
     window.theUltimateDomainManager = this
 
+    const localStore = this._localStore || new LocalStore()
     const dnsimpleAdapter = this._dnsimpleAdapter || new DNSimpleAdapter(window.fetch)
     const state = new State(this._state || { accounts: [], domains: [] })
     const queries = new Queries(state, dnsimpleAdapter)
