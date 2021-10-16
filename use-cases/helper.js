@@ -11,8 +11,6 @@ class FakeDNSimpleAdapter extends DNSimpleAdapter {
   }
 }
 
-window.document = {}
-
 const mountApp = async (path, state, dnsimpleAdapter) => {
   const router = createRouter({
     history: createMemoryHistory(),
@@ -38,12 +36,27 @@ const mountApp = async (path, state, dnsimpleAdapter) => {
     }
   })
 
-  await flushPromises()
+  app.click = async (el) => {
+    const $el = await app.find(el)
+    await $el.trigger('click')
+    await app.wait()
+  }
+
+  app.submit = async (el) => {
+    const $el = await app.find(el)
+    await $el.trigger('submit')
+    await app.wait()
+  }
+
+  app.wait = async () => {
+    await flushPromises()
+  }
+
+  await app.wait()
 
   return app
 }
 
 export {
-  flushPromises,
   mountApp
 }

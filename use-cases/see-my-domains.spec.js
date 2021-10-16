@@ -1,4 +1,4 @@
-import { mountApp, flushPromises } from './helper.js'
+import { mountApp } from './helper.js'
 const domain = { id: 181984, account_id: 1385, registrant_id: 2715, name: 'example.com', unicode_name: 'example.com', state: 'registered', auto_renew: false, private_whois: false, expires_on: '2021-06-05', expires_at: '2021-06-05T02:15:00Z', created_at: '2020-06-04T19:15:14Z', updated_at: '2020-06-04T19:15:21Z' }
 const dnsimpleAdapter = {
   fetchUser (account) { return Promise.resolve({ account }) },
@@ -22,7 +22,6 @@ describe('See my domains', () => {
 
   it('can search the domains', async () => {
     const app = await mountApp('/domains', null, dnsimpleAdapter)
-    await flushPromises()
 
     const input = app.find('input[aria-label="Domain search"]')
     await input.setValue('example')
@@ -33,10 +32,8 @@ describe('See my domains', () => {
 
   it('can visit a domain', async () => {
     const app = await mountApp('/domains', null, dnsimpleAdapter)
-    await flushPromises()
 
-    await app.find('[aria-label="Manage example.com"]').trigger('click')
-    await flushPromises()
+    await app.click('[aria-label="Manage example.com"]')
 
     expect(app.text()).toContain('name servers')
   })

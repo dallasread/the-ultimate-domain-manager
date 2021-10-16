@@ -7,7 +7,7 @@ describe('Log out', () => {
     //       accounts: [{ accessToken: 'abc-123' }]
     //     })
     //
-    //     await app.find('a[aria-label="Log out"]').trigger('click')
+    //     await app.click('a[aria-label="Log out"]')
     //     await flushPromises()
     //
     //     expect(app.findAll('[aria-label="Connect via DNSimple"]').length).toEqual(1)

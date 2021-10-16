@@ -28,7 +28,7 @@ describe('Log in', () => {
       fetchAccessToken () { return Promise.reject(new Error(expectedError)) }
     })
 
-    await flushPromises()
+    await app.wait()
 
     expect(app.find('[aria-label="Unauthorized"]').text()).toEqual(expectedError)
     expect(app.findAll('[aria-label="Log in"]').length).toEqual(1)
