@@ -8,7 +8,7 @@
     </div>
     <div class="content">
       <div v-if="domain">
-        <div v-if="app.queries.isNotServedBy(domain, 'dnsimple.com')" class="block with-padding notice">
+        <div v-if="!app.queries.isServedBy(domain, 'dnsimple.com')" class="block with-padding notice">
           <h3>
             Your domain is not served by DNSimple.
           </h3>
