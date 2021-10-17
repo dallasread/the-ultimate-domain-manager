@@ -44,11 +44,9 @@ export default {
     }
   },
   mounted () {
-    const accessToken = this.app.queries.getAccessToken()
+    this.focus()
 
-    this.$refs.search.focus()
-
-    return this.app.commands.fetchDomains(accessToken)
+    return this.app.commands.fetchDomains(this.app.queries.getAccount())
       .catch((err) => {
         this.error = err.message
       }).finally(() => {
@@ -62,6 +60,15 @@ export default {
       return this.domains.filter((domain) => {
         return domain.name.indexOf(q) !== -1
       })
+    }
+  },
+  methods: {
+    focus () {
+      if (('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0)) {
+        return
+      }
+
+      this.$refs.search.focus()
     }
   }
 }

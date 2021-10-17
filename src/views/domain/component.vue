@@ -8,21 +8,20 @@
     </div>
     <div class="content">
       <div v-if="domain">
-        <div v-if="app.queries.isNotServedBy(domain, 'dnsimple.com')" class="block with-padding notice">
+        <div class="block with-padding notice">
           <h3>
             Your domain is not served by DNSimple.
           </h3>
           <p>
-            It's a great idea to set up your domain before pointing your domain to DNSimple. When you're ready, point your name servers at DNSimple to use the values below. If you've recently made a change, it could take some time to be reflected.
+            It's a great idea to set up your domain before pointing your domain to DNSimple. When you're ready to use the values in this app, point your name servers at DNSimple. If you've recently made a change, it could take some time to be reflected.
           </p>
-          <!-- <a class="button button-yellow">
+          <a v-if="app.queries.shouldBeServedBy(domain, 'dnsimple.com')"  aria-label="Point to DNSimple" @click="pointToDNSimple" class="button button-yellow">
             Point to DNSimple
-          </a> -->
+          </a>
         </div>
         <div class="block-row">
           <div class="block half-block with-padding text-center">
-            {{app.queries.commonNameServers(domain)}}
-            <Loading v-if="!app.queries.commonNameServers(domain).length"  />
+            <Loading v-if="!app.queries.commonNameServers(domain).length" />
             <template v-else>
               <p>Your resolution is served by </p>
               <h3 v-for="nameServer in app.queries.commonNameServers(domain)" :key="`${domain.id}-nameserver-${nameServer}`">
@@ -72,14 +71,23 @@ export default {
     }
   },
   mounted () {
-    return Promise.all(
-      this.app.commands.fetchDomain(this.app.queries.getAccessToken(), this.$route.params.name),
-      this.app.commands.fetchNameServers(this.domain)
-    ).catch((e) => {
-      this.error = 'Domain not found'
-    }).finally(() => {
-      this.isLoading = false
+    return new Promise((resolve) => {
+      this.app.commands.fetchDomain(this.app.queries.getAccount(), this.$route.params.name)
+        .then(this.app.commands.fetchNameServers(this.domain))
+        .finally(() => {
+          this.isLoading = false
+          resolve()
+        })
     })
+  },
+  methods: {
+    pointToDNSimple () {
+      return this.app.commands.updateNameServers(
+        this.app.queries.getAccount(),
+        this.domain,
+        ['ns1.dnsimple.com', 'ns2.dnsimple.com', 'ns3.dnsimple.com', 'ns4.dnsimple.com']
+      )
+    }
   }
 }
 </script>

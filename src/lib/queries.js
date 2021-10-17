@@ -58,21 +58,21 @@ class Queries {
     return Math.round(diff / (1000 * 60 * 60 * 24))
   }
 
-  getAccessToken () {
-    const account = this.state.findAll('accounts')[0]
-
-    if (account) {
-      return account.accessToken
-    }
+  getAccount () {
+    return this.state.findAll('accounts')[0]
   }
 
-  isNotServedBy (domain, provider) {
+  shouldBeServedBy (domain, provider) {
+    if (!this.isRegistered(domain)) {
+      return false
+    }
+
     const nameServers = this.commonNameServers(domain)
     return nameServers.length && nameServers.indexOf(provider) === -1
   }
 
   commonNameServers (domain) {
-    return domain.nameServers.map((nameServer) => {
+    return (domain.nameServers || []).map((nameServer) => {
       return nameServer.match(MATCH_HOSTNAME)[0]
     }).filter(uniq)
   }

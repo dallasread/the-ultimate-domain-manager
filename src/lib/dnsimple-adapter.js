@@ -2,9 +2,17 @@ const BASE_URL = window.location.href.substr(0, window.location.href.lastIndexOf
 const OAUTH_RESPONSE_TYPE = 'code'
 const OAUTH_GRANT_TYPE = 'authorization_code'
 const OAUTH_REDIRECT_URL = `${BASE_URL}/auth`
+const OAUTH_STATE = 'RANDOM'
+
 const OAUTH_CLIENT_ID = 'cbde777b80c127be'
 const OAUTH_CLIENT_SECRET = atob('Q21TaVh6YmlQWTkxZloxZjRaNEZCc2R0NEt2QjBGcmg')
-const OAUTH_STATE = 'RANDOM'
+const DNSIMPLE_API = 'https://api.dnsimple.com/v2'
+const DNSIMPLE_APP = 'https://dnsimple.com'
+
+// const OAUTH_CLIENT_ID = '10ae7b4e4d1d69a4'
+// const OAUTH_CLIENT_SECRET = '0XSVDAf2YfEemHpE22XuupjX2ESDNJVb'
+// const DNSIMPLE_API = 'https://api.sandbox.dnsimple.com/v2'
+// const DNSIMPLE_APP = 'https://sandbox.dnsimple.com'
 
 class DNSimpleAdapter {
   constructor (fetch) {
@@ -42,24 +50,40 @@ class DNSimpleAdapter {
     })
   }
 
-  fetchDomains (accessToken) {
+  fetchDomains (account) {
     return new Promise((resolve, reject) => {
-      this._fetcher('GET', '/4521/domains', accessToken).then((response) => {
+      this._fetcher('GET', `/${account.id}/domains`, account.accessToken).then((response) => {
         resolve(response.data)
       }).catch(reject)
     })
   }
 
-  fetchDomain (accessToken, name) {
+  fetchDomain (account, name) {
     return new Promise((resolve, reject) => {
-      this._fetcher('GET', `/4521/domains/${name}`, accessToken).then((response) => {
+      this._fetcher('GET', `/${account.id}/domains/${name}`, account.accessToken).then((response) => {
+        resolve(response.data)
+      }).catch(reject)
+    })
+  }
+
+  fetchNameServers (account, name) {
+    return new Promise((resolve, reject) => {
+      this._fetcher('GET', `/${account.id}/registrar/domains/${name}/delegation`, account.accessToken).then((response) => {
+        resolve(response.data)
+      }).catch(reject)
+    })
+  }
+
+  updateNameServers (account, name, nameServers) {
+    return new Promise((resolve, reject) => {
+      this._fetcher('PUT', `/${account.id}/registrar/domains/${name}/delegation`, account.accessToken, nameServers).then((response) => {
         resolve(response.data)
       }).catch(reject)
     })
   }
 
   oauthUrl () {
-    const url = new URL('https://dnsimple.com/oauth/authorize')
+    const url = new URL(`${DNSIMPLE_APP}/oauth/authorize`)
 
     url.searchParams.append('response_type', OAUTH_RESPONSE_TYPE)
     url.searchParams.append('redirect_uri', OAUTH_REDIRECT_URL)
@@ -73,7 +97,7 @@ class DNSimpleAdapter {
     // console.log('FETCH', method, path)
 
     const proxy = 'https://thawing-brushlands-90182.herokuapp.com'
-    const url = `https://api.dnsimple.com/v2${path}`
+    const url = `${DNSIMPLE_API}${path}`
     const headers = { 'Content-Type': 'application/json' }
     const options = { method, headers }
 

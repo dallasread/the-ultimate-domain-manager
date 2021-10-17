@@ -5,7 +5,7 @@ class ZoneVisionAdapter {
 
   fetchNameServers (domain) {
     return new Promise((resolve, reject) => {
-      this._fetch(`https://api.zone.vision/query/${domain.name}`).then((response) => {
+      this._fetch.call(window, `https://api.zone.vision/query/${domain.name}`).then((response) => {
         response.json()
           .then((json) => {
             const nameServers = json.parent['name-servers'].map((n) => n.name.slice(0, -1))

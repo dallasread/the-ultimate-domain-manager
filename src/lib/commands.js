@@ -42,16 +42,16 @@ class Commands {
     })
   }
 
-  fetchDomain (accessToken, name) {
-    return this.dnsimpleAdapter.fetchDomain(accessToken, name)
+  fetchDomain (account, name) {
+    return this.dnsimpleAdapter.fetchDomain(account, name)
       .then((domain) => {
         this._applyDomainDefaults(domain)
         this._upsertById('domains', domain)
       })
   }
 
-  fetchDomains (accessToken) {
-    return this.dnsimpleAdapter.fetchDomains(accessToken)
+  fetchDomains (account) {
+    return this.dnsimpleAdapter.fetchDomains(account)
       .then((domains) => {
         domains.forEach((domain) => {
           this._applyDomainDefaults(domain)
@@ -60,9 +60,26 @@ class Commands {
       })
   }
 
+  fetchNameServers (domain) {
+    return new Promise((resolve, reject) => {
+      this.zoneVisionAdapter.fetchNameServers(domain).then((nameServers) => {
+        domain.nameServers = nameServers || []
+        this._upsertById('domains', domain)
+        resolve()
+      }).catch(reject)
+    })
+  }
+
+  updateNameServers (accessToken, domain, nameServers) {
+    return this.dnsimpleAdapter.updateNameServers(accessToken, domain.name, nameServers)
+      .then(() => {
+        domain.nameServers = nameServers || []
+        this._upsertById('domains', domain)
+      })
+  }
+
   _applyDomainDefaults (domain) {
     domain.provider = 'dnsimple'
-    domain.nameServers = domain.nameServers || []
   }
 
   restoreLocal () {
@@ -87,16 +104,6 @@ class Commands {
           .map((domain) => this.presenters.domainToJSON(domain))
       })
     }, 300, this)
-  }
-
-  fetchNameServers (domain) {
-    return new Promise((resolve, reject) => {
-      this.zoneVisionAdapter.fetchNameServers(domain).then((nameServers) => {
-        domain.nameServers = nameServers || []
-        this._upsertById('domains', domain)
-        resolve()
-      }).catch(reject)
-    })
   }
 
   _upsertById (model, data) {

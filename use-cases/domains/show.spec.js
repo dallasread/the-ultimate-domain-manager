@@ -71,5 +71,18 @@ describe('Domains: Show', () => {
 
       expect(app.text()).toContain('Your domain is not served by DNSimple.')
     })
+
+    it('can point to DNSimple', async () => {
+      const zoneVisionAdapter = {
+        fetchNameServers: () => Promise.resolve(['ns1.cloudflare.com'])
+      }
+      dnsimpleAdapter.updateNameServers = () => Promise.resolve()
+      const app = await mountApp('/domains', { accounts: [account], domains: [] }, dnsimpleAdapter, null, zoneVisionAdapter)
+
+      await app.click('[aria-label="Manage example.com"]')
+      await app.click('[aria-label="Point to DNSimple"]')
+
+      expect(app.text()).toContain('Your resolution is served by dnsimple.com')
+    })
   })
 })

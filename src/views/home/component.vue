@@ -4,7 +4,7 @@
 export default {
   props: ['app'],
   mounted () {
-    if (this.app.queries.getAccessToken()) {
+    if (this.app.queries.getAccount()) {
       this.$router.push('/domains')
     } else {
       this.$router.push('/login')
