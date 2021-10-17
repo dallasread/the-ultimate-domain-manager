@@ -18,7 +18,8 @@
             <span class="yellow">If you've recently made a change, it could take up to 24 hours to fully propagate.</span>
           </p>
           <a v-if="app.queries.shouldBeServedBy(domain, 'dnsimple.com')" href="javascript:;" aria-label="Point to DNSimple" @click="pointToDNSimple" class="button button-yellow">
-            Point to DNSimple
+            <span v-if="isLoadingPointToDNSimple">Loading...</span>
+            <span v-else>Point to DNSimple</span>
           </a>
         </div>
         <div class="block-row">
@@ -82,6 +83,7 @@ export default {
   data () {
     return {
       isLoading: true,
+      isLoadingPointToDNSimple: false,
       error: '',
       q: this.$route.params.name,
       dnsimpleServices
@@ -108,11 +110,18 @@ export default {
   },
   methods: {
     pointToDNSimple () {
-      return this.app.commands.updateNameServers(
-        this.app.queries.getAccount(),
-        this.domain,
-        ['ns1.dnsimple.com', 'ns2.dnsimple.com', 'ns3.dnsimple.com', 'ns4.dnsimple.com']
-      )
+      return new Promise((resolve, reject) => {
+        this.isLoadingPointToDNSimple = true
+
+        this.app.commands.updateNameServers(
+          this.app.queries.getAccount(),
+          this.domain,
+          ['ns1.dnsimple.com', 'ns2.dnsimple.com', 'ns3.dnsimple.com', 'ns4.dnsimple.com']
+        ).then(() => {
+          this.isLoadingPointToDNSimple = false
+          resolve()
+        }).catch(reject)
+      })
     }
   }
 }
