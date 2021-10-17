@@ -70,6 +70,13 @@ class Commands {
     })
   }
 
+  fetchRecords (account, domain) {
+    return this.dnsimpleAdapter.fetchRecords(account, domain.name)
+      .then((records) => {
+        records.forEach((record) => this._upsertById('records', record))
+      })
+  }
+
   updateNameServers (accessToken, domain, nameServers) {
     return this.dnsimpleAdapter.updateNameServers(accessToken, domain.name, nameServers)
       .then(() => {

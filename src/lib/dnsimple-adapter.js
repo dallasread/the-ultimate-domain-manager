@@ -69,6 +69,14 @@ class DNSimpleAdapter {
     })
   }
 
+  fetchRecords (account, name) {
+    return new Promise((resolve, reject) => {
+      this._fetcher('GET', `/${account.id}/zones/${name}/records`, account.accessToken).then((response) => {
+        resolve(response.data)
+      }).catch(reject)
+    })
+  }
+
   updateNameServers (account, name, nameServers) {
     return new Promise((resolve, reject) => {
       this._fetcher('PUT', `/${account.id}/registrar/domains/${name}/delegation`, account.accessToken, nameServers).then((response) => {

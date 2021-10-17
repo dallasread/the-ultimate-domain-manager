@@ -23,13 +23,13 @@ describe('Domains: List', () => {
   })
 
   it('displays a list of my domains', async () => {
-    const app = await mountApp('/domains', { accounts: [account], domains: [] }, dnsimpleAdapter)
+    const app = await mountApp('/domains', { accounts: [account], domains: [], records: [] }, dnsimpleAdapter)
 
     expect(app.text()).toContain('example.com')
   })
 
   it('saves the domains to local storage', async () => {
-    const app = await mountApp('/domains', { accounts: [account], domains: [] }, dnsimpleAdapter)
+    const app = await mountApp('/domains', { accounts: [account], domains: [], records: [] }, dnsimpleAdapter)
     await app.wait()
 
     const data = await app.vm.commands.localCache.get('data')
@@ -39,7 +39,7 @@ describe('Domains: List', () => {
 
   it('restores the domains from local storage', async () => {
     dnsimpleAdapter.fetchDomains = () => Promise.resolve([])
-    const app = await mountApp('/domains', { accounts: [], domains: [] }, dnsimpleAdapter, {
+    const app = await mountApp('/domains', { accounts: [], domains: [], records: [] }, dnsimpleAdapter, {
       accounts: [{ accessToken: 'abc-123' }],
       domains: [{ name: 'foo.bar' }]
     })
@@ -48,7 +48,7 @@ describe('Domains: List', () => {
   })
 
   it('can search the domains', async () => {
-    const app = await mountApp('/domains', { accounts: [account], domains: [] }, dnsimpleAdapter)
+    const app = await mountApp('/domains', { accounts: [account], domains: [], records: [] }, dnsimpleAdapter)
 
     const input = app.find('input[aria-label="Domain search"]')
     await input.setValue('example')
@@ -61,7 +61,7 @@ describe('Domains: List', () => {
   it('sorts by expired, then alphabetical', async () => {
     dnsimpleAdapter.fetchDomains = () => Promise.resolve([])
     const expiringSoon = new Date().setDate(-1)
-    const app = await mountApp('/domains', { accounts: [], domains: [] }, dnsimpleAdapter, {
+    const app = await mountApp('/domains', { accounts: [], domains: [], records: [] }, dnsimpleAdapter, {
       accounts: [{ accessToken: 'abc-123' }],
       domains: [
         { name: 'bar.baz' },

@@ -25,7 +25,7 @@
           <div class="block half-block with-padding text-center-desktop">
             <Loading v-if="!app.queries.commonNameServers(domain).length" />
             <template v-else>
-              <p>Your resolution is served by </p>
+              <p>Resolution served by </p>
               <h3 v-for="nameServer in app.queries.commonNameServers(domain)" :key="`${domain.id}-nameserver-${nameServer}`">
                 {{nameServer}}
               </h3>
@@ -40,6 +40,24 @@
             <h3>Hosted</h3>
           </div>
         </div>
+        <div class="more-services block with-padding">
+          <h2>Add more to your domain</h2>
+          <p>
+            With <strong>{{dnsimpleServices.length}} pre-built add-ons</strong> provided by DNSimple, your domain will be up and going in no time – just sit back and relax!
+          </p>
+          <a href="javascript:;" class="button">
+            Find more add-ons (coming soon!)
+          </a>
+        </div>
+        <!-- <div v-for="service in dnsimpleServices" :key="service.name" class="block-row">
+          <div class="service block with-padding">
+            <img :src="`data:image/png;base64,${service.logo}`">
+            <div class="meta">
+              <h3>{{service.label}}</h3>
+              <p>{{service.description}}</p>
+            </div>
+          </div>
+        </div> -->
       </div>
       <div v-else-if="error" class="block with-padding">
         <p>{{error}}</p>
@@ -54,6 +72,7 @@
 <script>
 import AuthenticatedRoute from '@/mixins/authenticated-route.js'
 import Loading from '@/components/loading/component.vue'
+import dnsimpleServices from '@/vendor/dnsimple-services.json'
 
 export default {
   mixins: [AuthenticatedRoute],
@@ -64,18 +83,23 @@ export default {
     return {
       isLoading: true,
       error: '',
-      q: this.$route.params.name
+      q: this.$route.params.name,
+      dnsimpleServices
     }
   },
   computed: {
     domain () {
       return this.app.queries.getDomain(this.$route.params.name)
+    },
+    records () {
+      return this.app.queries.recordsForZone(this.domain.name)
     }
   },
   mounted () {
     return new Promise((resolve) => {
       this.app.commands.fetchDomain(this.app.queries.getAccount(), this.$route.params.name)
         .then(this.app.commands.fetchNameServers(this.domain))
+        .then(this.app.commands.fetchRecords(this.app.queries.getAccount(), this.domain))
         .finally(() => {
           this.isLoading = false
           resolve()

@@ -81,6 +81,10 @@ class Queries {
       return nameServer.match(MATCH_HOSTNAME)[0]
     }).filter(uniq)
   }
+
+  recordsForZone (zoneName) {
+    return this.state.findAll('records', (r) => r.zone_id === zoneName)
+  }
 }
 
 export default Queries

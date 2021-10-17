@@ -56,7 +56,7 @@ const mountApp = async (path, state, dnsimpleAdapter, localCacheData, zoneVision
       plugins: [router]
     },
     propsData: {
-      _state: new State(state || { accounts: [], domains: [] }),
+      _state: new State(state || { accounts: [], domains: [], records: [] }),
       _dnsimpleAdapter: fakeDNSimpleAdapter,
       _zoneVisionAdapter: fakeZoneVisionAdapter
     }

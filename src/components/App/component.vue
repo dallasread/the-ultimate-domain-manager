@@ -34,7 +34,7 @@ export default {
     const dnsimpleAdapter = this._dnsimpleAdapter || new DNSimpleAdapter(window.fetch)
     const zoneVisionAdapter = this._zoneVisionAdapter || new ZoneVisionAdapter(window.fetch)
     const presenters = new Presenters()
-    const state = this._state || new State({ accounts: [], domains: [] })
+    const state = this._state || new State({ accounts: [], domains: [], records: [] })
     const queries = new Queries(state, dnsimpleAdapter)
     const commands = new Commands(state, queries, dnsimpleAdapter, zoneVisionAdapter, localCache, presenters)
 
