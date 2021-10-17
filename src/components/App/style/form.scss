@@ -42,6 +42,12 @@
       &:nth-child(2n) {
         margin-left: 2.5px;
       }
+
+      @media (max-width: 640px) {
+        margin-right: 0 !important;
+        margin-left: 0 !important;
+        width: 100%;
+      }
     }
 
     h3 {
