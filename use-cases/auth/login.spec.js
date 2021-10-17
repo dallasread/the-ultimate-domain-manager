@@ -13,7 +13,7 @@ describe('Auth: Log in', () => {
     expect(button.element.href).toMatch('state=')
   })
 
-  it('redirects to the domains page when authorized', async () => {
+  it('redirects to the domains page when authorized by DNSimple', async () => {
     const account = { accessToken: 'abc-123' }
     const app = await mountApp('/auth?code=AUTHCODE', {
       accounts: [account],
