@@ -19,10 +19,6 @@
     -o-transition: 500ms ease-in-out;
     transition: 500ms ease-in-out;
     margin-left: -6px;
-
-    @media (max-width: 640px) {
-      width: 100%;
-    }
   }
 
   .logout {
