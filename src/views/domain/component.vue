@@ -19,9 +19,11 @@
             Point to DNSimple
           </a>
         </div>
-        <div class="block with-padding text-center">
-          <p>Your domain {{domain.auto_renew ? 'will renew before' : 'expires'}}</p>
-          <h3>{{app.presenters.prettyDate(domain.expires_on)}}</h3>
+        <div v-if="app.queries.isRegistered(domain)">
+          <div class="block with-padding text-center">
+            <p>Your domain {{domain.auto_renew ? 'will renew before' : 'expires on'}}</p>
+            <h3 :class="app.queries.isExpiring(domain) ? 'red' : ''">{{app.presenters.prettyDate(domain.expires_on)}}</h3>
+          </div>
         </div>
       </div>
       <div v-else-if="error" class="block with-padding">
