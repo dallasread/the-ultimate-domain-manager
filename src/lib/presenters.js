@@ -26,7 +26,7 @@ class Presenters {
       expires_at: domain.expires_at,
       created_at: domain.created_at,
       updated_at: domain.updated_at,
-      nameServers: (domain.nameServers || []).map((ns) => `${ns}`)
+      nameServers: domain.nameServers.map((ns) => `${ns}`)
     }
   }
 

@@ -1,7 +1,8 @@
 import { mount, flushPromises } from '@vue/test-utils'
 import { createRouter, createMemoryHistory } from 'vue-router'
 import App from '@/components/app/component.vue'
-import DNSimpleAdapter from '@/lib/dnsimple-adapter'
+import DNSimpleAdapter from '@/lib/dnsimple-adapter.js'
+import ZoneVisionAdapter from '@/lib/zone-vision-adapter.js'
 import LocalCache from '@/lib/local-cache.js'
 import State from '@/lib/state.js'
 import { routes } from '@/router'
@@ -13,7 +14,13 @@ class FakeDNSimpleAdapter extends DNSimpleAdapter {
   }
 }
 
-const mountApp = async (path, state, dnsimpleAdapter, localCacheData) => {
+class FakeZoneVisionAdapter extends ZoneVisionAdapter {
+  fetchNameServers () {
+    return Promise.resolve({})
+  }
+}
+
+const mountApp = async (path, state, dnsimpleAdapter, localCacheData, zoneVisionAdapter) => {
   const localCache = new LocalCache()
 
   await localCache.reset()
@@ -36,13 +43,22 @@ const mountApp = async (path, state, dnsimpleAdapter, localCacheData) => {
     fakeDNSimpleAdapter[key] = dnsimpleAdapter[key]
   }
 
+  const fakeZoneVisionAdapter = new FakeZoneVisionAdapter()
+
+  fakeZoneVisionAdapter._fetch = () => Promise.resolve({})
+
+  for (const key in zoneVisionAdapter) {
+    fakeZoneVisionAdapter[key] = zoneVisionAdapter[key]
+  }
+
   const app = await mount(App, {
     global: {
       plugins: [router]
     },
     propsData: {
       _state: new State(state || { accounts: [], domains: [] }),
-      _dnsimpleAdapter: fakeDNSimpleAdapter
+      _dnsimpleAdapter: fakeDNSimpleAdapter,
+      _zoneVisionAdapter: fakeZoneVisionAdapter
     }
   })
 
@@ -58,8 +74,11 @@ const mountApp = async (path, state, dnsimpleAdapter, localCacheData) => {
     await app.wait()
   }
 
+  jest.useFakeTimers()
+
   app.wait = async () => {
-    await flushPromises()
+    jest.runAllTimers()
+    return flushPromises()
   }
 
   await app.wait()

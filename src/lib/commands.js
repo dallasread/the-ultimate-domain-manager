@@ -1,10 +1,11 @@
 import debouncedPromise from '@/lib/utils/debounced-promise.js'
 
 class Commands {
-  constructor (state, queries, dnsimpleAdapter, localCache, presenters) {
+  constructor (state, queries, dnsimpleAdapter, zoneVisionAdapter, localCache, presenters) {
     this.state = state
     this.queries = queries
     this.dnsimpleAdapter = dnsimpleAdapter
+    this.zoneVisionAdapter = zoneVisionAdapter
     this.localCache = localCache
     this.presenters = presenters
   }
@@ -44,7 +45,7 @@ class Commands {
   fetchDomain (accessToken, name) {
     return this.dnsimpleAdapter.fetchDomain(accessToken, name)
       .then((domain) => {
-        domain.provider = 'dnsimple'
+        this._applyDomainDefaults(domain)
         this._upsertById('domains', domain)
       })
   }
@@ -53,10 +54,15 @@ class Commands {
     return this.dnsimpleAdapter.fetchDomains(accessToken)
       .then((domains) => {
         domains.forEach((domain) => {
-          domain.provider = 'dnsimple'
+          this._applyDomainDefaults(domain)
           this._upsertById('domains', domain)
         })
       })
+  }
+
+  _applyDomainDefaults (domain) {
+    domain.provider = 'dnsimple'
+    domain.nameServers = domain.nameServers || []
   }
 
   restoreLocal () {
@@ -84,15 +90,9 @@ class Commands {
   }
 
   fetchNameServers (domain) {
-    return new Promise((resolve, reject) => {
-      fetch(`https://api.zone.vision/query/${domain.name}`).then((response) => {
-        response.json()
-          .then((json) => {
-            domain.nameServers = json.parent['name-servers'].map((n) => n.name.slice(0, -1))
-            this._upsertById('domains', domain)
-          })
-          .catch(reject)
-      }).catch(reject)
+    return this.zoneVisionAdapter.fetchNameServers(domain).then((nameServers) => {
+      domain.nameServers = nameServers || []
+      this._upsertById('domains', domain)
     })
   }
 

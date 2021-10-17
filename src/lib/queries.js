@@ -30,7 +30,7 @@ class Queries {
   }
 
   listAccounts () {
-    return this.state.findAll('accounts').sort(SORT_BY_NAME)
+    return this.state.findAll('accounts')
   }
 
   getDomain (name) {
@@ -72,7 +72,7 @@ class Queries {
   }
 
   commonNameServers (domain) {
-    return (domain.nameServers || []).map((nameServer) => {
+    return domain.nameServers.map((nameServer) => {
       return nameServer.match(MATCH_HOSTNAME)[0]
     }).filter(uniq)
   }

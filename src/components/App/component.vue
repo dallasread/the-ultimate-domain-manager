@@ -18,6 +18,7 @@
 
 <script>
 import DNSimpleAdapter from '@/lib/dnsimple-adapter.js'
+import ZoneVisionAdapter from '@/lib/zone-vision-adapter.js'
 import State from '@/lib/state.js'
 import Commands from '@/lib/commands.js'
 import LocalCache from '@/lib/local-cache.js'
@@ -25,16 +26,17 @@ import Presenters from '@/lib/presenters.js'
 import Queries from '@/lib/queries.js'
 
 export default {
-  props: ['_state', '_dnsimpleAdapter', '_localCache'],
+  props: ['_state', '_dnsimpleAdapter', '_zoneVisionAdapter', '_localCache'],
   data () {
     window.theUltimateDomainManager = this
 
     const localCache = this._localCache || new LocalCache()
     const dnsimpleAdapter = this._dnsimpleAdapter || new DNSimpleAdapter(window.fetch)
+    const zoneVisionAdapter = this._zoneVisionAdapter || new ZoneVisionAdapter(window.fetch)
     const presenters = new Presenters()
     const state = this._state || new State({ accounts: [], domains: [] })
     const queries = new Queries(state, dnsimpleAdapter)
-    const commands = new Commands(state, queries, dnsimpleAdapter, localCache, presenters)
+    const commands = new Commands(state, queries, dnsimpleAdapter, zoneVisionAdapter, localCache, presenters)
 
     return {
       app: this,

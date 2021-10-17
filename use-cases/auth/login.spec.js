@@ -1,6 +1,6 @@
-import { mountApp, flushPromises } from './helper.js'
+import { mountApp } from '../helper.js'
 
-describe('Log in', () => {
+describe('Auth: Log in', () => {
   it('shows a button that points to the DNSimple OAuth flow', async () => {
     const app = await mountApp('/login')
 

@@ -1,6 +1,6 @@
-import { mountApp } from './helper.js'
+import { mountApp } from '../helper.js'
 
-describe('See my domains', () => {
+describe('Domains: List', () => {
   let domain
   let account
   let dnsimpleAdapter
@@ -30,6 +30,7 @@ describe('See my domains', () => {
 
   it('saves the domains to local storage', async () => {
     const app = await mountApp('/domains', { accounts: [account], domains: [] }, dnsimpleAdapter)
+    await app.wait()
 
     const data = await app.vm.commands.localCache.get('data')
 
@@ -54,14 +55,18 @@ describe('See my domains', () => {
     await app.wait()
 
     expect(app.findAll('[aria-label^="Manage"]').length).toEqual(1)
-    expect(app.find('[aria-label="Manage example.com"]').text()).toEqual('example.com')
+    expect(app.find('[aria-label="Manage example.com"]').text()).toContain('example.com')
   })
 
-  it('can visit a domain', async () => {
-    const app = await mountApp('/domains', { accounts: [account], domains: [] }, dnsimpleAdapter)
-
-    await app.click('[aria-label="Manage example.com"]')
-
-    expect(app.text()).toContain('name servers')
-  })
+//     it('sorts by expired, then alphabetical', () => {
+//       dnsimpleAdapter.fetchDomains = () => Promise.resolve([])
+//       const expiringSoon = new Date()
+//       expiringSoon.setDate(-5)
+//       const app = await mountApp('/domains', { accounts: [], domains: [] }, dnsimpleAdapter, {
+//         accounts: [{ accessToken: 'abc-123' }],
+//         domains: [{ name: 'bar.baz' }, { name: 'foo.bar', expires_on: expiringSoon.toLocaleDateString() }]
+//       })
+//
+//       expect(app.text()).toContain('foo.bar')
+//     })
 })
