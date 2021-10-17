@@ -127,6 +127,8 @@
   padding: $padding * 2;
 }
 
-.text-center {
-  text-align: center;
+.text-center-desktop {
+  @media (min-width: 641px) {
+    text-align: center;
+  }
 }

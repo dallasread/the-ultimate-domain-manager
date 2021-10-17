@@ -35,7 +35,7 @@ html, body {
   margin: 3rem auto;
 
   @media (max-width: 640px) {
-    margin: $half-padding auto;
+    margin: $half-padding auto 0;
   }
 }
 

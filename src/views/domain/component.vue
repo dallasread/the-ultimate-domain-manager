@@ -22,7 +22,7 @@
           </a>
         </div>
         <div class="block-row">
-          <div class="block half-block with-padding text-center">
+          <div class="block half-block with-padding text-center-desktop">
             <Loading v-if="!app.queries.commonNameServers(domain).length" />
             <template v-else>
               <p>Your resolution is served by </p>
@@ -31,11 +31,11 @@
               </h3>
             </template>
           </div>
-          <div v-if="app.queries.isRegistered(domain)" class="block half-block with-padding text-center">
+          <div v-if="app.queries.isRegistered(domain)" class="block half-block with-padding text-center-desktop">
             <p>Your domain {{domain.auto_renew ? 'will renew before' : 'expires on'}}</p>
             <h3 :class="app.queries.isExpiring(domain) ? 'red' : ''">{{app.presenters.prettyDate(domain.expires_on)}}</h3>
           </div>
-          <div v-else class="block half-block with-padding text-center">
+          <div v-else class="block half-block with-padding text-center-desktop">
             <p>State</p>
             <h3>Hosted</h3>
           </div>
