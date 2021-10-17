@@ -62,9 +62,9 @@ class Queries {
     return this.state.findAll('accounts')[0]
   }
 
-  isServedBy (domain, provider) {
+  isNotServedBy (domain, provider) {
     const nameServers = this.commonNameServers(domain)
-    return nameServers.length && nameServers.indexOf(provider) !== -1
+    return nameServers.length && nameServers.indexOf(provider) === -1
   }
 
   shouldBeServedBy (domain, provider) {

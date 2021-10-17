@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "deploy": "node scripts/deploy.js",
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "serve": "vue-cli-service serve --mode development",
+    "build": "vue-cli-service build --mode production",
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint"
   },
