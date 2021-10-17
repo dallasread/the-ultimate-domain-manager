@@ -13,7 +13,7 @@
           <li v-for="domain in filteredDomains" :key="domain.id" class="list-item">
             <router-link :to="'/domains/' + domain.name" :aria-label="'Manage ' + domain.name">
               <svg class="arrow" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M4.555 5.168A1 1 0 003 6v8a1 1 0 001.555.832L10 11.202V14a1 1 0 001.555.832l6-4a1 1 0 000-1.664l-6-4A1 1 0 0010 6v2.798l-5.445-3.63z" /></svg>
-              {{domain.name}}
+              <span aria-label="Name">{{domain.name}}</span>
               <span v-if="app.queries.isExpiring(domain)" class="expires">
                 Expires in {{app.queries.daysTilExpiry(domain)}} days
               </span>

@@ -30,16 +30,46 @@ describe('Domains: Show', () => {
     expect(app.text()).toContain('Your domain expires')
   })
 
-//   it('shows the current name servers', async () => {
-//     const app = await mountApp('/domains', { accounts: [account], domains: [] }, dnsimpleAdapter)
-//
-//     await app.click('[aria-label="Manage example.com"]')
-//
-//     expect(app.text()).toContain('name servers')
-//   })
-//
-//   it.todo('shows the expiry date')
-//   it.todo('shows the renewal date')
-//   it.todo('shows the current DNS provider')
-//   it.todo('shows a warning if the current provider is not DNSimple')
+  describe('dates', () => {
+    it('shows the expiry date', async () => {
+      const app = await mountApp('/domains', { accounts: [account], domains: [] }, dnsimpleAdapter)
+
+      await app.click('[aria-label="Manage example.com"]')
+
+      expect(app.text()).toContain('Your domain expires')
+    })
+
+    it('shows the renewal date', async () => {
+      domain.auto_renew = true
+      const app = await mountApp('/domains', { accounts: [account], domains: [] }, dnsimpleAdapter)
+
+      await app.click('[aria-label="Manage example.com"]')
+
+      expect(app.text()).toContain('Your domain will renew')
+    })
+  })
+
+  describe('name servers', () => {
+    it('shows the current DNS provider', async () => {
+      const zoneVisionAdapter = {
+        fetchNameServers: () => Promise.resolve(['ns1.dnsimple.com', 'ns2.dnsimple.com'])
+      }
+      const app = await mountApp('/domains', { accounts: [account], domains: [] }, dnsimpleAdapter, null, zoneVisionAdapter)
+
+      await app.click('[aria-label="Manage example.com"]')
+
+      expect(app.text()).toContain('Your resolution is served by dnsimple.com')
+    })
+
+    it('shows a warning if the current provider is not DNSimple', async () => {
+      const zoneVisionAdapter = {
+        fetchNameServers: () => Promise.resolve(['ns1.cloudflare.com'])
+      }
+      const app = await mountApp('/domains', { accounts: [account], domains: [] }, dnsimpleAdapter, null, zoneVisionAdapter)
+
+      await app.click('[aria-label="Manage example.com"]')
+
+      expect(app.text()).toContain('Your domain is not served by DNSimple.')
+    })
+  })
 })

@@ -90,9 +90,12 @@ class Commands {
   }
 
   fetchNameServers (domain) {
-    return this.zoneVisionAdapter.fetchNameServers(domain).then((nameServers) => {
-      domain.nameServers = nameServers || []
-      this._upsertById('domains', domain)
+    return new Promise((resolve, reject) => {
+      this.zoneVisionAdapter.fetchNameServers(domain).then((nameServers) => {
+        domain.nameServers = nameServers || []
+        this._upsertById('domains', domain)
+        resolve()
+      }).catch(reject)
     })
   }
 

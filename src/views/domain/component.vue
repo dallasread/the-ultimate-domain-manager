@@ -21,9 +21,10 @@
         </div>
         <div class="block-row">
           <div class="block half-block with-padding text-center">
+            {{app.queries.commonNameServers(domain)}}
             <Loading v-if="!app.queries.commonNameServers(domain).length"  />
             <template v-else>
-              <p>Your resolution is served by</p>
+              <p>Your resolution is served by </p>
               <h3 v-for="nameServer in app.queries.commonNameServers(domain)" :key="`${domain.id}-nameserver-${nameServer}`">
                 {{nameServer}}
               </h3>
@@ -71,14 +72,14 @@ export default {
     }
   },
   mounted () {
-    this.app.commands.fetchNameServers(this.domain)
-
-    return this.app.commands.fetchDomain(this.app.queries.getAccessToken(), this.$route.params.name)
-      .catch((e) => {
-        this.error = 'Domain not found'
-      }).finally(() => {
-        this.isLoading = false
-      })
+    return Promise.all(
+      this.app.commands.fetchDomain(this.app.queries.getAccessToken(), this.$route.params.name),
+      this.app.commands.fetchNameServers(this.domain)
+    ).catch((e) => {
+      this.error = 'Domain not found'
+    }).finally(() => {
+      this.isLoading = false
+    })
   }
 }
 </script>

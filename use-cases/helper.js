@@ -16,7 +16,7 @@ class FakeDNSimpleAdapter extends DNSimpleAdapter {
 
 class FakeZoneVisionAdapter extends ZoneVisionAdapter {
   fetchNameServers () {
-    return Promise.resolve({})
+    return Promise.resolve([])
   }
 }
 

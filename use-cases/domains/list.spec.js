@@ -58,15 +58,20 @@ describe('Domains: List', () => {
     expect(app.find('[aria-label="Manage example.com"]').text()).toContain('example.com')
   })
 
-//     it('sorts by expired, then alphabetical', () => {
-//       dnsimpleAdapter.fetchDomains = () => Promise.resolve([])
-//       const expiringSoon = new Date()
-//       expiringSoon.setDate(-5)
-//       const app = await mountApp('/domains', { accounts: [], domains: [] }, dnsimpleAdapter, {
-//         accounts: [{ accessToken: 'abc-123' }],
-//         domains: [{ name: 'bar.baz' }, { name: 'foo.bar', expires_on: expiringSoon.toLocaleDateString() }]
-//       })
-//
-//       expect(app.text()).toContain('foo.bar')
-//     })
+  it('sorts by expired, then alphabetical', async () => {
+    dnsimpleAdapter.fetchDomains = () => Promise.resolve([])
+    const expiringSoon = new Date().setDate(-1)
+    const app = await mountApp('/domains', { accounts: [], domains: [] }, dnsimpleAdapter, {
+      accounts: [{ accessToken: 'abc-123' }],
+      domains: [
+        { name: 'bar.baz' },
+        { name: 'abc.com' },
+        { name: 'foo.bar', state: 'registered', expires_on: expiringSoon }]
+    })
+
+    const links = app.findAll('[aria-label^="Manage"]')
+    const domainNames = links.map((link) => link.find('[aria-label="Name"]').text())
+
+    expect(domainNames).toEqual(['foo.bar', 'abc.com', 'bar.baz'])
+  })
 })
