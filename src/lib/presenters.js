@@ -1,6 +1,7 @@
 class Presenters {
   accountToJSON (account) {
     return {
+      provider: account.provider,
       id: account.id,
       email: account.email,
       plan_identifier: account.plan_identifier,
@@ -12,6 +13,7 @@ class Presenters {
 
   domainToJSON (domain) {
     return {
+      provider: domain.provider,
       id: domain.id,
       account_id: domain.account_id,
       registrant_id: domain.registrant_id,
@@ -23,7 +25,8 @@ class Presenters {
       expires_on: domain.expires_on,
       expires_at: domain.expires_at,
       created_at: domain.created_at,
-      updated_at: domain.updated_at
+      updated_at: domain.updated_at,
+      nameServers: (domain.nameServers || []).map((ns) => `${ns}`)
     }
   }
 

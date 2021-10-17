@@ -8,21 +8,34 @@
     </div>
     <div class="content">
       <div v-if="domain">
-        <div class="block with-padding notice">
+        <div v-if="app.queries.isNotServedBy(domain, 'dnsimple.com')" class="block with-padding notice">
           <h3>
             Your domain is not served by DNSimple.
           </h3>
           <p>
-            It's a great idea to set up your domain before pointing your domain to DNSimple. When you're ready, point your name servers at DNSimple to use the values below.
+            It's a great idea to set up your domain before pointing your domain to DNSimple. When you're ready, point your name servers at DNSimple to use the values below. If you've recently made a change, it could take some time to be reflected.
           </p>
-          <a class="button button-yellow">
+          <!-- <a class="button button-yellow">
             Point to DNSimple
-          </a>
+          </a> -->
         </div>
-        <div v-if="app.queries.isRegistered(domain)">
-          <div class="block with-padding text-center">
+        <div class="block-row">
+          <div class="block half-block with-padding text-center">
+            <Loading v-if="!app.queries.commonNameServers(domain).length"  />
+            <template v-else>
+              <p>Your resolution is served by</p>
+              <h3 v-for="nameServer in app.queries.commonNameServers(domain)" :key="`${domain.id}-nameserver-${nameServer}`">
+                {{nameServer}}
+              </h3>
+            </template>
+          </div>
+          <div v-if="app.queries.isRegistered(domain)" class="block half-block with-padding text-center">
             <p>Your domain {{domain.auto_renew ? 'will renew before' : 'expires on'}}</p>
             <h3 :class="app.queries.isExpiring(domain) ? 'red' : ''">{{app.presenters.prettyDate(domain.expires_on)}}</h3>
+          </div>
+          <div v-else class="block half-block with-padding text-center">
+            <p>State</p>
+            <h3>Hosted</h3>
           </div>
         </div>
       </div>
@@ -58,6 +71,8 @@ export default {
     }
   },
   mounted () {
+    this.app.commands.fetchNameServers(this.domain)
+
     return this.app.commands.fetchDomain(this.app.queries.getAccessToken(), this.$route.params.name)
       .catch((e) => {
         this.error = 'Domain not found'

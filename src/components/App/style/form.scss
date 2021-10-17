@@ -31,9 +31,22 @@
     background: rgba(255, 255, 255, 0.8);
     margin-top: 5px;
 
+    &.half-block {
+      width: calc(50% - 2.5px);
+      float: left;
+
+      &:nth-child(2n + 1) {
+        margin-right: 2.5px;
+      }
+
+      &:nth-child(2n) {
+        margin-left: 2.5px;
+      }
+    }
+
     h3 {
       font-weight: bold;
-      font-size: 1.5rem;
+      font-size: 1.3rem;
     }
 
     .red {

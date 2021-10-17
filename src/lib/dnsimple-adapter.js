@@ -94,8 +94,8 @@ class DNSimpleAdapter {
   }
 }
 
-DNSimpleAdapter.prototype._fetcher = () => {
-  return Promise.resolve()
-}
+// DNSimpleAdapter.prototype._fetcher = () => {
+//   return Promise.resolve()
+// }
 
 export default DNSimpleAdapter

@@ -13,6 +13,12 @@ const SORT_BY_EXPIRES_AND_NAME = (queries) => {
   }
 }
 
+const MATCH_HOSTNAME = /[\w-]+\.\w+$/gi
+
+function uniq (value, index, self) {
+  return self.indexOf(value) === index
+}
+
 class Queries {
   constructor (state, dnsimpleAdapter) {
     this.state = state
@@ -58,6 +64,17 @@ class Queries {
     if (account) {
       return account.accessToken
     }
+  }
+
+  isNotServedBy (domain, provider) {
+    const nameServers = this.commonNameServers(domain)
+    return nameServers.length && nameServers.indexOf(provider) === -1
+  }
+
+  commonNameServers (domain) {
+    return (domain.nameServers || []).map((nameServer) => {
+      return nameServer.match(MATCH_HOSTNAME)[0]
+    }).filter(uniq)
   }
 }
 
