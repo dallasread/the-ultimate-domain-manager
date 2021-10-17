@@ -4,15 +4,15 @@ const OAUTH_GRANT_TYPE = 'authorization_code'
 const OAUTH_REDIRECT_URL = `${BASE_URL}/auth`
 const OAUTH_STATE = 'RANDOM'
 
-// const OAUTH_CLIENT_ID = 'cbde777b80c127be'
-// const OAUTH_CLIENT_SECRET = atob('Q21TaVh6YmlQWTkxZloxZjRaNEZCc2R0NEt2QjBGcmg')
-// const DNSIMPLE_API = 'https://api.dnsimple.com/v2'
-// const DNSIMPLE_APP = 'https://dnsimple.com'
+const OAUTH_CLIENT_ID = 'cbde777b80c127be'
+const OAUTH_CLIENT_SECRET = atob('Q21TaVh6YmlQWTkxZloxZjRaNEZCc2R0NEt2QjBGcmg')
+const DNSIMPLE_API = 'https://api.dnsimple.com/v2'
+const DNSIMPLE_APP = 'https://dnsimple.com'
 
-const OAUTH_CLIENT_ID = '10ae7b4e4d1d69a4'
-const OAUTH_CLIENT_SECRET = '0XSVDAf2YfEemHpE22XuupjX2ESDNJVb'
-const DNSIMPLE_API = 'https://api.sandbox.dnsimple.com/v2'
-const DNSIMPLE_APP = 'https://sandbox.dnsimple.com'
+// const OAUTH_CLIENT_ID = '10ae7b4e4d1d69a4'
+// const OAUTH_CLIENT_SECRET = '0XSVDAf2YfEemHpE22XuupjX2ESDNJVb'
+// const DNSIMPLE_API = 'https://api.sandbox.dnsimple.com/v2'
+// const DNSIMPLE_APP = 'https://sandbox.dnsimple.com'
 
 class DNSimpleAdapter {
   constructor (fetch) {
