@@ -6,7 +6,7 @@ describe('Auth: Log in', () => {
 
     const button = app.find('a[aria-label="Connect via DNSimple"]')
     expect(button.text()).toEqual('Connect via DNSimple')
-    expect(button.element.href).toMatch('https://dnsimple.com/oauth/authorize')
+    expect(button.element.href).toMatch('/oauth/authorize')
     expect(button.element.href).toMatch('response_type=')
     expect(button.element.href).toMatch('redirect_uri=')
     expect(button.element.href).toMatch('client_id=')
