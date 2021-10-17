@@ -1,6 +1,7 @@
+const BASE_URL = window.location.href.substr(0, window.location.href.lastIndexOf('/'))
 const OAUTH_RESPONSE_TYPE = 'code'
 const OAUTH_GRANT_TYPE = 'authorization_code'
-const OAUTH_REDIRECT_URL = 'http://localhost:8080/auth'
+const OAUTH_REDIRECT_URL = `${BASE_URL}/auth`
 const OAUTH_CLIENT_ID = 'cbde777b80c127be'
 const OAUTH_CLIENT_SECRET = atob('Q21TaVh6YmlQWTkxZloxZjRaNEZCc2R0NEt2QjBGcmg')
 const OAUTH_STATE = 'RANDOM'
