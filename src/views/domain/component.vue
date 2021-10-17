@@ -8,14 +8,14 @@
     </div>
     <div class="content">
       <div v-if="domain">
-        <div class="block with-padding notice">
+        <div v-if="app.queries.isNotServedBy(domain, 'dnsimple.com')" class="block with-padding notice">
           <h3>
             Your domain is not served by DNSimple.
           </h3>
           <p>
             It's a great idea to set up your domain before pointing your domain to DNSimple. When you're ready to use the values in this app, point your name servers at DNSimple. If you've recently made a change, it could take some time to be reflected.
           </p>
-          <a v-if="app.queries.shouldBeServedBy(domain, 'dnsimple.com')"  aria-label="Point to DNSimple" @click="pointToDNSimple" class="button button-yellow">
+          <a v-if="app.queries.shouldBeServedBy(domain, 'dnsimple.com')" aria-label="Point to DNSimple" @click="pointToDNSimple" class="button button-yellow">
             Point to DNSimple
           </a>
         </div>

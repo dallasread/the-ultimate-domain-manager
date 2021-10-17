@@ -62,6 +62,20 @@ class Queries {
     return this.state.findAll('accounts')[0]
   }
 
+  isNotServedBy (domain, provider) {
+    const nameServers = this.commonNameServers(domain)
+    return nameServers.length && nameServers.indexOf(provider) === -1
+  }
+
+  isServedBy (domain, provider) {
+    if (!this.isRegistered(domain)) {
+      return false
+    }
+
+    const nameServers = this.commonNameServers(domain)
+    return nameServers.length && nameServers.indexOf(provider) === -1
+  }
+
   shouldBeServedBy (domain, provider) {
     if (!this.isRegistered(domain)) {
       return false
