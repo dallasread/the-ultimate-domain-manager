@@ -14,7 +14,7 @@ const deploy = async (target, version) => {
     await execa('cp', [target + '/index.html', target + '/404.html'])
 
     await execa('git', ['--work-tree', target, 'add', '--all'])
-    await execa('git', ['--work-tree', target, 'commit', '-m', `Publish ${version}`])
+    await execa('git', ['--work-tree', target, 'commit', '-m', `Publish ${version}`, '--no-verify'])
 
     console.log('Pushing to gh-pages...')
 
