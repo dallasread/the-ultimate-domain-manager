@@ -26,7 +26,7 @@
           <div class="block half-block with-padding text-center-desktop">
             <Loading v-if="!app.queries.commonNameServers(domain).length" />
             <template v-else>
-              <p>Resolution served by </p>
+              <p>Resolution provided by </p>
               <h3 v-for="nameServer in app.queries.commonNameServers(domain)" :key="`${domain.id}-nameserver-${nameServer}`">
                 {{nameServer}}
               </h3>

@@ -45,7 +45,7 @@ class Commands {
   fetchDomain (account, name) {
     return this.dnsimpleAdapter.fetchDomain(account, name)
       .then((domain) => {
-        this._applyDomainDefaults(domain)
+        domain.provider = 'dnsimple'
         this._upsertById('domains', domain)
       })
   }
@@ -54,7 +54,7 @@ class Commands {
     return this.dnsimpleAdapter.fetchDomains(account)
       .then((domains) => {
         domains.forEach((domain) => {
-          this._applyDomainDefaults(domain)
+          domain.provider = 'dnsimple'
           this._upsertById('domains', domain)
         })
       })
@@ -63,11 +63,17 @@ class Commands {
   fetchNameServers (domain) {
     return new Promise((resolve, reject) => {
       this.zoneVisionAdapter.fetchNameServers(domain).then((nameServers) => {
-        domain.nameServers = nameServers || []
-        this._upsertById('domains', domain)
+        this._upsertById('domains', { id: domain.id, nameServers: nameServers || [] })
         resolve()
       }).catch(reject)
     })
+  }
+
+  updateNameServers (accessToken, domain, nameServers) {
+    return this.dnsimpleAdapter.updateNameServers(accessToken, domain.name, nameServers)
+      .then(() => {
+        this._upsertById('domains', { id: domain.id, nameServers: nameServers || [] })
+      })
   }
 
   fetchRecords (account, domain) {
@@ -75,18 +81,6 @@ class Commands {
       .then((records) => {
         records.forEach((record) => this._upsertById('records', record))
       })
-  }
-
-  updateNameServers (accessToken, domain, nameServers) {
-    return this.dnsimpleAdapter.updateNameServers(accessToken, domain.name, nameServers)
-      .then(() => {
-        domain.nameServers = nameServers || []
-        this._upsertById('domains', domain)
-      })
-  }
-
-  _applyDomainDefaults (domain) {
-    domain.provider = 'dnsimple'
   }
 
   restoreLocal () {

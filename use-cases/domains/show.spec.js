@@ -18,7 +18,8 @@ describe('Domains: Show', () => {
           domain,
           { id: 181985, account_id: 1385, registrant_id: 2715, name: 'foo-bar.com', unicode_name: 'foo-bar.com', state: 'registered', auto_renew: false, private_whois: false, expires_on: '2021-06-05', expires_at: '2021-06-05T02:15:00Z', created_at: '2020-06-04T19:15:14Z', updated_at: '2020-06-04T19:15:21Z' }
         ])
-      }
+      },
+      fetchRecords: () => Promise.resolve([])
     }
   })
 
@@ -58,7 +59,7 @@ describe('Domains: Show', () => {
 
       await app.click('[aria-label="Manage example.com"]')
 
-      expect(app.text()).toContain('Your resolution is served by dnsimple.com')
+      expect(app.text()).toContain('Resolution provided by dnsimple.com')
     })
 
     it('shows a warning if the current provider is not DNSimple', async () => {
@@ -82,7 +83,7 @@ describe('Domains: Show', () => {
       await app.click('[aria-label="Manage example.com"]')
       await app.click('[aria-label="Point to DNSimple"]')
 
-      expect(app.text()).toContain('Your resolution is served by dnsimple.com')
+      expect(app.text()).toContain('Resolution provided by dnsimple.com')
     })
   })
 })
