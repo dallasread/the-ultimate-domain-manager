@@ -37,11 +37,11 @@
           class="block with-padding notice fadeIn"
         >
           <h3>
-            Your domain is not served by DNSimple.
+            Your domain is not served by {{ domain.provider }}.
           </h3>
           <p>
-            It's a great idea to set up your domain before pointing your domain to DNSimple.
-            When you're ready to use the values in this app, point your name servers at DNSimple.
+            It's a great idea to set up your domain before pointing your domain to {{ domain.provider }}.
+            When you're ready to use the values in this app, point your name servers at your domain's registrar.
           </p>
           <a
             v-if="app.queries.shouldBeServedByProvider(domain)"
@@ -51,7 +51,7 @@
             @click="pointToDNSimple"
           >
             <span v-if="isLoadingPointToDNSimple">Loading...</span>
-            <span v-else>Point to DNSimple</span>
+            <span v-else>Point to {{ domain.provider }}</span>
           </a>
         </div>
         <div class="block-row">

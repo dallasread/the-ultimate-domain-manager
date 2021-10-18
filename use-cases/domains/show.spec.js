@@ -70,7 +70,7 @@ describe('Domains: Show', () => {
 
       await app.click('[aria-label="Manage example.com"]')
 
-      expect(app.text()).toContain('Your domain is not served by DNSimple.')
+      expect(app.text()).toContain('Your domain is not served by dnsimple.com.')
     })
 
     it('can point to DNSimple', async () => {
