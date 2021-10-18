@@ -20,9 +20,10 @@ function uniq (value, index, self) {
 }
 
 class Queries {
-  constructor (state, dnsimpleAdapter) {
+  constructor (state, dnsimpleAdapter, serviceIdentifier) {
     this.state = state
     this.dnsimpleAdapter = dnsimpleAdapter
+    this.serviceIdentifier = serviceIdentifier
   }
 
   listDomains () {
@@ -94,6 +95,10 @@ class Queries {
 
   recordsForZone (zoneName) {
     return this.state.findAll('records', (r) => r.zone_id === zoneName)
+  }
+
+  findInstalledServices (domain, records) {
+    return this.serviceIdentifier.parse(domain, records)
   }
 }
 

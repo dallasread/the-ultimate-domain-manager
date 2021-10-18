@@ -37,8 +37,10 @@
 </template>
 
 <script>
+import dnsimpleServices from '@/vendor/dnsimple-services.json'
 import DNSimpleAdapter from '@/lib/dnsimple-adapter.js'
 import ZoneVisionAdapter from '@/lib/zone-vision-adapter.js'
+import ServiceIdentifier from '@/lib/service-identifier.js'
 import State from '@/lib/state.js'
 import Commands from '@/lib/commands.js'
 import LocalCache from '@/lib/local-cache.js'
@@ -62,14 +64,29 @@ export default {
     localCache: {
       type: Object,
       default: () => new LocalCache()
+    },
+    serviceIdentifier: {
+      type: Object,
+      default: () => new ServiceIdentifier(dnsimpleServices)
     }
   },
   data () {
     window.theUltimateDomainManager = this
 
     const presenters = new Presenters()
-    const queries = new Queries(this.state, this.dnsimpleAdapter)
-    const commands = new Commands(this.state, queries, this.dnsimpleAdapter, this.zoneVisionAdapter, this.localCache, presenters)
+    const queries = new Queries(
+      this.state,
+      this.dnsimpleAdapter,
+      this.serviceIdentifier
+    )
+    const commands = new Commands(
+      this.state,
+      queries,
+      this.dnsimpleAdapter,
+      this.zoneVisionAdapter,
+      this.localCache,
+      presenters
+    )
 
     return {
       app: this,

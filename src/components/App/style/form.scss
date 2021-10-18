@@ -38,6 +38,11 @@
   .block {
     background: rgba(255, 255, 255, 0.8);
     margin-top: 5px;
+    display: block;
+
+    &[href]:hover {
+      background: #fff;
+    }
 
     &.half-block {
       width: calc(50% - 2.5px);
@@ -70,14 +75,31 @@
   .service {
     @include clearfix();
 
-    img {
-      float: right;
-      width: 20%;
+    position: relative;
+    padding: 0;
+
+    .img-wrapper {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      height: 100%;
+      width: 175px;
+      background: #fff;
+      padding: $padding * 1.5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
 
     .meta {
-      float: left;
-      width: 75%;
+      float: right;
+      width: calc(100% - 175px);
+      padding: $padding * 1.5 $padding * 2;
+
+      .name {
+        font-weight: bold;
+      }
     }
   }
 

@@ -84,10 +84,33 @@
             <h3>Hosted</h3>
           </div>
         </div>
+        <template
+          v-for="service in installedServices"
+          :key="service.id"
+        >
+          <router-link
+            :to="'/domains/' + domain.name"
+            :aria-label="'Manage Service ' + service.id"
+            class="service block with-padding"
+          >
+            <div class="img-wrapper">
+              <img :src="`data:image/png;base64,${service.logo}`">
+            </div>
+            <div class="meta">
+              <span aria-label="Summary">{{ service.summary }}</span>
+              <!-- <svg
+                class="arrow"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg"
+              ><path d="M4.555 5.168A1 1 0 003 6v8a1 1 0 001.555.832L10 11.202V14a1 1 0 001.555.832l6-4a1 1 0 000-1.664l-6-4A1 1 0 0010 6v2.798l-5.445-3.63z" /></svg> -->
+            </div>
+          </router-link>
+        </template>
         <div class="more-services block with-padding">
           <h2>Add more to your domain</h2>
           <p>
-            With <strong>{{ dnsimpleServices.length }} pre-built add-ons</strong> provided by DNSimple, your domain will be up and going in no time – just sit back and relax!
+            With <strong>over 40 pre-built add-ons</strong> provided by DNSimple, your domain will be up and going in no time – just sit back and relax!
           </p>
           <a
             href="javascript:;"
@@ -125,7 +148,6 @@
 <script>
 import AuthenticatedRoute from '@/mixins/authenticated-route.js'
 import Loading from '@/components/loading/component.vue'
-import dnsimpleServices from '@/vendor/dnsimple-services.json'
 
 export default {
   components: {
@@ -136,8 +158,7 @@ export default {
     return {
       isLoadingPointToDNSimple: false,
       error: '',
-      q: this.$route.params.name,
-      dnsimpleServices
+      q: this.$route.params.name
     }
   },
   computed: {
@@ -146,6 +167,9 @@ export default {
     },
     records () {
       return this.app.queries.recordsForZone(this.domain.name)
+    },
+    installedServices () {
+      return this.app.queries.findInstalledServices(this.domain, this.records)
     }
   },
   mounted () {
