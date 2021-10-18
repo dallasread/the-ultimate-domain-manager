@@ -10,7 +10,7 @@ const deploy = async (target, version) => {
 
     console.log('Building started...')
 
-    await execa('npm', ['run', 'build'])
+    await execa('yarn', ['build'])
     await execa('cp', [target + '/index.html', target + '/404.html'])
 
     await execa('git', ['--work-tree', target, 'add', '--all'])
