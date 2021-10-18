@@ -1,8 +1,16 @@
 <template>
   <div class="with-mobile-padding">
     <template v-if="error">
-      <h4 aria-label="Unauthorized">{{error}}</h4>
-      <router-link to="/" class="button" aria-label="Log in">Click here to try again.</router-link>
+      <h4 aria-label="Unauthorized">
+        {{ error }}
+      </h4>
+      <router-link
+        to="/"
+        class="button"
+        aria-label="Log in"
+      >
+        Click here to try again.
+      </router-link>
     </template>
     <Loading v-else />
   </div>
@@ -12,9 +20,20 @@
 import Loading from '@/components/loading/component.vue'
 
 export default {
-  props: ['app'],
   components: {
     Loading
+  },
+  props: {
+    app: {
+      type: Object,
+      default: () => {}
+    }
+  },
+  data () {
+    return {
+      error: '',
+      isLoading: true
+    }
   },
   mounted () {
     return this.app.commands.authorize(this.$route.query.code)
@@ -25,12 +44,6 @@ export default {
       .finally(() => {
         this.isLoading = false
       })
-  },
-  data () {
-    return {
-      error: '',
-      isLoading: true
-    }
   }
 }
 </script>

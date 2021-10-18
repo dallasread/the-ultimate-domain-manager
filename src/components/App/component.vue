@@ -1,9 +1,29 @@
 <template>
-  <div id="app" v-if="isReady" :class="app.queries.getAccount() ? 'logged-in' : ''">
+  <div
+    v-if="isReady"
+    id="app"
+    :class="app.queries.getAccount() ? 'logged-in' : ''"
+  >
     <div class="header">
-      <a v-if="app.queries.getAccount()" href="javascript:;" aria-label="Log out" @click="logout" class="logout">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z" />
+      <a
+        v-if="app.queries.getAccount()"
+        href="javascript:;"
+        aria-label="Log out"
+        class="logout"
+        @click="logout"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z"
+          />
         </svg>
       </a>
       <h1>
@@ -26,17 +46,30 @@ import Presenters from '@/lib/presenters.js'
 import Queries from '@/lib/queries.js'
 
 export default {
-  props: ['_state', '_dnsimpleAdapter', '_zoneVisionAdapter', '_localCache'],
+  props: {
+    state: {
+      type: Object,
+      default: () => new State({ accounts: [], domains: [], records: [] })
+    },
+    dnsimpleAdapter: {
+      type: Object,
+      default: () => new DNSimpleAdapter(window.fetch)
+    },
+    zoneVisionAdapter: {
+      type: Object,
+      default: () => new ZoneVisionAdapter(window.fetch)
+    },
+    localCache: {
+      type: Object,
+      default: () => new LocalCache()
+    }
+  },
   data () {
     window.theUltimateDomainManager = this
 
-    const localCache = this._localCache || new LocalCache()
-    const dnsimpleAdapter = this._dnsimpleAdapter || new DNSimpleAdapter(window.fetch)
-    const zoneVisionAdapter = this._zoneVisionAdapter || new ZoneVisionAdapter(window.fetch)
     const presenters = new Presenters()
-    const state = this._state || new State({ accounts: [], domains: [], records: [] })
-    const queries = new Queries(state, dnsimpleAdapter)
-    const commands = new Commands(state, queries, dnsimpleAdapter, zoneVisionAdapter, localCache, presenters)
+    const queries = new Queries(this.state, this.dnsimpleAdapter)
+    const commands = new Commands(this.state, queries, this.dnsimpleAdapter, this.zoneVisionAdapter, this.localCache, presenters)
 
     return {
       app: this,
