@@ -45,7 +45,7 @@ class Commands {
   fetchDomain (account, name) {
     return this.dnsimpleAdapter.fetchDomain(account, name)
       .then((domain) => {
-        domain.provider = 'dnsimple'
+        domain.provider = 'dnsimple.com'
         this._upsertById('domains', domain)
       })
   }
@@ -54,15 +54,24 @@ class Commands {
     return this.dnsimpleAdapter.fetchDomains(account)
       .then((domains) => {
         domains.forEach((domain) => {
-          domain.provider = 'dnsimple'
+          domain.provider = 'dnsimple.com'
           this._upsertById('domains', domain)
         })
       })
   }
 
-  fetchNameServers (domain) {
+  fetchLiveNameServers (domain) {
     return new Promise((resolve, reject) => {
       this.zoneVisionAdapter.fetchNameServers(domain).then((nameServers) => {
+        this._upsertById('domains', { id: domain.id, liveNameServers: nameServers || [] })
+        resolve()
+      }).catch(reject)
+    })
+  }
+
+  fetchNameServers (account, domain) {
+    return new Promise((resolve, reject) => {
+      this.dnsimpleAdapter.fetchNameServers(account, domain).then((nameServers) => {
         this._upsertById('domains', { id: domain.id, nameServers: nameServers || [] })
         resolve()
       }).catch(reject)

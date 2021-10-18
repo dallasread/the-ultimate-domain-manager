@@ -49,6 +49,12 @@ class Queries {
     return this.isRegistered(domain) && this.daysTilExpiry(domain) < 60
   }
 
+  isPropagating (domain) {
+    const currentNameServers = (domain.nameServers || []).sort()
+    const liveNameServers = (domain.liveNameServers || []).sort()
+    return currentNameServers.length && liveNameServers.length && JSON.stringify(currentNameServers) !== JSON.stringify(liveNameServers)
+  }
+
   expiresAt (domain) {
     return new Date(domain.expires_on)
   }
@@ -62,22 +68,26 @@ class Queries {
     return this.state.findAll('accounts')[0]
   }
 
-  isNotServedBy (domain, provider) {
-    const nameServers = this.commonNameServers(domain)
-    return nameServers.length && nameServers.indexOf(provider) === -1
+  isProvider (domain, provider) {
+    return domain.provider === provider
   }
 
-  shouldBeServedBy (domain, provider) {
+  isNotServedByProvider (domain) {
+    const nameServers = this.commonLiveNameServers(domain)
+    return nameServers.length && nameServers.indexOf(domain.provider) === -1
+  }
+
+  shouldBeServedByProvider (domain) {
     if (!this.isRegistered(domain)) {
       return false
     }
 
-    const nameServers = this.commonNameServers(domain)
-    return nameServers.length && nameServers.indexOf(provider) === -1
+    const nameServers = this.commonLiveNameServers(domain)
+    return nameServers.length && nameServers.indexOf(domain.provider) === -1
   }
 
-  commonNameServers (domain) {
-    return (domain.nameServers || []).map((nameServer) => {
+  commonLiveNameServers (domain) {
+    return (domain.liveNameServers || []).map((nameServer) => {
       return nameServer.match(MATCH_HOSTNAME)[0]
     }).filter(uniq)
   }

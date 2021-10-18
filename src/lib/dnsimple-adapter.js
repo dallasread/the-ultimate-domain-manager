@@ -61,9 +61,9 @@ class DNSimpleAdapter {
     })
   }
 
-  fetchNameServers (account, name) {
+  fetchNameServers (account, domain) {
     return new Promise((resolve, reject) => {
-      this._fetcher('GET', `/${account.id}/registrar/domains/${name}/delegation`, account.accessToken).then((response) => {
+      this._fetcher('GET', `/${account.id}/registrar/domains/${domain.name}/delegation`, account.accessToken).then((response) => {
         resolve(response.data)
       }).catch(reject)
     })

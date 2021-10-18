@@ -21,7 +21,19 @@
     <div class="content">
       <div v-if="domain">
         <div
-          v-if="app.queries.isNotServedBy(domain, 'dnsimple.com')"
+          v-if="app.queries.isPropagating(domain)"
+          class="block with-padding notice fadeIn"
+        >
+          <h3>
+            It looks like you've recently made a change to your name servers!
+          </h3>
+          <p>
+            While this change took effect immediately, it could take up to 24 hours to fully propagate across the internet.
+            When all is said and done, your name servers will be set to: <span class="yellow">{{ domain.nameServers.join(', ') }}</span>
+          </p>
+        </div>
+        <div
+          v-else-if="app.queries.isNotServedByProvider(domain)"
           class="block with-padding notice fadeIn"
         >
           <h3>
@@ -30,10 +42,9 @@
           <p>
             It's a great idea to set up your domain before pointing your domain to DNSimple.
             When you're ready to use the values in this app, point your name servers at DNSimple.
-            <span class="yellow">If you've recently made a change, it could take up to 24 hours to fully propagate.</span>
           </p>
           <a
-            v-if="app.queries.shouldBeServedBy(domain, 'dnsimple.com')"
+            v-if="app.queries.shouldBeServedByProvider(domain)"
             href="javascript:;"
             aria-label="Point to DNSimple"
             class="button button-yellow"
@@ -45,11 +56,11 @@
         </div>
         <div class="block-row">
           <div class="block half-block with-padding text-center-desktop">
-            <Loading v-if="!app.queries.commonNameServers(domain).length" />
+            <Loading v-if="!app.queries.commonLiveNameServers(domain).length" />
             <template v-else>
               <p>Resolution provided by </p>
               <h3
-                v-for="nameServer in app.queries.commonNameServers(domain)"
+                v-for="nameServer in app.queries.commonLiveNameServers(domain)"
                 :key="`${domain.id}-nameserver-${nameServer}`"
               >
                 {{ nameServer }}
@@ -123,7 +134,6 @@ export default {
   mixins: [AuthenticatedRoute],
   data () {
     return {
-      isLoading: true,
       isLoadingPointToDNSimple: false,
       error: '',
       q: this.$route.params.name,
@@ -139,15 +149,10 @@ export default {
     }
   },
   mounted () {
-    return new Promise((resolve) => {
-      this.app.commands.fetchDomain(this.app.queries.getAccount(), this.$route.params.name)
-        .then(this.app.commands.fetchNameServers(this.domain))
-        .then(this.app.commands.fetchRecords(this.app.queries.getAccount(), this.domain))
-        .finally(() => {
-          this.isLoading = false
-          resolve()
-        })
-    })
+    return this.app.commands.fetchDomain(this.app.queries.getAccount(), this.$route.params.name)
+      .then(this.app.commands.fetchRecords(this.app.queries.getAccount(), this.domain))
+      .then(this.app.commands.fetchNameServers(this.app.queries.getAccount(), this.domain))
+      .then(this.app.commands.fetchLiveNameServers(this.domain))
   },
   methods: {
     pointToDNSimple () {

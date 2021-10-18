@@ -83,7 +83,7 @@ describe('Domains: Show', () => {
       await app.click('[aria-label="Manage example.com"]')
       await app.click('[aria-label="Point to DNSimple"]')
 
-      expect(app.text()).toContain('Resolution provided by dnsimple.com')
+      expect(app.text()).toContain('It looks like you\'ve recently made a change to your name servers!')
     })
   })
 })
