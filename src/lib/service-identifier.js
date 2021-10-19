@@ -37,8 +37,12 @@ class ServiceIdentifier {
   parse (domainRecords) {
     const identified = []
     const usedRecords = []
+    const services = [].concat(this.services)
+      .sort(SORT_BY_WILDNESS)
+      .sort(SORT_BY_RECORD_NAME_MATCHABILTIY(domainRecords))
 
-    this.services.sort(SORT_BY_WILDNESS).sort(SORT_BY_RECORD_NAME_MATCHABILTIY(domainRecords)).forEach((service) => {
+    for (let i = 0; i < services.length; i++) {
+      const service = services[i]
       const recordsForService = []
 
       service.records.forEach((serviceRecord) => {
@@ -61,8 +65,10 @@ class ServiceIdentifier {
           logo: service.logo,
           summary: this._description(recordsForService)
         })
+
+        i--
       }
-    })
+    }
 
     return identified
   }

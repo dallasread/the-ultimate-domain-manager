@@ -20,7 +20,7 @@ describe('Domains: Identify services', () => {
 
     expect(subject.parse([
       {
-        id: 69061,
+        id: 69062,
         zone_id: 'example.com',
         parent_id: null,
         name: 'my',
@@ -63,7 +63,7 @@ describe('Domains: Identify services', () => {
 
     expect(subject.parse([
       {
-        id: 69061,
+        id: 69063,
         zone_id: 'example.com',
         parent_id: null,
         name: 'NOMATCH',
@@ -100,7 +100,7 @@ describe('Domains: Identify services', () => {
 
     expect(subject.parse([
       {
-        id: 69061,
+        id: 69064,
         zone_id: 'example.com',
         parent_id: null,
         name: 'my',
@@ -137,7 +137,7 @@ describe('Domains: Identify services', () => {
 
     expect(subject.parse([
       {
-        id: 69061,
+        id: 69065,
         zone_id: 'example.com',
         parent_id: null,
         name: 'my',
@@ -174,7 +174,7 @@ describe('Domains: Identify services', () => {
 
     expect(subject.parse([
       {
-        id: 69061,
+        id: 69066,
         zone_id: 'example.com',
         parent_id: null,
         name: 'my',
@@ -223,7 +223,7 @@ describe('Domains: Identify services', () => {
 
     expect(subject.parse([
       {
-        id: 69062,
+        id: 69067,
         zone_id: 'example.com',
         parent_id: null,
         name: 'my',
@@ -239,7 +239,7 @@ describe('Domains: Identify services', () => {
         updated_at: '2016-03-22T10:20:53Z'
       },
       {
-        id: 69061,
+        id: 69068,
         zone_id: 'example.com',
         parent_id: null,
         name: 'bob',
@@ -282,7 +282,7 @@ describe('Domains: Identify services', () => {
 
     expect(subject.parse([
       {
-        id: 69061,
+        id: 69069,
         zone_id: 'example.com',
         parent_id: null,
         name: '',
@@ -325,7 +325,7 @@ describe('Domains: Identify services', () => {
 
     expect(subject.parse([
       {
-        id: 69061,
+        id: 69071,
         zone_id: 'example.com',
         parent_id: null,
         name: 'blog',
@@ -380,7 +380,7 @@ describe('Domains: Identify services', () => {
       logo: '...'
     }]
     const record = {
-      id: 69061,
+      id: 69072,
       zone_id: 'example.com',
       parent_id: null,
       name: 'blog',
@@ -446,7 +446,7 @@ describe('Domains: Identify services', () => {
       logo: '...'
     }]
     const record = {
-      id: 69061,
+      id: 69073,
       zone_id: 'example.com',
       parent_id: null,
       name: 'aws',
@@ -481,5 +481,64 @@ describe('Domains: Identify services', () => {
     ])
   })
 
-  it.todo('finds the same service multiple times')
+  it('finds the same service multiple times', () => {
+    const subject = new ServiceIdentifier([{
+      name: 'aws',
+      label: 'AWS',
+      description: 'AWS description',
+      category: 'infrastructure',
+      records: [
+        {
+          name: '*',
+          type: 'CNAME',
+          content: 'my.infrastructure.com',
+          ttl: 3600
+        }
+      ],
+      logo: '...'
+    }])
+
+    expect(subject.parse([{
+      id: 69074,
+      zone_id: 'example.com',
+      parent_id: null,
+      name: 'my-app',
+      content: 'my.infrastructure.com',
+      ttl: 3600,
+      priority: null,
+      type: 'CNAME',
+      regions: [
+        'global'
+      ],
+      system_record: true,
+      created_at: '2016-03-22T10:20:53Z',
+      updated_at: '2016-03-22T10:20:53Z'
+    }, {
+      id: 69075,
+      zone_id: 'example.com',
+      parent_id: null,
+      name: 'your-app',
+      content: 'my.infrastructure.com',
+      ttl: 3600,
+      priority: null,
+      type: 'CNAME',
+      regions: [
+        'global'
+      ],
+      system_record: true,
+      created_at: '2016-03-22T10:20:53Z',
+      updated_at: '2016-03-22T10:20:53Z'
+    }])).toEqual([
+      {
+        name: 'aws',
+        logo: '...',
+        summary: 'my.infrastructure.com'
+      },
+      {
+        name: 'aws',
+        logo: '...',
+        summary: 'my.infrastructure.com'
+      }
+    ])
+  })
 })
