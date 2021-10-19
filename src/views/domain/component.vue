@@ -62,7 +62,7 @@
               <h3
                 v-for="nameServer in app.queries.commonLiveNameServers(domain)"
                 :key="`${domain.id}-nameserver-${nameServer}`"
-                class="no-padding"
+                class="no-bottom-margin"
               >
                 {{ nameServer }}
               </h3>
@@ -73,7 +73,7 @@
             class="block half-block with-padding text-center-desktop"
           >
             <p>Your domain {{ domain.auto_renew ? 'will renew before' : 'expires on' }}</p>
-            <h3 :class="app.queries.isExpiring(domain) ? 'red no-padding' : 'no-padding'">
+            <h3 :class="app.queries.isExpiring(domain) ? 'red no-bottom-margin' : 'no-bottom-margin'">
               {{ app.presenters.prettyDate(domain.expires_on) }}
             </h3>
           </div>
@@ -82,7 +82,7 @@
             class="block half-block with-padding text-center-desktop"
           >
             <p>State</p>
-            <h3 class="no-padding">
+            <h3 class="no-bottom-margin">
               Hosted
             </h3>
           </div>
