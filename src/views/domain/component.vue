@@ -29,7 +29,7 @@
           </h3>
           <p>
             While this change took effect immediately, it could take up to 24 hours to fully propagate across the internet.
-            When all is said and done, your domain's resolution will be provided by: <span class="yellow">{{ domain.nameServers.join(', ') }}</span>
+            When all is said and done, your domain will be resolved by: <span class="yellow">{{ domain.nameServers.join(', ') }}</span>
           </p>
         </div>
         <div
