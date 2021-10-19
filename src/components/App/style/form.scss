@@ -77,6 +77,7 @@
 
     position: relative;
     padding: 0;
+    min-height: 4rem;
 
     .img-wrapper {
       position: absolute;
@@ -84,18 +85,18 @@
       bottom: 0;
       left: 0;
       height: 100%;
-      width: 175px;
+      width: 160px;
       background: #fff;
-      padding: $padding * 1.5;
       display: flex;
       justify-content: center;
       align-items: center;
+      padding: $padding * 1.5;
     }
 
     .meta {
       float: right;
-      width: calc(100% - 175px);
-      padding: $padding * 1.5 $padding * 2;
+      width: calc(100% - 160px);
+      padding: $padding * 1.5;
 
       .name {
         font-weight: bold;

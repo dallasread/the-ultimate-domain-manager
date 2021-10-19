@@ -37,7 +37,7 @@
           class="block with-padding notice fadeIn"
         >
           <h3>
-            Your domain is not served by {{ domain.provider }}.
+            Your domain is not resolved by {{ domain.provider }}.
           </h3>
           <p>
             It's a great idea to set up your domain before pointing your domain to {{ domain.provider }}.
@@ -98,6 +98,7 @@
             </div>
             <div class="meta">
               <span aria-label="Summary">{{ service.summary }}</span>
+              {{ service.recordsForService }}
               <!-- <svg
                 class="arrow"
                 fill="currentColor"
@@ -108,9 +109,9 @@
           </router-link>
         </template>
         <div class="more-services block with-padding">
-          <h2>Add more to your domain</h2>
+          <h2>Add-on to your domain</h2>
           <p>
-            With <strong>over 40 pre-built add-ons</strong> provided by DNSimple, your domain will be up and going in no time – just sit back and relax!
+            With <strong>over 40 pre-built add-ons</strong> provided by DNSimple, your domain will be connected in no time – just sit back and relax!
           </p>
           <a
             href="javascript:;"

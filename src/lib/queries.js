@@ -98,7 +98,7 @@ class Queries {
   }
 
   findInstalledServices (domain, records) {
-    return this.serviceIdentifier.parse(domain, records)
+    return this.serviceIdentifier.parse(records)
   }
 }
 
