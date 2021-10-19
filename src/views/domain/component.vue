@@ -40,9 +40,8 @@
             Your domain is not resolved by {{ domain.provider }}.
           </h3>
           <p>
-            It's a great idea to fully set up your domain before pointing it to {{ domain.provider }}.
             When you're ready to use the values reflected below, visit your domain's registrar.
-            There, you will be able to set the name servers to those provided by {{ domain.provider }}.
+            There, you will want to set the name servers to those provided to you by {{ domain.provider }}.
           </p>
           <a
             v-if="app.queries.shouldBeServedByProvider(domain)"
