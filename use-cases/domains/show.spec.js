@@ -59,7 +59,7 @@ describe('Domains: Show', () => {
 
       await app.click('[aria-label="Manage example.com"]')
 
-      expect(app.text()).toContain('Resolution provided by dnsimple.com')
+      expect(app.text()).toContain('Currently resolved by dnsimple.com')
     })
 
     it('shows a warning if the current provider is not DNSimple', async () => {
