@@ -5,9 +5,17 @@ const serviceWildcardRatio = (service) => {
   ) / service.records.length
 }
 
+const includesAny = (str, arr) => {
+  return arr.filter((item) => str.indexOf(item) !== -1).length
+}
+
 const recordsMatchServiceName = (service, domainRecords) => {
   return domainRecords.filter((domainRecord) => {
-    return domainRecord.name.toLowerCase().indexOf(service.name) !== -1 || domainRecord.content.toLowerCase().indexOf(service.name) !== -1
+    const serviceNames = service.name.split('-').filter((str) => str.length > 2).map((str) => str.toLowerCase())
+    const domainRecordName = domainRecord.name.toLowerCase()
+    const domainRecordContent = domainRecord.content.toLowerCase()
+
+    return includesAny(domainRecordName, serviceNames) || includesAny(domainRecordContent, serviceNames)
   }).length
 }
 

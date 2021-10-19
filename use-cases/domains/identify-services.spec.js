@@ -351,7 +351,7 @@ describe('Domains: Identify services', () => {
 
   it('prioritizes services that have record contents that mention service name in them', () => {
     const services = [{
-      name: 'aws',
+      name: 'my-aws',
       label: 'AWS',
       description: 'AWS description',
       category: 'infrastructure',
@@ -399,7 +399,7 @@ describe('Domains: Identify services', () => {
     const subject = new ServiceIdentifier(services)
     expect(subject.parse([record])).toEqual([
       {
-        name: 'aws',
+        name: 'my-aws',
         logo: '...',
         summary: 'aws.infrastructure.com'
       }
@@ -408,7 +408,7 @@ describe('Domains: Identify services', () => {
     const subject2 = new ServiceIdentifier(services.reverse())
     expect(subject2.parse([record])).toEqual([
       {
-        name: 'aws',
+        name: 'my-aws',
         logo: '...',
         summary: 'aws.infrastructure.com'
       }
@@ -417,7 +417,7 @@ describe('Domains: Identify services', () => {
 
   it('prioritizes services that have record names that mention service name in them', () => {
     const services = [{
-      name: 'aws',
+      name: 'my-aws',
       label: 'AWS',
       description: 'AWS description',
       category: 'infrastructure',
@@ -465,7 +465,7 @@ describe('Domains: Identify services', () => {
     const subject = new ServiceIdentifier(services)
     expect(subject.parse([record])).toEqual([
       {
-        name: 'aws',
+        name: 'my-aws',
         logo: '...',
         summary: 'my.infrastructure.com'
       }
@@ -474,7 +474,7 @@ describe('Domains: Identify services', () => {
     const subject2 = new ServiceIdentifier(services.reverse())
     expect(subject2.parse([record])).toEqual([
       {
-        name: 'aws',
+        name: 'my-aws',
         logo: '...',
         summary: 'my.infrastructure.com'
       }
