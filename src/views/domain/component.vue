@@ -177,10 +177,10 @@ export default {
     }
   },
   mounted () {
-    return this.app.commands.fetchDomain(this.app.queries.getAccount(), this.$route.params.name)
-      .then(this.app.commands.fetchRecords(this.app.queries.getAccount(), this.domain))
-      .then(this.app.commands.fetchNameServers(this.app.queries.getAccount(), this.domain))
-      .then(this.app.commands.fetchLiveNameServers(this.domain))
+    this.app.commands.fetchDomain(this.app.queries.getAccount(), this.$route.params.name)
+    this.app.commands.fetchRecords(this.app.queries.getAccount(), this.domain)
+    this.app.commands.fetchNameServers(this.app.queries.getAccount(), this.domain)
+    this.app.commands.fetchLiveNameServers(this.domain)
   },
   methods: {
     pointToDNSimple () {
