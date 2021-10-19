@@ -41,7 +41,7 @@
           </h3>
           <p>
             When you're ready to use the values reflected below, visit your domain's registrar.
-            There, you will want to set the name servers to those provided to you by {{ domain.provider }}.
+            There, you will want to set the name servers to those provided to you by the fine folks at {{ domain.provider }}.
           </p>
           <a
             v-if="app.queries.shouldBeServedByProvider(domain)"
