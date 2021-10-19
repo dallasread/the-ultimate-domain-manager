@@ -359,7 +359,7 @@ describe('Domains: Identify services', () => {
         {
           name: 'blog',
           type: 'CNAME',
-          content: '{{name}}',
+          content: '{{name}}.infrastructure.com',
           ttl: 3600
         }
       ],
@@ -373,7 +373,7 @@ describe('Domains: Identify services', () => {
         {
           name: 'blog',
           type: 'CNAME',
-          content: '{{name}}',
+          content: '{{name}}.infrastructure.com',
           ttl: 3600
         }
       ],
@@ -425,7 +425,7 @@ describe('Domains: Identify services', () => {
         {
           name: '*',
           type: 'CNAME',
-          content: '{{name}}',
+          content: '{{name}}.infrastructure.com',
           ttl: 3600
         }
       ],
@@ -439,7 +439,7 @@ describe('Domains: Identify services', () => {
         {
           name: '*',
           type: 'CNAME',
-          content: '{{name}}',
+          content: '{{name}}.infrastructure.com',
           ttl: 3600
         }
       ],

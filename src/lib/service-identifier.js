@@ -37,6 +37,10 @@ const SORT_BY_WILDNESS = (a, b) => {
   return 0
 }
 
+const FILTER_REMOVE_GENERIC = (service) => {
+  return service.records.filter((r) => r.content.slice(-2) !== '}}').length
+}
+
 class ServiceIdentifier {
   constructor (services) {
     this.services = services
@@ -46,6 +50,7 @@ class ServiceIdentifier {
     const identified = []
     const usedRecords = []
     const services = [].concat(this.services)
+      .filter(FILTER_REMOVE_GENERIC)
       .sort(SORT_BY_WILDNESS)
       .sort(SORT_BY_RECORD_NAME_MATCHABILTIY(domainRecords))
 
