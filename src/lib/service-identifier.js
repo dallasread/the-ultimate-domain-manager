@@ -24,6 +24,8 @@ class ServiceIdentifier {
     const identified = []
     const usedRecords = []
 
+    // loop the records and make guesses about the services used
+
     this.services.sort(SORT_BY_WILDNESS).forEach((service) => {
       const recordsForService = []
 
