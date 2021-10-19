@@ -5,6 +5,20 @@ const serviceWildcardRatio = (service) => {
   ) / service.records.length
 }
 
+const recordsMatchServiceName = (service, domainRecords) => {
+  return domainRecords.filter((domainRecord) => {
+    return domainRecord.name.toLowerCase().indexOf(service.name) !== -1 || domainRecord.content.toLowerCase().indexOf(service.name) !== -1
+  }).length
+}
+
+const SORT_BY_RECORD_NAME_MATCHABILTIY = (domainRecords) => {
+  return (a, b) => {
+    if (recordsMatchServiceName(a, domainRecords) && !recordsMatchServiceName(b, domainRecords)) return -1
+    if (!recordsMatchServiceName(a, domainRecords) && recordsMatchServiceName(b, domainRecords)) return 1
+    return 0
+  }
+}
+
 const SORT_BY_WILDNESS = (a, b) => {
   if (serviceWildcardRatio(a) > serviceWildcardRatio(b)) return 1
   if (serviceWildcardRatio(a) < serviceWildcardRatio(b)) return -1
@@ -24,9 +38,7 @@ class ServiceIdentifier {
     const identified = []
     const usedRecords = []
 
-    // loop the records and make guesses about the services used
-
-    this.services.sort(SORT_BY_WILDNESS).forEach((service) => {
+    this.services.sort(SORT_BY_WILDNESS).sort(SORT_BY_RECORD_NAME_MATCHABILTIY(domainRecords)).forEach((service) => {
       const recordsForService = []
 
       service.records.forEach((serviceRecord) => {

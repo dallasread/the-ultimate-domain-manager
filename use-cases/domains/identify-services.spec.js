@@ -349,6 +349,137 @@ describe('Domains: Identify services', () => {
     ])
   })
 
+  it('prioritizes services that have record contents that mention service name in them', () => {
+    const services = [{
+      name: 'aws',
+      label: 'AWS',
+      description: 'AWS description',
+      category: 'infrastructure',
+      records: [
+        {
+          name: 'blog',
+          type: 'CNAME',
+          content: '{{name}}',
+          ttl: 3600
+        }
+      ],
+      logo: '...'
+    }, {
+      name: 'other',
+      label: 'Other',
+      description: 'Other description',
+      category: 'infrastructure',
+      records: [
+        {
+          name: 'blog',
+          type: 'CNAME',
+          content: '{{name}}',
+          ttl: 3600
+        }
+      ],
+      logo: '...'
+    }]
+    const record = {
+      id: 69061,
+      zone_id: 'example.com',
+      parent_id: null,
+      name: 'blog',
+      content: 'aws.infrastructure.com',
+      ttl: 3600,
+      priority: null,
+      type: 'CNAME',
+      regions: [
+        'global'
+      ],
+      system_record: true,
+      created_at: '2016-03-22T10:20:53Z',
+      updated_at: '2016-03-22T10:20:53Z'
+    }
+
+    const subject = new ServiceIdentifier(services)
+    expect(subject.parse([record])).toEqual([
+      {
+        name: 'aws',
+        logo: '...',
+        summary: 'aws.infrastructure.com'
+      }
+    ])
+
+    const subject2 = new ServiceIdentifier(services.reverse())
+    expect(subject2.parse([record])).toEqual([
+      {
+        name: 'aws',
+        logo: '...',
+        summary: 'aws.infrastructure.com'
+      }
+    ])
+  })
+
+  it('prioritizes services that have record names that mention service name in them', () => {
+    const services = [{
+      name: 'aws',
+      label: 'AWS',
+      description: 'AWS description',
+      category: 'infrastructure',
+      records: [
+        {
+          name: '*',
+          type: 'CNAME',
+          content: '{{name}}',
+          ttl: 3600
+        }
+      ],
+      logo: '...'
+    }, {
+      name: 'other',
+      label: 'Other',
+      description: 'Other description',
+      category: 'infrastructure',
+      records: [
+        {
+          name: '*',
+          type: 'CNAME',
+          content: '{{name}}',
+          ttl: 3600
+        }
+      ],
+      logo: '...'
+    }]
+    const record = {
+      id: 69061,
+      zone_id: 'example.com',
+      parent_id: null,
+      name: 'aws',
+      content: 'my.infrastructure.com',
+      ttl: 3600,
+      priority: null,
+      type: 'CNAME',
+      regions: [
+        'global'
+      ],
+      system_record: true,
+      created_at: '2016-03-22T10:20:53Z',
+      updated_at: '2016-03-22T10:20:53Z'
+    }
+
+    const subject = new ServiceIdentifier(services)
+    expect(subject.parse([record])).toEqual([
+      {
+        name: 'aws',
+        logo: '...',
+        summary: 'my.infrastructure.com'
+      }
+    ])
+
+    const subject2 = new ServiceIdentifier(services.reverse())
+    expect(subject2.parse([record])).toEqual([
+      {
+        name: 'aws',
+        logo: '...',
+        summary: 'my.infrastructure.com'
+      }
+    ])
+  })
+
   it.todo('finds the same service multiple times')
-  it.todo('finds services that have records with the service name in them')
 })
