@@ -94,14 +94,13 @@
           <router-link
             :to="'/domains/' + domain.name"
             :aria-label="'Manage Service ' + service.id"
-            class="service block with-padding"
+            class="service block with-padding fadeIn"
           >
             <div class="img-wrapper">
               <img :src="`data:image/png;base64,${service.logo}`">
             </div>
             <div class="meta">
               <span aria-label="Summary">{{ service.summary }}</span>
-              {{ service.recordsForService }}
               <!-- <svg
                 class="arrow"
                 fill="currentColor"
@@ -123,21 +122,6 @@
             Find more add-ons (coming soon!)
           </a>
         </div>
-        <!-- <div v-for="service in dnsimpleServices" :key="service.name" class="block-row">
-          <div class="service block with-padding">
-            <img :src="`data:image/png;base64,${service.logo}`">
-            <div class="meta">
-              <h3>{{service.label}}</h3>
-              <p>{{service.description}}</p>
-            </div>
-          </div>
-        </div> -->
-      </div>
-      <div
-        v-else-if="error"
-        class="block with-padding"
-      >
-        <p>{{ error }}</p>
       </div>
       <div
         v-else
@@ -161,7 +145,6 @@ export default {
   data () {
     return {
       isLoadingPointToDNSimple: false,
-      error: '',
       q: this.$route.params.name
     }
   },
