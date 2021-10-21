@@ -56,7 +56,7 @@ class ServiceIdentifier {
 
     for (let i = 0; i < services.length; i++) {
       const service = services[i]
-      const recordsForService = []
+      const domainRecordsForService = []
 
       service.records.forEach((serviceRecord) => {
         const foundDomainRecord = this._findDomainRecordForServiceRecord(
@@ -66,17 +66,18 @@ class ServiceIdentifier {
         )
 
         if (foundDomainRecord) {
-          recordsForService.push(foundDomainRecord)
+          domainRecordsForService.push(foundDomainRecord)
         }
       })
 
-      if (recordsForService.length === service.records.length) {
-        usedRecords.push.apply(usedRecords, recordsForService)
+      if (domainRecordsForService.length === service.records.length) {
+        usedRecords.push.apply(usedRecords, domainRecordsForService)
 
         identified.push({
           name: service.name,
           logo: service.logo,
-          summary: this._description(recordsForService)
+          summary: this._description(domainRecordsForService),
+          domainRecords: domainRecordsForService
         })
 
         i--
@@ -135,6 +136,8 @@ class ServiceIdentifier {
   _description (records) {
     if (records.length === 1) {
       return records[0].content
+    } else if (records.length === 2) {
+      return `${records[0].content} / ${records[1].content}`
     }
 
     return `${records.length} records`

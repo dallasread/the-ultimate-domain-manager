@@ -79,6 +79,7 @@
     padding: 0;
     min-height: 4rem;
 
+
     .img-wrapper {
       position: absolute;
       top: 0;
@@ -90,16 +91,32 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: $padding * 1.5;
+      padding: 0 1.5rem;
+      transition: width 0.5s ease;
     }
 
     .meta {
       float: right;
       width: calc(100% - 160px);
-      padding: $padding * 1.5;
+      padding: 1.5rem;
+    }
 
-      .name {
-        font-weight: bold;
+    &.open {
+      background: #fff;
+
+      .img-wrapper {
+        position: static;
+        text-align: center;
+        display: block;
+        height: auto;
+        padding-top: 1.5rem;
+        width: 225px;
+        text-align: center;
+      }
+
+      .table-wrapper {
+        padding: 1rem 1.5rem 1.5rem 1.5rem;
+        overflow-x: auto;
       }
     }
   }
@@ -205,4 +222,22 @@
 
 .no-bottom-margin {
   margin-bottom: 0 !important;
+}
+
+.table {
+  width: 100%;
+  font-size: 0.85rem;
+
+  td, th {
+    border: 1px solid $gray;
+    padding: 0.5rem;
+  }
+
+  th {
+    background: $gray;
+    font-weight: bold;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    color: #777;
+  }
 }

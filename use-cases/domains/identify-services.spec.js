@@ -39,6 +39,7 @@ describe('Domains: Identify services', () => {
       {
         name: 'amazon-elasticbeanstalk',
         logo: '...',
+        domainRecords: expect.anything(),
         summary: 'my.elasticbeanstalk.com'
       }
     ])
@@ -193,6 +194,7 @@ describe('Domains: Identify services', () => {
       {
         name: 'amazon-elasticbeanstalk',
         logo: '...',
+        domainRecords: expect.anything(),
         summary: 'my-app.elasticbeanstalk.com'
       }
     ])
@@ -258,7 +260,8 @@ describe('Domains: Identify services', () => {
       {
         name: 'amazon-elasticbeanstalk',
         logo: '...',
-        summary: '2 records'
+        domainRecords: expect.anything(),
+        summary: '1.1.1.1 / bob.elasticbeanstalk.com'
       }
     ])
   })
@@ -301,6 +304,7 @@ describe('Domains: Identify services', () => {
       {
         name: 'amazon-elasticbeanstalk',
         logo: '...',
+        domainRecords: expect.anything(),
         summary: 'my-app.elasticbeanstalk.com'
       }
     ])
@@ -344,6 +348,7 @@ describe('Domains: Identify services', () => {
       {
         name: 'amazon-elasticbeanstalk',
         logo: '...',
+        domainRecords: expect.anything(),
         summary: 'blog.elasticbeanstalk.com'
       }
     ])
@@ -401,6 +406,7 @@ describe('Domains: Identify services', () => {
       {
         name: 'my-aws',
         logo: '...',
+        domainRecords: expect.anything(),
         summary: 'aws.infrastructure.com'
       }
     ])
@@ -410,6 +416,7 @@ describe('Domains: Identify services', () => {
       {
         name: 'my-aws',
         logo: '...',
+        domainRecords: expect.anything(),
         summary: 'aws.infrastructure.com'
       }
     ])
@@ -467,6 +474,7 @@ describe('Domains: Identify services', () => {
       {
         name: 'my-aws',
         logo: '...',
+        domainRecords: expect.anything(),
         summary: 'my.infrastructure.com'
       }
     ])
@@ -476,6 +484,7 @@ describe('Domains: Identify services', () => {
       {
         name: 'my-aws',
         logo: '...',
+        domainRecords: expect.anything(),
         summary: 'my.infrastructure.com'
       }
     ])
@@ -532,11 +541,13 @@ describe('Domains: Identify services', () => {
       {
         name: 'aws',
         logo: '...',
+        domainRecords: expect.anything(),
         summary: 'my.infrastructure.com'
       },
       {
         name: 'aws',
         logo: '...',
+        domainRecords: expect.anything(),
         summary: 'my.infrastructure.com'
       }
     ])

@@ -1,5 +1,6 @@
 $purple: #430098;
 $yellow: #FFCF2D;
+$gray: #ddd;
 $black: #222;
 $white: #fff;
 $padding: 1rem;
@@ -31,7 +32,7 @@ html, body {
 
 .container {
   width: 100%;
-  max-width: 720px;
+  max-width: 840px;
   margin: 3rem auto;
 
   @media (max-width: 640px) {
