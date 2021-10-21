@@ -19,7 +19,8 @@ describe('Domains: Show', () => {
           { id: 181985, account_id: 1385, registrant_id: 2715, name: 'foo-bar.com', unicode_name: 'foo-bar.com', state: 'registered', auto_renew: false, private_whois: false, expires_on: '2021-06-05', expires_at: '2021-06-05T02:15:00Z', created_at: '2020-06-04T19:15:14Z', updated_at: '2020-06-04T19:15:21Z' }
         ])
       },
-      fetchRecords: () => Promise.resolve([])
+      fetchRecords: () => Promise.resolve([]),
+      fetchNameServers: () => Promise.resolve([])
     }
   })
 
@@ -71,6 +72,18 @@ describe('Domains: Show', () => {
       await app.click('[aria-label="Manage example.com"]')
 
       expect(app.text()).toContain('Your domain is not resolved by dnsimple.com.')
+    })
+
+    it('shows a warning if live name servers do not match the name servers from the DNS provider', async () => {
+      const zoneVisionAdapter = {
+        fetchNameServers: () => Promise.resolve(['ns1.cloudflare.com'])
+      }
+      dnsimpleAdapter.fetchNameServers = () => Promise.resolve(['ns1.dnsimple.com'])
+      const app = await mountApp('/domains', { accounts: [account], domains: [], records: [] }, dnsimpleAdapter, null, zoneVisionAdapter)
+
+      await app.click('[aria-label="Manage example.com"]')
+
+      expect(app.text()).toContain('It looks like you\'ve recently made a change')
     })
 
     it('can point to DNSimple', async () => {
