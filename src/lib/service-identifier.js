@@ -1,3 +1,7 @@
+function uniq (value, index, self) {
+  return self.indexOf(value) === index
+}
+
 const serviceWildcardRatio = (service) => {
   return (
     (service.records.filter((r) => r.content.slice(-2) === '}}').length * 2) +
@@ -137,7 +141,7 @@ class ServiceIdentifier {
     if (records.length === 1) {
       return records[0].content
     } else if (records.length === 2) {
-      return `${records[0].content} / ${records[1].content}`
+      return records.map((r) => r.content).filter(uniq).join(' / ')
     }
 
     return `${records.length} records`
