@@ -44,7 +44,6 @@ import ServiceIdentifier from '@/lib/service-identifier.js'
 import State from '@/lib/state.js'
 import Commands from '@/lib/commands.js'
 import LocalCacheAdapter from '@/lib/adapters/local-cache.js'
-import Presenters from '@/lib/presenters.js'
 import Queries from '@/lib/queries.js'
 
 export default {
@@ -73,7 +72,6 @@ export default {
   data () {
     window.theUltimateDomainManager = this
 
-    const presenters = new Presenters()
     const queries = new Queries(
       this.state,
       this.dnsimpleAdapter,
@@ -84,16 +82,14 @@ export default {
       queries,
       this.dnsimpleAdapter,
       this.zoneVisionAdapter,
-      this.localCacheAdapter,
-      presenters
+      this.localCacheAdapter
     )
 
     return {
       app: this,
       isReady: false,
       queries,
-      commands,
-      presenters
+      commands
     }
   },
   mounted () {

@@ -1,13 +1,12 @@
 import debouncedPromise from '@/lib/utils/debounced-promise.js'
 
 class Commands {
-  constructor (state, queries, dnsimpleAdapter, zoneVisionAdapter, localCacheAdapter, presenters) {
+  constructor (state, queries, dnsimpleAdapter, zoneVisionAdapter, localCacheAdapter) {
     this.state = state
     this.queries = queries
     this.dnsimpleAdapter = dnsimpleAdapter
     this.zoneVisionAdapter = zoneVisionAdapter
     this.localCacheAdapter = localCacheAdapter
-    this.presenters = presenters
   }
 
   authenticate (accessToken) {

@@ -74,7 +74,7 @@
           >
             <p>Your domain {{ domain.auto_renew ? 'will renew before' : 'expires on' }}</p>
             <h3 :class="app.queries.isExpiring(domain) ? 'red no-bottom-margin' : 'no-bottom-margin'">
-              {{ app.presenters.prettyDate(domain.expires_on) }}
+              {{ prettyDate(domain.expires_on) }}
             </h3>
           </div>
           <div
@@ -164,6 +164,10 @@ export default {
           resolve()
         }).catch(reject)
       })
+    },
+    prettyDate (str) {
+      const date = new Date(str)
+      return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
     }
   }
 }
