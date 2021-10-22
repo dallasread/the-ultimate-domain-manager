@@ -28,7 +28,7 @@
       </a>
       <h1>
         <router-link to="/">
-          <img src="@/assets/logo.svg">
+          <img src="@/app/assets/logo.svg">
         </router-link>
       </h1>
     </div>
