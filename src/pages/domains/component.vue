@@ -59,7 +59,7 @@
 </template>
 
 <script>
-import AuthenticatedRoute from '@/mixins/authenticated-route.js'
+import AuthenticatedRoute from '@/components/authenticated-route/component.js'
 import Loading from '@/components/loading/component.vue'
 
 export default {

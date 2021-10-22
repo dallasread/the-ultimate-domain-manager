@@ -7,9 +7,9 @@ class LocalCacheAdapter {
     })
   }
 
-  save (accounts, domains, records) {
+  save (data) {
     return this.db.setItem('data', {
-      accounts: (accounts || []).map((account) => {
+      accounts: (data.accounts || []).map((account) => {
         return {
           provider: account.provider,
           id: account.id,
@@ -20,7 +20,7 @@ class LocalCacheAdapter {
           accessToken: account.accessToken
         }
       }),
-      domains: (domains || []).map((domain) => {
+      domains: (data.domains || []).map((domain) => {
         return {
           provider: domain.provider,
           id: domain.id,
@@ -39,7 +39,7 @@ class LocalCacheAdapter {
           liveNameServers: (domain.liveNameServers || []).map((ns) => `${ns}`)
         }
       }),
-      records: (records || []).map((record) => {
+      records: (data.records || []).map((record) => {
         return {
           content: record.content,
           created_at: record.created_at,

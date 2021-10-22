@@ -28,11 +28,7 @@ const mountApp = async (path, options) => {
   await localCacheAdapter.reset()
 
   if (options.localCacheAdapterData) {
-    await localCacheAdapter.save(
-      options.localCacheAdapterData.accounts,
-      options.localCacheAdapterData.domains,
-      options.localCacheAdapterData.records
-    )
+    await localCacheAdapter.save(options.localCacheAdapterData)
   }
 
   const router = createRouter({

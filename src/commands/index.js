@@ -105,11 +105,11 @@ class Commands {
 
   saveLocal () {
     return debouncedPromise(() => {
-      this.localCacheAdapter.save(
-        this.state.findAll('accounts'),
-        this.state.findAll('domains'),
-        this.state.findAll('records')
-      )
+      this.localCacheAdapter.save({
+        accounts: this.state.findAll('accounts'),
+        domains: this.state.findAll('domains'),
+        records: this.state.findAll('records')
+      })
     }, 300, this)
   }
 
