@@ -1,4 +1,4 @@
-import debouncedPromise from '@/lib/utils/functions/debounced-promise.js'
+import debouncedPromise from '@/utils/functions/debounced-promise.js'
 
 class Commands {
   constructor (options) {
@@ -95,6 +95,7 @@ class Commands {
         if (data) {
           this.state.add('accounts', data.accounts || [])
           this.state.add('domains', data.domains || [])
+          this.state.add('records', data.domains || [])
         }
 
         resolve()
@@ -104,7 +105,11 @@ class Commands {
 
   saveLocal () {
     return debouncedPromise(() => {
-      this.localCacheAdapter.save(this.queries.stateToLocal())
+      this.localCacheAdapter.save(
+        this.state.findAll('accounts'),
+        this.state.findAll('domains'),
+        this.state.findAll('records')
+      )
     }, 300, this)
   }
 

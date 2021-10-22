@@ -1,4 +1,4 @@
-import sortByName from '@/lib/utils/sorters/sort-by-name'
+import sortByName from '@/utils/sorters/sort-by-name'
 
 export default (queries) => {
   return (a, b) => {
