@@ -3,8 +3,10 @@ import { mountApp } from '../helper.js'
 describe('Auth: Log out', () => {
   it('redirects to the login page', async () => {
     const app = await mountApp('/domains', {
-      domains: [{ name: 'example.com' }],
-      accounts: [{ accessToken: 'abc-123' }]
+      state: {
+        domains: [{ name: 'example.com' }],
+        accounts: [{ accessToken: 'abc-123' }]
+      }
     })
 
     await app.click('a[aria-label="Log out"]')
@@ -13,8 +15,10 @@ describe('Auth: Log out', () => {
   })
 
   it('redirects to login page if already logged out', async () => {
-    const app = await mountApp('/domains', null, {
-      fetchUser (account) { return Promise.reject(new Error('Unauthorized')) }
+    const app = await mountApp('/domains', {
+      dnsimpleAdapter: {
+        fetchUser (account) { return Promise.reject(new Error('Unauthorized')) }
+      }
     })
 
     expect(app.findAll('a[aria-label="Log out"]').length).toEqual(0)

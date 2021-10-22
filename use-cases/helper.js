@@ -20,13 +20,19 @@ class FakeZoneVisionAdapter extends ZoneVisionAdapter {
   }
 }
 
-const mountApp = async (path, state, dnsimpleAdapter, localCacheAdapterData, zoneVisionAdapter) => {
+const mountApp = async (path, options) => {
+  options = options || {}
+
   const localCacheAdapter = new LocalCacheAdapter()
 
   await localCacheAdapter.reset()
 
-  if (localCacheAdapterData) {
-    await localCacheAdapter.save(localCacheAdapterData.accounts, localCacheAdapterData.domains, localCacheAdapterData.records)
+  if (options.localCacheAdapterData) {
+    await localCacheAdapter.save(
+      options.localCacheAdapterData.accounts,
+      options.localCacheAdapterData.domains,
+      options.localCacheAdapterData.records
+    )
   }
 
   const router = createRouter({
@@ -39,16 +45,20 @@ const mountApp = async (path, state, dnsimpleAdapter, localCacheAdapterData, zon
 
   const fakeDNSimpleAdapter = new FakeDNSimpleAdapter()
 
-  for (const key in dnsimpleAdapter) {
-    fakeDNSimpleAdapter[key] = dnsimpleAdapter[key]
+  if (options.dnsimpleAdapter) {
+    for (const key in options.dnsimpleAdapter) {
+      fakeDNSimpleAdapter[key] = options.dnsimpleAdapter[key]
+    }
   }
 
   const fakeZoneVisionAdapter = new FakeZoneVisionAdapter()
 
   fakeZoneVisionAdapter._fetch = () => Promise.resolve({})
 
-  for (const key in zoneVisionAdapter) {
-    fakeZoneVisionAdapter[key] = zoneVisionAdapter[key]
+  if (options.zoneVisionAdapter) {
+    for (const key in options.zoneVisionAdapter) {
+      fakeZoneVisionAdapter[key] = options.zoneVisionAdapter[key]
+    }
   }
 
   const app = await mount(App, {
@@ -56,7 +66,7 @@ const mountApp = async (path, state, dnsimpleAdapter, localCacheAdapterData, zon
       plugins: [router]
     },
     propsData: {
-      state: new State(state || { accounts: [], domains: [], records: [] }),
+      state: new State(options.state || { accounts: [], domains: [], records: [] }),
       dnsimpleAdapter: fakeDNSimpleAdapter,
       zoneVisionAdapter: fakeZoneVisionAdapter
     }

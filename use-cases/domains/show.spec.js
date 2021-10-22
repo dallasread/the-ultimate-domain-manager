@@ -25,7 +25,10 @@ describe('Domains: Show', () => {
   })
 
   it('can visit a domain', async () => {
-    const app = await mountApp('/domains', { accounts: [account], domains: [], records: [] }, dnsimpleAdapter)
+    const app = await mountApp('/domains', {
+      state: { accounts: [account], domains: [], records: [] },
+      dnsimpleAdapter
+    })
 
     await app.click('[aria-label="Manage example.com"]')
 
@@ -34,7 +37,10 @@ describe('Domains: Show', () => {
 
   describe('dates', () => {
     it('shows the expiry date', async () => {
-      const app = await mountApp('/domains', { accounts: [account], domains: [], records: [] }, dnsimpleAdapter)
+      const app = await mountApp('/domains', {
+        state: { accounts: [account], domains: [], records: [] },
+        dnsimpleAdapter
+      })
 
       await app.click('[aria-label="Manage example.com"]')
 
@@ -43,7 +49,10 @@ describe('Domains: Show', () => {
 
     it('shows the renewal date', async () => {
       domain.auto_renew = true
-      const app = await mountApp('/domains', { accounts: [account], domains: [], records: [] }, dnsimpleAdapter)
+      const app = await mountApp('/domains', {
+        state: { accounts: [account], domains: [], records: [] },
+        dnsimpleAdapter
+      })
 
       await app.click('[aria-label="Manage example.com"]')
 
@@ -53,10 +62,13 @@ describe('Domains: Show', () => {
 
   describe('name servers', () => {
     it('shows the current DNS provider', async () => {
-      const zoneVisionAdapter = {
-        fetchNameServers: () => Promise.resolve(['ns1.dnsimple.com', 'ns2.dnsimple.com'])
-      }
-      const app = await mountApp('/domains', { accounts: [account], domains: [], records: [] }, dnsimpleAdapter, null, zoneVisionAdapter)
+      const app = await mountApp('/domains', {
+        state: { accounts: [account], domains: [], records: [] },
+        dnsimpleAdapter,
+        zoneVisionAdapter: {
+          fetchNameServers: () => Promise.resolve(['ns1.dnsimple.com', 'ns2.dnsimple.com'])
+        }
+      })
 
       await app.click('[aria-label="Manage example.com"]')
 
@@ -64,10 +76,13 @@ describe('Domains: Show', () => {
     })
 
     it('shows a warning if the current provider is not DNSimple', async () => {
-      const zoneVisionAdapter = {
-        fetchNameServers: () => Promise.resolve(['ns1.cloudflare.com'])
-      }
-      const app = await mountApp('/domains', { accounts: [account], domains: [], records: [] }, dnsimpleAdapter, null, zoneVisionAdapter)
+      const app = await mountApp('/domains', {
+        state: { accounts: [account], domains: [], records: [] },
+        dnsimpleAdapter,
+        zoneVisionAdapter: {
+          fetchNameServers: () => Promise.resolve(['ns1.cloudflare.com'])
+        }
+      })
 
       await app.click('[aria-label="Manage example.com"]')
 
@@ -75,11 +90,14 @@ describe('Domains: Show', () => {
     })
 
     it('shows a warning if live name servers do not match the name servers from the DNS provider', async () => {
-      const zoneVisionAdapter = {
-        fetchNameServers: () => Promise.resolve(['ns1.cloudflare.com'])
-      }
       dnsimpleAdapter.fetchNameServers = () => Promise.resolve(['ns1.dnsimple.com'])
-      const app = await mountApp('/domains', { accounts: [account], domains: [], records: [] }, dnsimpleAdapter, null, zoneVisionAdapter)
+      const app = await mountApp('/domains', {
+        state: { accounts: [account], domains: [], records: [] },
+        dnsimpleAdapter,
+        zoneVisionAdapter: {
+          fetchNameServers: () => Promise.resolve(['ns1.cloudflare.com'])
+        }
+      })
 
       await app.click('[aria-label="Manage example.com"]')
 
@@ -87,11 +105,14 @@ describe('Domains: Show', () => {
     })
 
     it('can point to DNSimple', async () => {
-      const zoneVisionAdapter = {
-        fetchNameServers: () => Promise.resolve(['ns1.cloudflare.com'])
-      }
       dnsimpleAdapter.updateNameServers = () => Promise.resolve()
-      const app = await mountApp('/domains', { accounts: [account], domains: [], records: [] }, dnsimpleAdapter, null, zoneVisionAdapter)
+      const app = await mountApp('/domains', {
+        state: { accounts: [account], domains: [], records: [] },
+        dnsimpleAdapter,
+        zoneVisionAdapter: {
+          fetchNameServers: () => Promise.resolve(['ns1.cloudflare.com'])
+        }
+      })
 
       await app.click('[aria-label="Manage example.com"]')
       await app.click('[aria-label="Point to DNSimple"]')

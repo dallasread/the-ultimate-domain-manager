@@ -16,12 +16,15 @@ describe('Auth: Log in', () => {
   it('redirects to the domains page when authorized by DNSimple', async () => {
     const account = { accessToken: 'abc-123' }
     const app = await mountApp('/auth?code=AUTHCODE', {
-      accounts: [account],
-      domains: []
-    }, {
-      fetchUser (account) { return Promise.resolve({ account }) },
-      fetchAccessToken () { return Promise.resolve(account.accessToken) },
-      fetchDomains () { return Promise.resolve([{ name: 'example.com' }]) }
+      state: {
+        accounts: [account],
+        domains: []
+      },
+      dnsimpleAdapter: {
+        fetchUser (account) { return Promise.resolve({ account }) },
+        fetchAccessToken () { return Promise.resolve(account.accessToken) },
+        fetchDomains () { return Promise.resolve([{ name: 'example.com' }]) }
+      }
     })
 
     expect(app.text()).toContain('example.com')
@@ -29,8 +32,10 @@ describe('Auth: Log in', () => {
 
   it('shows an error if the user is not authenticated with DNSimple', async () => {
     const expectedError = 'You are unauthorized'
-    const app = await mountApp('/auth?code=AUTHCODE', null, {
-      fetchAccessToken () { return Promise.reject(new Error(expectedError)) }
+    const app = await mountApp('/auth?code=AUTHCODE', {
+      dnsimpleAdapter: {
+        fetchAccessToken () { return Promise.reject(new Error(expectedError)) }
+      }
     })
 
     await app.wait()
