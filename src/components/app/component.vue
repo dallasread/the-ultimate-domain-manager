@@ -41,10 +41,10 @@ import dnsimpleServices from '@/vendor/dnsimple-services.json'
 import DNSimpleAdapter from '@/adapters/dnsimple.js'
 import LocalCacheAdapter from '@/adapters/local-cache.js'
 import ZoneVisionAdapter from '@/adapters/zone-vision.js'
-import ServiceIdentifier from '@/lib/service-identifier.js'
-import State from '@/lib/state.js'
-import Commands from '@/lib/commands.js'
-import Queries from '@/lib/queries.js'
+import ServiceIdentifier from '@/utils/service-identifier.js'
+import State from '@/utils/state.js'
+import Commands from '@/commands/index.js'
+import Queries from '@/queries/index.js'
 
 export default {
   props: {

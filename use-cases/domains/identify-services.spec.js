@@ -1,4 +1,4 @@
-import ServiceIdentifier from '@/lib/service-identifier.js'
+import ServiceIdentifier from '@/utils/service-identifier.js'
 
 describe('Domains: Identify services', () => {
   it('finds services based on simple matching name/content/type', () => {
