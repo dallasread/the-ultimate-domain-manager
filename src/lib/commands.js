@@ -1,12 +1,10 @@
-import debouncedPromise from '@/lib/utils/debounced-promise.js'
+import debouncedPromise from '@/lib/utils/functions/debounced-promise.js'
 
 class Commands {
-  constructor (state, queries, dnsimpleAdapter, zoneVisionAdapter, localCacheAdapter) {
-    this.state = state
-    this.queries = queries
-    this.dnsimpleAdapter = dnsimpleAdapter
-    this.zoneVisionAdapter = zoneVisionAdapter
-    this.localCacheAdapter = localCacheAdapter
+  constructor (options) {
+    for (const key in options) {
+      this[key] = options[key]
+    }
   }
 
   authenticate (accessToken) {

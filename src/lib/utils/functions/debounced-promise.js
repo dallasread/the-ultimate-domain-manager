@@ -1,7 +1,7 @@
 let timer = null
 let resolves = []
 
-function debouncedPromise (func, timeout = 0, thisArg) {
+export default (func, timeout = 0, thisArg) => {
   clearTimeout(timer)
 
   timer = setTimeout(() => {
@@ -12,5 +12,3 @@ function debouncedPromise (func, timeout = 0, thisArg) {
 
   return new Promise(resolve => resolves.push(resolve))
 }
-
-export default debouncedPromise

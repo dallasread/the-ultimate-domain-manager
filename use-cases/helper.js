@@ -1,9 +1,9 @@
 import { mount, flushPromises } from '@vue/test-utils'
 import { createRouter, createMemoryHistory } from 'vue-router'
 import App from '@/components/app/component.vue'
-import DNSimpleAdapter from '@/lib/adapters/dnsimple.js'
-import ZoneVisionAdapter from '@/lib/adapters/zone-vision.js'
-import LocalCacheAdapter from '@/lib/adapters/local-cache.js'
+import DNSimpleAdapter from '@/adapters/dnsimple.js'
+import ZoneVisionAdapter from '@/adapters/zone-vision.js'
+import LocalCacheAdapter from '@/adapters/local-cache.js'
 import State from '@/lib/state.js'
 import { routes } from '@/router'
 

@@ -38,12 +38,12 @@
 
 <script>
 import dnsimpleServices from '@/vendor/dnsimple-services.json'
-import DNSimpleAdapter from '@/lib/adapters/dnsimple.js'
-import ZoneVisionAdapter from '@/lib/adapters/zone-vision.js'
+import DNSimpleAdapter from '@/adapters/dnsimple.js'
+import LocalCacheAdapter from '@/adapters/local-cache.js'
+import ZoneVisionAdapter from '@/adapters/zone-vision.js'
 import ServiceIdentifier from '@/lib/service-identifier.js'
 import State from '@/lib/state.js'
 import Commands from '@/lib/commands.js'
-import LocalCacheAdapter from '@/lib/adapters/local-cache.js'
 import Queries from '@/lib/queries.js'
 
 export default {
@@ -72,18 +72,18 @@ export default {
   data () {
     window.theUltimateDomainManager = this
 
-    const queries = new Queries(
-      this.state,
-      this.dnsimpleAdapter,
-      this.serviceIdentifier
-    )
-    const commands = new Commands(
-      this.state,
-      queries,
-      this.dnsimpleAdapter,
-      this.zoneVisionAdapter,
-      this.localCacheAdapter
-    )
+    const queries = new Queries({
+      state: this.state,
+      dnsimpleAdapter: this.dnsimpleAdapter,
+      serviceIdentifier: this.serviceIdentifier
+    })
+    const commands = new Commands({
+      state: this.state,
+      queries: queries,
+      dnsimpleAdapter: this.dnsimpleAdapter,
+      zoneVisionAdapter: this.zoneVisionAdapter,
+      localCacheAdapter: this.localCacheAdapter
+    })
 
     return {
       app: this,

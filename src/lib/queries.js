@@ -1,33 +1,16 @@
-const SORT_BY_NAME = (a, b) => a.name.localeCompare(b.name)
-const SORT_BY_EXPIRES_AND_NAME = (queries) => {
-  return (a, b) => {
-    if (queries.isExpiring(a) && !queries.isExpiring(b)) return -1
-    if (!queries.isExpiring(a) && queries.isExpiring(b)) return 1
-
-    if (queries.isExpiring(a) && queries.isExpiring(b)) {
-      if (queries.expiresAt(a).getTime() < queries.expiresAt(b).getTime()) return -1
-      if (queries.expiresAt(a).getTime() > queries.expiresAt(b).getTime()) return 1
-    }
-
-    return SORT_BY_NAME(a, b)
-  }
-}
-
-const MATCH_HOSTNAME = /[\w-]+\.\w+$/gi
-
-function uniq (value, index, self) {
-  return self.indexOf(value) === index
-}
+import sortByExpiresAndName from '@/lib/utils/sorters/sort-by-expires-and-name'
+import matchesHostname from '@/lib/utils/filters/matches-hostname.js'
+import uniq from '@/lib/utils/filters/uniq.js'
 
 class Queries {
-  constructor (state, dnsimpleAdapter, serviceIdentifier) {
-    this.state = state
-    this.dnsimpleAdapter = dnsimpleAdapter
-    this.serviceIdentifier = serviceIdentifier
+  constructor (options) {
+    for (const key in options) {
+      this[key] = options[key]
+    }
   }
 
   listDomains () {
-    return this.state.findAll('domains').sort(SORT_BY_EXPIRES_AND_NAME(this))
+    return this.state.findAll('domains').sort(sortByExpiresAndName(this))
   }
 
   listAccounts () {
@@ -88,9 +71,7 @@ class Queries {
   }
 
   commonLiveNameServers (domain) {
-    return (domain.liveNameServers || []).map((nameServer) => {
-      return nameServer.match(MATCH_HOSTNAME)[0]
-    }).filter(uniq)
+    return (domain.liveNameServers || []).map(matchesHostname).filter(uniq)
   }
 
   recordsForZone (zoneName) {
