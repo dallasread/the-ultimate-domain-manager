@@ -1,4 +1,4 @@
-import debouncedPromise from '@/utils/functions/debounced-promise.js'
+import debouncedPromise from './debounced-promise.js'
 
 class Commands {
   constructor (options) {

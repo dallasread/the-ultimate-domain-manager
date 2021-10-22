@@ -117,9 +117,9 @@
 </template>
 
 <script>
-import AuthenticatedRoute from '@/components/authenticated-route/component.js'
-import Loading from '@/components/loading/component.vue'
-import InstalledService from '@/components/installed-service/component.vue'
+import AuthenticatedRoute from '@/app/components/authenticated-route/component.js'
+import Loading from '@/app/components/loading/component.vue'
+import InstalledService from '@/app/components/installed-service/component.vue'
 
 export default {
   components: {

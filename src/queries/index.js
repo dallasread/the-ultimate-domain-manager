@@ -1,6 +1,6 @@
-import sortByExpiresAndName from '@/utils/sorters/sort-by-expires-and-name'
-import matchesHostname from '@/utils/filters/matches-hostname.js'
-import uniq from '@/utils/filters/uniq.js'
+import sortByExpiresAndName from './sorters/sort-by-expires-and-name'
+import matchesHostname from './filters/matches-hostname.js'
+import uniq from './filters/uniq.js'
 
 class Queries {
   constructor (options) {

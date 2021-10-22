@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import UnauthenticatedRoute from '@/components/unauthenticated-route/component.js'
+import UnauthenticatedRoute from '@/app/components/unauthenticated-route/component.js'
 
 export default {
   mixins: [UnauthenticatedRoute]

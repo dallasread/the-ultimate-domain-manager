@@ -59,8 +59,8 @@
 </template>
 
 <script>
-import AuthenticatedRoute from '@/components/authenticated-route/component.js'
-import Loading from '@/components/loading/component.vue'
+import AuthenticatedRoute from '@/app/components/authenticated-route/component.js'
+import Loading from '@/app/components/loading/component.vue'
 
 export default {
   components: {

@@ -1,4 +1,4 @@
-import sortByName from '@/utils/sorters/sort-by-name'
+import sortByName from './sort-by-name.js'
 
 export default (queries) => {
   return (a, b) => {
