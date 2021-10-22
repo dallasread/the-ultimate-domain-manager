@@ -32,7 +32,7 @@ describe('Domains: List', () => {
     const app = await mountApp('/domains', { accounts: [account], domains: [], records: [] }, dnsimpleAdapter)
     await app.wait()
 
-    const data = await app.vm.commands.localCache.get('data')
+    const data = await app.vm.commands.localCacheAdapter.restore()
 
     expect(data.domains[0].name).toContain('example.com')
   })

@@ -38,12 +38,12 @@
 
 <script>
 import dnsimpleServices from '@/vendor/dnsimple-services.json'
-import DNSimpleAdapter from '@/lib/dnsimple-adapter.js'
-import ZoneVisionAdapter from '@/lib/zone-vision-adapter.js'
+import DNSimpleAdapter from '@/lib/adapters/dnsimple.js'
+import ZoneVisionAdapter from '@/lib/adapters/zone-vision.js'
 import ServiceIdentifier from '@/lib/service-identifier.js'
 import State from '@/lib/state.js'
 import Commands from '@/lib/commands.js'
-import LocalCache from '@/lib/local-cache.js'
+import LocalCacheAdapter from '@/lib/adapters/local-cache.js'
 import Presenters from '@/lib/presenters.js'
 import Queries from '@/lib/queries.js'
 
@@ -61,9 +61,9 @@ export default {
       type: Object,
       default: () => new ZoneVisionAdapter(window.fetch)
     },
-    localCache: {
+    localCacheAdapter: {
       type: Object,
-      default: () => new LocalCache()
+      default: () => new LocalCacheAdapter()
     },
     serviceIdentifier: {
       type: Object,
@@ -84,7 +84,7 @@ export default {
       queries,
       this.dnsimpleAdapter,
       this.zoneVisionAdapter,
-      this.localCache,
+      this.localCacheAdapter,
       presenters
     )
 

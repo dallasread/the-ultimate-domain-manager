@@ -1,9 +1,9 @@
 import { mount, flushPromises } from '@vue/test-utils'
 import { createRouter, createMemoryHistory } from 'vue-router'
 import App from '@/components/app/component.vue'
-import DNSimpleAdapter from '@/lib/dnsimple-adapter.js'
-import ZoneVisionAdapter from '@/lib/zone-vision-adapter.js'
-import LocalCache from '@/lib/local-cache.js'
+import DNSimpleAdapter from '@/lib/adapters/dnsimple.js'
+import ZoneVisionAdapter from '@/lib/adapters/zone-vision.js'
+import LocalCacheAdapter from '@/lib/adapters/local-cache.js'
 import State from '@/lib/state.js'
 import { routes } from '@/router'
 
@@ -20,13 +20,13 @@ class FakeZoneVisionAdapter extends ZoneVisionAdapter {
   }
 }
 
-const mountApp = async (path, state, dnsimpleAdapter, localCacheData, zoneVisionAdapter) => {
-  const localCache = new LocalCache()
+const mountApp = async (path, state, dnsimpleAdapter, localCacheAdapterData, zoneVisionAdapter) => {
+  const localCacheAdapter = new LocalCacheAdapter()
 
-  await localCache.reset()
+  await localCacheAdapter.reset()
 
-  if (localCacheData) {
-    await localCache.set('data', localCacheData)
+  if (localCacheAdapterData) {
+    await localCacheAdapter.save(localCacheAdapterData)
   }
 
   const router = createRouter({

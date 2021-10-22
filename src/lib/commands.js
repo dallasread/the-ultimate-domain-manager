@@ -1,12 +1,12 @@
 import debouncedPromise from '@/lib/utils/debounced-promise.js'
 
 class Commands {
-  constructor (state, queries, dnsimpleAdapter, zoneVisionAdapter, localCache, presenters) {
+  constructor (state, queries, dnsimpleAdapter, zoneVisionAdapter, localCacheAdapter, presenters) {
     this.state = state
     this.queries = queries
     this.dnsimpleAdapter = dnsimpleAdapter
     this.zoneVisionAdapter = zoneVisionAdapter
-    this.localCache = localCache
+    this.localCacheAdapter = localCacheAdapter
     this.presenters = presenters
   }
 
@@ -22,12 +22,6 @@ class Commands {
     })
   }
 
-  logout () {
-    this.state.removeAll('accounts', this.queries.listAccounts())
-    this.state.removeAll('domains', this.queries.listDomains())
-    return this.localCache.reset()
-  }
-
   authorize (code) {
     return new Promise((resolve, reject) => {
       this.dnsimpleAdapter.fetchAccessToken(code).then((accessToken) => {
@@ -40,6 +34,12 @@ class Commands {
           .catch(reject)
       }).catch(reject)
     })
+  }
+
+  logout () {
+    this.state.removeAll('accounts', this.queries.listAccounts())
+    this.state.removeAll('domains', this.queries.listDomains())
+    return this.localCacheAdapter.reset()
   }
 
   fetchDomain (account, name) {
@@ -94,7 +94,7 @@ class Commands {
 
   restoreLocal () {
     return new Promise((resolve, reject) => {
-      this.localCache.get('data').then((data) => {
+      this.localCacheAdapter.restore().then((data) => {
         if (data) {
           this.state.add('accounts', data.accounts || [])
           this.state.add('domains', data.domains || [])
@@ -107,12 +107,7 @@ class Commands {
 
   saveLocal () {
     return debouncedPromise(() => {
-      this.localCache.set('data', {
-        accounts: this.queries.listAccounts()
-          .map((account) => this.presenters.accountToJSON(account)),
-        domains: this.queries.listDomains()
-          .map((domain) => this.presenters.domainToJSON(domain))
-      })
+      this.localCacheAdapter.save(this.queries.stateToLocal())
     }, 300, this)
   }
 
