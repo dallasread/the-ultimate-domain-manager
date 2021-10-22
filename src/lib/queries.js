@@ -56,6 +56,12 @@ class Queries {
     return domain.provider === provider
   }
 
+  getProvider (domain) {
+    return {
+      nameServers: ['ns1.dnsimple.com', 'ns2.dnsimple.com', 'ns3.dnsimple.com', 'ns4.dnsimple.com']
+    }
+  }
+
   isNotServedByProvider (domain) {
     const nameServers = this.commonLiveNameServers(domain)
     return nameServers.length && nameServers.indexOf(domain.provider) === -1
@@ -80,6 +86,11 @@ class Queries {
 
   findInstalledServices (domain, records) {
     return this.serviceIdentifier.parse(records)
+  }
+
+  prettyExpiresDate (domain) {
+    const date = new Date(domain.expires_on)
+    return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
   }
 
   stateToLocal () {

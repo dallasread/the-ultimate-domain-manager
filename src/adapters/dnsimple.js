@@ -97,8 +97,6 @@ class DNSimpleAdapter {
   }
 
   _fetcher (method, path, accessToken, data) {
-    // console.log('FETCH', method, path)
-
     const proxy = 'https://thawing-brushlands-90182.herokuapp.com'
     const url = `${DNSIMPLE_API}${path}`
     const headers = { 'Content-Type': 'application/json' }
@@ -121,9 +119,5 @@ class DNSimpleAdapter {
     })
   }
 }
-
-// DNSimpleAdapter.prototype._fetcher = () => {
-//   return Promise.resolve()
-// }
 
 export default DNSimpleAdapter

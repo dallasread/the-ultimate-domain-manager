@@ -48,9 +48,9 @@
             href="javascript:;"
             aria-label="Point to DNSimple"
             class="button button-yellow"
-            @click="pointToDNSimple"
+            @click="pointToProvider(app.queries.getProvider(domain))"
           >
-            <span v-if="isLoadingPointToDNSimple">Loading...</span>
+            <span v-if="isLoadingPointToProvider">Loading...</span>
             <span v-else>Point to {{ domain.provider }}</span>
           </a>
         </div>
@@ -74,7 +74,7 @@
           >
             <p>Your domain {{ domain.auto_renew ? 'will renew before' : 'expires on' }}</p>
             <h3 :class="app.queries.isExpiring(domain) ? 'red no-bottom-margin' : 'no-bottom-margin'">
-              {{ prettyDate(domain.expires_on) }}
+              {{ app.queries.prettyExpiresDate(domain) }}
             </h3>
           </div>
           <div
@@ -129,7 +129,7 @@ export default {
   mixins: [AuthenticatedRoute],
   data () {
     return {
-      isLoadingPointToDNSimple: false,
+      isLoadingPointToProvider: false,
       q: this.$route.params.name
     }
   },
@@ -151,23 +151,19 @@ export default {
     this.app.commands.fetchLiveNameServers(this.domain)
   },
   methods: {
-    pointToDNSimple () {
+    pointToProvider (provider) {
       return new Promise((resolve, reject) => {
-        this.isLoadingPointToDNSimple = true
+        this.isLoadingPointToProvider = true
 
         this.app.commands.updateNameServers(
           this.app.queries.getAccount(),
           this.domain,
-          ['ns1.dnsimple.com', 'ns2.dnsimple.com', 'ns3.dnsimple.com', 'ns4.dnsimple.com']
+          provider.nameServers
         ).then(() => {
-          this.isLoadingPointToDNSimple = false
+          this.isLoadingPointToProvider = false
           resolve()
         }).catch(reject)
       })
-    },
-    prettyDate (str) {
-      const date = new Date(str)
-      return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
     }
   }
 }
