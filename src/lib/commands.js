@@ -95,7 +95,7 @@ class Commands {
         if (data) {
           this.state.add('accounts', data.accounts || [])
           this.state.add('domains', data.domains || [])
-          this.state.add('records', data.domains || [])
+          this.state.add('records', data.records || [])
         }
 
         resolve()

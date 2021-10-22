@@ -2,7 +2,7 @@
   <a
     href="javascript:;"
     :aria-label="'Manage Service ' + service.id"
-    :class="`service block with-padding fadeIn ${isOpen ? 'open' : ''}`"
+    :class="`service block with-padding ${isOpen ? 'open' : ''}`"
     @click="toggle"
   >
     <div class="img-wrapper">
