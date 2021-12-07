@@ -5,6 +5,9 @@ export default (queries) => {
     if (queries.isExpiring(a) && !queries.isExpiring(b)) return -1
     if (!queries.isExpiring(a) && queries.isExpiring(b)) return 1
 
+    if (queries.isAutoRenewing(a) && !queries.isAutoRenewing(b)) return -1
+    if (!queries.isAutoRenewing(a) && queries.isAutoRenewing(b)) return 1
+
     if (queries.isExpiring(a) && queries.isExpiring(b)) {
       if (queries.expiresAt(a).getTime() < queries.expiresAt(b).getTime()) return -1
       if (queries.expiresAt(a).getTime() > queries.expiresAt(b).getTime()) return 1

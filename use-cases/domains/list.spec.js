@@ -71,7 +71,7 @@ describe('Domains: List', () => {
     expect(app.find('[aria-label="Manage example.com"]').text()).toContain('example.com')
   })
 
-  it('sorts by expired, then alphabetical', async () => {
+  it('sorts by expired, auto-renewing, then alphabetical', async () => {
     dnsimpleAdapter.fetchDomains = () => Promise.resolve([])
     const expiringSoon = new Date().setDate(-1)
     const app = await mountApp('/domains', {
@@ -82,7 +82,8 @@ describe('Domains: List', () => {
         domains: [
           { name: 'bar.baz' },
           { name: 'abc.com' },
-          { name: 'foo.bar', state: 'registered', expires_on: expiringSoon }
+          { name: 'auto-renewing.com', state: 'registered', auto_renew: true, expires_on: expiringSoon },
+          { name: 'expiring.com', state: 'registered', expires_on: expiringSoon }
         ]
       }
     })
@@ -90,6 +91,25 @@ describe('Domains: List', () => {
     const links = app.findAll('[aria-label^="Manage"]')
     const domainNames = links.map((link) => link.find('[aria-label="Name"]').text())
 
-    expect(domainNames).toEqual(['foo.bar', 'abc.com', 'bar.baz'])
+    expect(domainNames).toEqual(['expiring.com', 'auto-renewing.com', 'abc.com', 'bar.baz'])
+  })
+
+  it('shows the expiry date', async () => {
+    const app = await mountApp('/domains', {
+      state: { accounts: [account], domains: [], records: [] },
+      dnsimpleAdapter
+    })
+
+    expect(app.text()).toContain('Expires in')
+  })
+
+  it('shows the auto-renewal date', async () => {
+    domain.auto_renew = true
+    const app = await mountApp('/domains', {
+      state: { accounts: [account], domains: [], records: [] },
+      dnsimpleAdapter
+    })
+
+    expect(app.text()).toContain('Renews within')
   })
 })

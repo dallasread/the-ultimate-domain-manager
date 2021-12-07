@@ -148,7 +148,7 @@
         color: rgba(0, 0, 0, 0.2);
       }
 
-      .expires {
+      .expires, .auto-renews {
         display: inline-block;
         vertical-align: middle;
         font-size: 0.7rem;
@@ -157,6 +157,10 @@
         margin-left: 0.5rem;
         background: red;
         color: #fff;
+
+        &.auto-renews {
+          background: $purple;
+        }
       }
     }
 
@@ -183,6 +187,10 @@
 
   .red {
     color: red;
+  }
+
+  .purple {
+    color: $purple;
   }
 
   .notice {

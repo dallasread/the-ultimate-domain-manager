@@ -72,8 +72,8 @@
             v-if="app.queries.isRegistered(domain)"
             class="block half-block with-padding text-center-desktop"
           >
-            <p>Your domain {{ domain.auto_renew ? 'will renew before' : 'expires on' }}</p>
-            <h3 :class="app.queries.isExpiring(domain) ? 'red no-bottom-margin' : 'no-bottom-margin'">
+            <p>Your domain {{ app.queries.isAutoRenew(domain) ? 'will renew before' : 'expires on' }}</p>
+            <h3 :class="dateClass">
               {{ app.queries.prettyExpiresDate(domain) }}
             </h3>
           </div>
@@ -142,6 +142,19 @@ export default {
     },
     installedServices () {
       return this.app.queries.findInstalledServices(this.domain, this.records)
+    },
+    dateClass () {
+      let klass = 'no-bottom-margin'
+
+      if (this.app.queries.isExpiring(this.domain)) {
+        klass += ' red'
+      }
+
+      if (this.app.queries.isAutoRenewing(this.domain)) {
+        klass += ' purple'
+      }
+
+      return klass
     }
   },
   mounted () {

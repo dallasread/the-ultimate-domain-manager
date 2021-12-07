@@ -29,8 +29,20 @@ class Queries {
     return domain.state === 'registered'
   }
 
+  isAutoRenew (domain) {
+    return domain.auto_renew === true
+  }
+
+  isImminent (domain) {
+    return this.daysTilExpiry(domain) < 60
+  }
+
+  isAutoRenewing (domain) {
+    return this.isRegistered(domain) && this.isImminent(domain) && this.isAutoRenew(domain)
+  }
+
   isExpiring (domain) {
-    return this.isRegistered(domain) && this.daysTilExpiry(domain) < 60
+    return this.isRegistered(domain) && this.isImminent(domain) && !this.isAutoRenew(domain)
   }
 
   isPropagating (domain) {

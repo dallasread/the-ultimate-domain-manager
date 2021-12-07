@@ -37,6 +37,7 @@ describe('Domains: Show', () => {
 
   describe('dates', () => {
     it('shows the expiry date', async () => {
+      domain.expires_on = new Date().setDate(-1)
       const app = await mountApp('/domains', {
         state: { accounts: [account], domains: [], records: [] },
         dnsimpleAdapter
@@ -48,6 +49,7 @@ describe('Domains: Show', () => {
     })
 
     it('shows the renewal date', async () => {
+      domain.expires_on = new Date().setDate(-1)
       domain.auto_renew = true
       const app = await mountApp('/domains', {
         state: { accounts: [account], domains: [], records: [] },
