@@ -1,6 +1,24 @@
 <template>
   <div class="container">
     <div class="search">
+      <ul
+        v-if="tlds.length > 1"
+        class="tlds"
+      >
+        <li
+          v-for="tld in tlds"
+          :key="`tld-${tld}`"
+        >
+          <a
+            :aria-label="`Search for .${tld}`"
+            href="javascript:;"
+            :class="q === `.${tld}` ? 'selected' : ''"
+            @click="q = `.${tld}`"
+          >
+            .{{ tld }}
+          </a>
+        </li>
+      </ul>
       <router-link
         to="/domains"
         class="icon"
@@ -89,6 +107,9 @@ export default {
       return this.domains.filter((domain) => {
         return domain.name.indexOf(q) !== -1
       })
+    },
+    tlds () {
+      return this.app.queries.listTLDs()
     }
   },
   mounted () {

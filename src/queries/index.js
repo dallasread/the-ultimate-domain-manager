@@ -21,6 +21,16 @@ class Queries {
     return this.state.find('domains', (domain) => domain.name === name)
   }
 
+  listTLDs () {
+    const tlds = this.listDomains().map((domain) => this.parseTLD(domain.name))
+
+    return [...new Set(tlds)]
+  }
+
+  parseTLD (name) {
+    return name.substring(name.lastIndexOf('.') + 1, name.length)
+  }
+
   oauthUrl () {
     return this.dnsimpleAdapter.oauthUrl()
   }

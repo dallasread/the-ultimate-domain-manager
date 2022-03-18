@@ -32,6 +32,38 @@
       height: 1.5rem;
     }
   }
+
+  .tlds {
+    margin-top: -2.25rem;
+
+    @media (max-width: 640px) {
+      float: none;
+      margin-top: -1.5rem;
+      margin-right: 1rem;
+    }
+
+    li {
+      float: right;
+      display: inline-block;
+      text-transform: uppercase;
+      margin-left: 0.5rem;
+      margin-bottom: 0.5rem;
+
+      a {
+        display: inline-block;
+        vertical-align: middle;
+        font-size: 0.7rem;
+        padding: 0.25rem 0.5rem;
+        border-radius: 0.25rem;
+        color: #fff;
+        background: rgba(0, 0, 0, 0.3);
+
+        &.selected {
+          background: $purple;
+        }
+      }
+    }
+  }
 }
 
 .content {

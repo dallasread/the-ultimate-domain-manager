@@ -112,4 +112,20 @@ describe('Domains: List', () => {
 
     expect(app.text()).toContain('Renews within')
   })
+
+  it('provides a one-click to search by TLD', async () => {
+    const domainName = 'example.app'
+    const app = await mountApp('/domains', {
+      state: { accounts: [account], domains: [{ name: domainName }], records: [] },
+      dnsimpleAdapter
+    })
+
+    const input = app.find('input[aria-label="Domain search"]')
+    await input.setValue('should show no results')
+    expect(app.text()).not.toContain(domainName)
+
+    await app.click('[aria-label="Search for .app"]')
+
+    expect(app.text()).toContain(domainName)
+  })
 })
