@@ -69,14 +69,40 @@ const mountApp = async (path, options) => {
   })
 
   app.click = async (el) => {
-    const $el = await app.find(el)
+    let $el = null
+
+    if (typeof el === 'string') {
+      try {
+        $el = await app.find(el)
+      } catch (e) { }
+    } else {
+      $el = el
+    }
+
+    if (!$el || !$el.exists()) {
+      throw new Error(`Could not find element to click: ${typeof el === 'string' ? `${el} in ` : ''}${app.text()}`)
+    }
+
     await $el.trigger('click')
     await app.wait()
   }
 
   app.submit = async (el) => {
-    const $el = await app.find(el)
-    await $el.trigger('submit')
+    let $el = null
+
+    if (typeof el === 'string') {
+      try {
+        $el = await app.find(el)
+      } catch (e) { }
+    } else {
+      $el = el
+    }
+
+    if (!$el || !$el.exists()) {
+      throw new Error(`Could not find element to submit: ${typeof el === 'string' ? `${el} in ` : ''}${app.text()}`)
+    }
+
+    await $el.trigger('submit.prevent')
     await app.wait()
   }
 
