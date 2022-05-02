@@ -1,34 +1,44 @@
 /* eslint-disable no-console */
+
 const execa = require('execa')
 const fs = require('fs')
-const changelog = require('../changelog.json')
-const version = Object.keys(changelog)[0]
+const deployBranch = 'gh-pages'
+const masterBranch = 'master'
 
-const deploy = async (target, version) => {
-  try {
-    await execa('git', ['checkout', '--orphan', 'gh-pages'])
+const refresh = async () => {
+  console.log('🌱 Creating fresh branch...')
 
-    console.log('Building started...')
-
-    await execa('yarn', ['build'])
-    await execa('cp', [target + '/index.html', target + '/404.html'])
-
-    await execa('git', ['--work-tree', target, 'add', '--all'])
-    await execa('git', ['--work-tree', target, 'commit', '-m', `Publish ${version}`, '--no-verify'])
-
-    console.log('Pushing to gh-pages...')
-
-    await execa('git', ['push', 'origin', 'HEAD:gh-pages', '--force'])
-    await execa('rm', ['-r', target])
-    await execa('rm', ['-rf', '.git/gc.log'])
-    await execa('git', ['checkout', '-f', 'master'])
-    await execa('git', ['branch', '-D', 'gh-pages'])
-
-    console.log('Successfully deployed, check your settings')
-  } catch (e) {
-    console.log(e.message)
-    process.exit(1)
-  }
+  await execa('git', ['checkout', '--orphan', deployBranch])
 }
 
-deploy('dist', `${version}: ${changelog[version]}`)
+const build = async () => {
+  console.log('🔨 Building...')
+
+  await execa('npm', ['run', 'build'])
+  await execa('git', ['--work-tree', 'dist', 'add', '--all'])
+  await execa('git', ['--work-tree', 'dist', 'commit', '-m', deployBranch, '--no-verify'])
+}
+
+const push = async () => {
+  console.log('🌏 Deploying...')
+
+  await execa('git', ['push', 'origin', `HEAD:${deployBranch}`, '--force'])
+  await execa('rm', ['-r', 'dist'])
+  await execa('rm', ['-rf', '.git/gc.log'])
+  await execa('git', ['checkout', '-f', masterBranch])
+  await execa('git', ['branch', '-D', deployBranch])
+}
+
+const done = () => {
+  console.log('✅ Deployed!')
+}
+
+Promise.resolve()
+  .then(refresh)
+  .then(build)
+  .then(push)
+  .then(done)
+  .catch((e) => {
+    console.log(e.message)
+    process.exit(1)
+  })
