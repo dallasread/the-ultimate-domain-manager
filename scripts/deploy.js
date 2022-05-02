@@ -4,6 +4,7 @@ const execa = require('execa')
 const fs = require('fs')
 const deployBranch = 'gh-pages'
 const masterBranch = 'master'
+const target = 'dist'
 
 const refresh = async () => {
   console.log('🌱 Creating fresh branch...')
@@ -14,16 +15,17 @@ const refresh = async () => {
 const build = async () => {
   console.log('🔨 Building...')
 
-  await execa('npm', ['run', 'build'])
-  await execa('git', ['--work-tree', 'dist', 'add', '--all'])
-  await execa('git', ['--work-tree', 'dist', 'commit', '-m', deployBranch, '--no-verify'])
+  await execa('yarn', ['build'])
+  await execa('cp', [`${target}/index.html`, `${target}/404.html`])
+  await execa('git', ['--work-tree', target, 'add', '--all'])
+  await execa('git', ['--work-tree', target, 'commit', '-m', deployBranch, '--no-verify'])
 }
 
 const push = async () => {
   console.log('🌏 Deploying...')
 
   await execa('git', ['push', 'origin', `HEAD:${deployBranch}`, '--force'])
-  await execa('rm', ['-r', 'dist'])
+  await execa('rm', ['-r', target])
   await execa('rm', ['-rf', '.git/gc.log'])
   await execa('git', ['checkout', '-f', masterBranch])
   await execa('git', ['branch', '-D', deployBranch])
