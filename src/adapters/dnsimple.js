@@ -97,7 +97,7 @@ class DNSimpleAdapter {
   }
 
   _fetcher (method, path, accessToken, data) {
-    const proxy = 'https://thawing-brushlands-90182.herokuapp.com'
+    const proxy = 'https://cors-anywhere.followalong.com'
     const url = `${DNSIMPLE_API}${path}`
     const headers = { 'Content-Type': 'application/json' }
     const options = { method, headers }
